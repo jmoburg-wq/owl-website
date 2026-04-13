@@ -1,1043 +1,700 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
-/* ─────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════
    OWL — The AI Operating System for Business
-   ───────────────────────────────────────────── */
+   Intelligence-grade. PE-ready. Fully managed.
+   ═══════════════════════════════════════════════════ */
 
-const CAPABILITIES = [
-  {
-    icon: '⚡',
-    title: 'Revenue Intelligence',
-    desc: 'Daily lead prioritization, deal stall detection, text-to-qualify flows, and pipeline forecasting that runs while you sleep.',
-  },
-  {
-    icon: '🏗',
-    title: 'FORGE — Org Intelligence',
-    desc: 'Continuous org decomposition, living job descriptions, retention radar, and performance signals. No competitor offers this managed.',
-  },
-  {
-    icon: '📊',
-    title: 'EBITDA Attribution',
-    desc: 'Patent-pending methodology that traces AI agent output directly to measurable EBITDA impact. LP-grade reporting every quarter.',
-  },
-  {
-    icon: '🛡',
-    title: 'Governed Autonomy',
-    desc: 'Every agent operates within a 4-tier permission system. Values-governed output pipeline ensures nothing ships without oversight.',
-  },
-  {
-    icon: '🔄',
-    title: 'Compound Intelligence',
-    desc: 'Every engagement makes the system smarter. The 10th client benefits from the learning of the first 9. A network effect in intelligence.',
-  },
-  {
-    icon: '🎯',
-    title: 'Competitive Intelligence',
-    desc: 'Weekly market monitoring, threat detection, and positioning analysis. Know what your competitors are doing before they announce it.',
-  },
+// ── Simulated live agent data ──
+const LIVE_AGENTS = [
+  { name: 'ORACLE', status: 'active', task: 'Synthesizing Sunday brief', system: 'Intelligence' },
+  { name: 'SENTINEL', status: 'active', task: 'Scanning threat vectors', system: 'Security' },
+  { name: 'FORGE-01', status: 'active', task: 'Decomposing org chart', system: 'Operations' },
+  { name: 'GRIND', status: 'active', task: 'Prospecting pipeline', system: 'Revenue' },
+  { name: 'RADAR', status: 'idle', task: 'Awaiting next scan cycle', system: 'Intelligence' },
+  { name: 'DEMING', status: 'active', task: 'Quality gate review', system: 'Quality' },
+  { name: 'BLITZ', status: 'active', task: 'Outreach sequence 14', system: 'Revenue' },
+  { name: 'CIPHER', status: 'active', task: 'Calibrating message tone', system: 'Comms' },
 ]
 
-const HOW_IT_WORKS = [
-  {
-    week: 'Week 1–2',
-    title: 'Decomposition',
-    desc: 'We map your organization — every function, every workflow, every decision point. No agent output yet. This is the foundation.',
-  },
-  {
-    week: 'Week 3–4',
-    title: 'Configuration',
-    desc: 'Agents are configured to your business. First test outputs appear. Rough edges get smoothed. Your Canon gets built.',
-  },
-  {
-    week: 'Month 2',
-    title: 'Go Live',
-    desc: 'System goes live. First intelligence deliverables within 48 hours. Weekly progress reports begin. Agents start compounding.',
-  },
-  {
-    week: 'Month 3',
-    title: 'Proof',
-    desc: 'EBITDA impact becomes measurable. First quarterly report delivered. You see the numbers. Your board sees the numbers.',
-  },
+const INTEL_FEED = [
+  { time: '06:00', agent: 'GRIND', msg: 'Pipeline built: 14 qualified leads identified' },
+  { time: '06:30', agent: 'RADAR', msg: 'Competitor alert: Lindy AI announced enterprise tier' },
+  { time: '07:00', agent: 'SENTINEL', msg: 'All systems nominal. Threat level: GREEN' },
+  { time: '07:15', agent: 'ORACLE', msg: 'Market synthesis complete. 3 actionable signals.' },
+  { time: '07:30', agent: 'FORGE-01', msg: 'Retention risk flagged: Engineering lead, 87% score' },
+  { time: '08:00', agent: 'DEMING', msg: 'Quality gate: 4 outputs scored, avg 36/40' },
+  { time: '08:15', agent: 'BLITZ', msg: 'Sequence 14 complete. 3 replies, 1 meeting booked' },
+  { time: '08:30', agent: 'VERA', msg: 'Morning brief delivered to James via Telegram' },
 ]
 
-const PERSONAS = [
-  {
-    id: 'pe',
-    label: 'PE Firms',
-    headline: 'Your competitors are getting AI playbooks at exit. Yours already has one.',
-    problems: [
-      'Board asks about AI at every meeting — no coordinated answer',
-      'Each portco doing something different with AI — nothing repeatable',
-      'Paying consultants $200K for decks that collect dust',
-      'Hold period ending before EBITDA impact materializes',
-    ],
-    solution:
-      'OWL deploys a repeatable AI operating layer across your portfolio — 90-day deployment, quarterly EBITDA report, scales without headcount.',
-    metric: '$200K–$400K annual EBITDA recovery within 90 days for a 100-person company',
-    price: 'From $3,500/portco/month',
-    anchor: 'vs. $50K–$500K per Big 4 engagement',
-  },
-  {
-    id: 'smb',
-    label: '$5M–$50M Companies',
-    headline: "Your competitors are still managing. You're operating.",
-    problems: [
-      'Outgrown spreadsheets but not ready for enterprise software',
-      'Watching faster competitors and can\'t figure out what they\'re doing',
-      'Every AI tool requires a new hire to manage it',
-      'Paying enterprise prices for tools built for companies 10x your size',
-    ],
-    solution:
-      'The intelligence layer Fortune 500 companies pay $500K/year for — deployed to your business in 90 days at a fraction of the cost.',
-    metric: '8–12 hours recovered per team member per week',
-    price: 'From $2,500/month',
-    anchor: 'vs. $60K–$120K/year for one junior hire',
-  },
-  {
-    id: 'solo',
-    label: 'Solo Operators',
-    headline: 'Your competitors hire. You compound.',
-    problems: [
-      'Running five things at once — weekends spent catching up',
-      'Outcompeted by people with bigger teams and more resources',
-      'Trapped in the operational layer — can\'t do strategic work',
-      'Every new tool adds complexity instead of removing it',
-    ],
-    solution:
-      'OWL gives you 180+ agents working in shifts. Your attention goes only to the decisions only you can make.',
-    metric: 'The leverage of a 20-person team without the overhead',
-    price: 'From $997/month',
-    anchor: 'vs. $75K+/year for your first hire',
-  },
-]
+function TypingText({ texts, className = '' }: { texts: string[]; className?: string }) {
+  const [index, setIndex] = useState(0)
+  const [displayed, setDisplayed] = useState('')
+  const [typing, setTyping] = useState(true)
 
-const PRICING = [
-  {
-    tier: 'Intelligence Suite',
-    price: '$500',
-    period: '/month',
-    desc: 'Entry point. Low risk. Immediate value.',
-    features: [
-      'Weekly competitive landscape report',
-      'Market signal monitoring',
-      'Venture health scores',
-      'Sunday synthesis brief',
-    ],
-    cta: 'Start Here',
-    highlight: false,
-  },
-  {
-    tier: 'Revenue Acceleration',
-    price: '$299',
-    period: '/team/month',
-    desc: 'Revenue intelligence on top of your existing CRM.',
-    features: [
-      'Daily lead prioritization (top 3)',
-      'Context loading before every call',
-      'Outreach drafting + compliance',
-      'Deal stall detection',
-      'Text-to-qualify flow',
-      'Weekly pipeline report',
-    ],
-    cta: 'Accelerate Revenue',
-    highlight: false,
-  },
-  {
-    tier: 'FORGE',
-    price: '$2,500',
-    period: '/month',
-    desc: 'Workforce intelligence. No competitor offers this.',
-    features: [
-      'Org decomposition map',
-      'Living job descriptions',
-      'Performance signal detection',
-      'Retention radar',
-      'Onboarding playbooks',
-      'Development plans',
-    ],
-    cta: 'Deploy FORGE',
-    highlight: true,
-  },
-  {
-    tier: 'Enterprise OS',
-    price: '$3,500',
-    period: '/month',
-    desc: 'Full AI operating system. Every agent team.',
-    features: [
-      'Everything in all tiers',
-      'Full Canon build + configuration',
-      'All agent teams deployed',
-      'Quarterly EBITDA impact report',
-      'PE portfolio pricing available',
-      '90-day deployment guarantee',
-    ],
-    cta: 'Talk to James',
-    highlight: false,
-  },
-]
+  useEffect(() => {
+    const text = texts[index]
+    if (typing) {
+      if (displayed.length < text.length) {
+        const t = setTimeout(() => setDisplayed(text.slice(0, displayed.length + 1)), 40)
+        return () => clearTimeout(t)
+      } else {
+        const t = setTimeout(() => setTyping(false), 2000)
+        return () => clearTimeout(t)
+      }
+    } else {
+      if (displayed.length > 0) {
+        const t = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 20)
+        return () => clearTimeout(t)
+      } else {
+        setIndex((i) => (i + 1) % texts.length)
+        setTyping(true)
+      }
+    }
+  }, [displayed, typing, index, texts])
 
-const COMPARISONS = [
-  { name: 'OWL', managed: true, org: true, ebitda: true, pe: true, guarantee: true, price: '$500/mo' },
-  { name: 'Lindy AI', managed: false, org: false, ebitda: false, pe: false, guarantee: false, price: '$50/mo DIY' },
-  { name: '11x.ai', managed: false, org: false, ebitda: false, pe: false, guarantee: true, price: '$5K/mo' },
-  { name: 'Copilot', managed: false, org: false, ebitda: false, pe: false, guarantee: false, price: '$30/user/mo' },
-  { name: 'Big 4', managed: false, org: false, ebitda: false, pe: true, guarantee: false, price: '$50K+' },
-]
-
-function Section({ children, id, className = '' }: { children: React.ReactNode; id?: string; className?: string }) {
   return (
-    <section id={id} className={`section-padding ${className}`}>
-      <div className="container">{children}</div>
-    </section>
-  )
-}
-
-function Badge({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      style={{
-        display: 'inline-block',
-        padding: '6px 16px',
-        fontSize: '0.75rem',
-        fontWeight: 600,
-        letterSpacing: '0.12em',
-        textTransform: 'uppercase',
-        color: 'var(--copper)',
-        border: '1px solid var(--copper)',
-        borderRadius: '100px',
-        fontFamily: 'var(--font-sans)',
-      }}
-    >
-      {children}
+    <span className={className}>
+      {displayed}
+      <span style={{ opacity: 0.6, animation: 'blink 1s step-end infinite' }}>_</span>
     </span>
   )
 }
 
+function AgentStatusRow({ agent, delay }: { agent: typeof LIVE_AGENTS[0]; delay: number }) {
+  const [show, setShow] = useState(false)
+  useEffect(() => { const t = setTimeout(() => setShow(true), delay); return () => clearTimeout(t) }, [delay])
+  if (!show) return null
+  return (
+    <div style={{
+      display: 'grid', gridTemplateColumns: '100px 70px 1fr 90px',
+      gap: '12px', padding: '10px 16px', fontSize: '0.8rem',
+      borderBottom: '1px solid rgba(78,205,196,0.06)',
+      fontFamily: "'Courier New', monospace", alignItems: 'center',
+      animation: 'fadeRow 0.4s ease',
+    }}>
+      <span style={{ color: '#4ECDC4', fontWeight: 700 }}>{agent.name}</span>
+      <span style={{
+        color: agent.status === 'active' ? '#4ECDC4' : '#D4A853',
+        display: 'flex', alignItems: 'center', gap: '6px',
+      }}>
+        <span style={{
+          width: 6, height: 6, borderRadius: '50%',
+          background: agent.status === 'active' ? '#4ECDC4' : '#D4A853',
+          animation: agent.status === 'active' ? 'pulse 2s infinite' : 'none',
+          display: 'inline-block',
+        }} />
+        {agent.status.toUpperCase()}
+      </span>
+      <span style={{ color: 'rgba(242,237,228,0.5)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{agent.task}</span>
+      <span style={{ color: 'rgba(242,237,228,0.3)', textAlign: 'right', fontSize: '0.7rem' }}>{agent.system}</span>
+    </div>
+  )
+}
+
+function IntelFeed() {
+  const [visibleCount, setVisibleCount] = useState(0)
+  const containerRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (visibleCount < INTEL_FEED.length) {
+      const t = setTimeout(() => setVisibleCount(c => c + 1), 800)
+      return () => clearTimeout(t)
+    }
+  }, [visibleCount])
+  useEffect(() => {
+    if (containerRef.current) containerRef.current.scrollTop = containerRef.current.scrollHeight
+  }, [visibleCount])
+  return (
+    <div ref={containerRef} style={{
+      maxHeight: '320px', overflow: 'hidden',
+      fontFamily: "'Courier New', monospace", fontSize: '0.78rem',
+    }}>
+      {INTEL_FEED.slice(0, visibleCount).map((item, i) => (
+        <div key={i} style={{
+          padding: '8px 0', borderBottom: '1px solid rgba(78,205,196,0.06)',
+          animation: 'fadeRow 0.5s ease',
+        }}>
+          <span style={{ color: 'rgba(242,237,228,0.25)', marginRight: '12px' }}>{item.time}</span>
+          <span style={{ color: '#C8622A', fontWeight: 700, marginRight: '12px' }}>[{item.agent}]</span>
+          <span style={{ color: 'rgba(242,237,228,0.6)' }}>{item.msg}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ── Simulated Dashboard Cards ──
+function DashboardMock() {
+  return (
+    <div style={{
+      background: '#0a0b0e', border: '1px solid rgba(78,205,196,0.15)',
+      borderRadius: '12px', overflow: 'hidden', position: 'relative',
+    }}>
+      {/* Title bar */}
+      <div style={{
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        padding: '12px 20px', borderBottom: '1px solid rgba(78,205,196,0.1)',
+        background: 'rgba(78,205,196,0.03)',
+      }}>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#4ECDC4', animation: 'pulse 2s infinite' }} />
+          <span style={{ fontFamily: "'Courier New', monospace", fontSize: '0.75rem', color: '#4ECDC4', fontWeight: 700, letterSpacing: '0.1em' }}>
+            OWL COMMAND CENTER
+          </span>
+        </div>
+        <span style={{ fontFamily: "'Courier New', monospace", fontSize: '0.65rem', color: 'rgba(242,237,228,0.25)' }}>
+          LIVE // ALL SYSTEMS OPERATIONAL
+        </span>
+      </div>
+
+      {/* Metrics row */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', borderBottom: '1px solid rgba(78,205,196,0.08)' }}>
+        {[
+          { label: 'AGENTS ACTIVE', value: '47', change: '+3', color: '#4ECDC4' },
+          { label: 'SIGNALS TODAY', value: '128', change: '+14', color: '#C8622A' },
+          { label: 'PIPELINE VALUE', value: '$2.4M', change: '+$180K', color: '#D4A853' },
+          { label: 'QUALITY SCORE', value: '37/40', change: '', color: '#4ECDC4' },
+        ].map((m) => (
+          <div key={m.label} style={{
+            padding: '20px', borderRight: '1px solid rgba(78,205,196,0.06)',
+            textAlign: 'center',
+          }}>
+            <div style={{ fontFamily: "'Courier New', monospace", fontSize: '0.6rem', color: 'rgba(242,237,228,0.3)', letterSpacing: '0.15em', marginBottom: '8px' }}>{m.label}</div>
+            <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: m.color, fontWeight: 700 }}>{m.value}</div>
+            {m.change && <div style={{ fontFamily: "'Courier New', monospace", fontSize: '0.65rem', color: '#4ECDC4', marginTop: '4px' }}>{m.change} this week</div>}
+          </div>
+        ))}
+      </div>
+
+      {/* Two column: Agent roster + Intel feed */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+        <div style={{ borderRight: '1px solid rgba(78,205,196,0.06)' }}>
+          <div style={{
+            padding: '10px 16px', fontSize: '0.65rem', letterSpacing: '0.15em',
+            color: 'rgba(242,237,228,0.3)', fontFamily: "'Courier New', monospace",
+            borderBottom: '1px solid rgba(78,205,196,0.06)',
+            fontWeight: 700,
+          }}>AGENT ROSTER — LIVE STATUS</div>
+          {LIVE_AGENTS.map((a, i) => <AgentStatusRow key={a.name} agent={a} delay={i * 200} />)}
+        </div>
+        <div>
+          <div style={{
+            padding: '10px 16px', fontSize: '0.65rem', letterSpacing: '0.15em',
+            color: 'rgba(242,237,228,0.3)', fontFamily: "'Courier New', monospace",
+            borderBottom: '1px solid rgba(78,205,196,0.06)',
+            fontWeight: 700,
+          }}>INTELLIGENCE FEED — TODAY</div>
+          <div style={{ padding: '8px 16px' }}>
+            <IntelFeed />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function EbitdaDashboard() {
+  return (
+    <div style={{
+      background: '#0a0b0e', border: '1px solid rgba(200,98,42,0.2)',
+      borderRadius: '12px', overflow: 'hidden',
+    }}>
+      <div style={{
+        padding: '12px 20px', borderBottom: '1px solid rgba(200,98,42,0.1)',
+        background: 'rgba(200,98,42,0.03)',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+      }}>
+        <span style={{ fontFamily: "'Courier New', monospace", fontSize: '0.75rem', color: '#C8622A', fontWeight: 700, letterSpacing: '0.1em' }}>
+          EBITDA ATTRIBUTION LEDGER
+        </span>
+        <span style={{ fontFamily: "'Courier New', monospace", fontSize: '0.65rem', color: 'rgba(242,237,228,0.25)' }}>Q1 2026 // CONFIDENTIAL</span>
+      </div>
+      <div style={{ padding: '24px 20px' }}>
+        {/* Bar chart simulation */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {[
+            { label: 'Revenue Intelligence', value: 142, max: 200, pct: '71%' },
+            { label: 'FORGE Retention Saves', value: 89, max: 200, pct: '44%' },
+            { label: 'Pipeline Acceleration', value: 167, max: 200, pct: '83%' },
+            { label: 'Cost Reduction (FinOps)', value: 54, max: 200, pct: '27%' },
+          ].map((bar) => (
+            <div key={bar.label}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                <span style={{ fontFamily: "'Courier New', monospace", fontSize: '0.7rem', color: 'rgba(242,237,228,0.5)' }}>{bar.label}</span>
+                <span style={{ fontFamily: "'Courier New', monospace", fontSize: '0.7rem', color: '#D4A853' }}>${bar.value}K</span>
+              </div>
+              <div style={{ height: '4px', background: 'rgba(242,237,228,0.06)', borderRadius: '2px', overflow: 'hidden' }}>
+                <div style={{
+                  height: '100%', width: bar.pct, borderRadius: '2px',
+                  background: 'linear-gradient(90deg, #C8622A, #D4A853)',
+                  animation: 'growBar 1.5s ease forwards',
+                }} />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{
+          marginTop: '20px', padding: '16px', background: 'rgba(200,98,42,0.05)',
+          border: '1px solid rgba(200,98,42,0.1)', borderRadius: '8px',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+        }}>
+          <div>
+            <div style={{ fontFamily: "'Courier New', monospace", fontSize: '0.6rem', color: 'rgba(242,237,228,0.3)', letterSpacing: '0.15em' }}>TOTAL ATTRIBUTED EBITDA IMPACT</div>
+            <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', color: '#D4A853', fontWeight: 700, marginTop: '4px' }}>$452K</div>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontFamily: "'Courier New', monospace", fontSize: '0.6rem', color: 'rgba(242,237,228,0.3)', letterSpacing: '0.15em' }}>ANNUALIZED</div>
+            <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', color: '#4ECDC4', fontWeight: 700 }}>$1.8M</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ForgePanel() {
+  return (
+    <div style={{
+      background: '#0a0b0e', border: '1px solid rgba(78,205,196,0.15)',
+      borderRadius: '12px', overflow: 'hidden',
+    }}>
+      <div style={{
+        padding: '12px 20px', borderBottom: '1px solid rgba(78,205,196,0.1)',
+        background: 'rgba(78,205,196,0.03)',
+      }}>
+        <span style={{ fontFamily: "'Courier New', monospace", fontSize: '0.75rem', color: '#4ECDC4', fontWeight: 700, letterSpacing: '0.1em' }}>
+          FORGE // ORG INTELLIGENCE ENGINE
+        </span>
+      </div>
+      <div style={{ padding: '16px 20px' }}>
+        {[
+          { role: 'VP Engineering', risk: 'HIGH', score: 87, signal: 'LinkedIn activity spike, 3 recruiter connections added' },
+          { role: 'Head of Sales', risk: 'LOW', score: 23, signal: 'Stable engagement, promoted 2 team members' },
+          { role: 'CFO', risk: 'MEDIUM', score: 54, signal: 'Glassdoor review sentiment shift detected' },
+        ].map((person) => (
+          <div key={person.role} style={{
+            padding: '12px 0', borderBottom: '1px solid rgba(78,205,196,0.06)',
+            display: 'grid', gridTemplateColumns: '140px 70px 1fr', gap: '12px', alignItems: 'start',
+          }}>
+            <div>
+              <div style={{ fontFamily: "'Courier New', monospace", fontSize: '0.8rem', color: 'rgba(242,237,228,0.8)', fontWeight: 600 }}>{person.role}</div>
+            </div>
+            <div style={{
+              fontFamily: "'Courier New', monospace", fontSize: '0.65rem', fontWeight: 700,
+              color: person.risk === 'HIGH' ? '#e74c3c' : person.risk === 'MEDIUM' ? '#D4A853' : '#4ECDC4',
+              padding: '2px 8px', borderRadius: '4px',
+              background: person.risk === 'HIGH' ? 'rgba(231,76,60,0.1)' : person.risk === 'MEDIUM' ? 'rgba(212,168,83,0.1)' : 'rgba(78,205,196,0.1)',
+              textAlign: 'center',
+            }}>
+              {person.risk}
+            </div>
+            <div style={{ fontFamily: "'Courier New', monospace", fontSize: '0.7rem', color: 'rgba(242,237,228,0.4)', lineHeight: 1.5 }}>
+              {person.signal}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function Section({ children, id }: { children: React.ReactNode; id?: string }) {
+  return (
+    <section id={id} style={{ padding: '120px 24px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>{children}</div>
+    </section>
+  )
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{
+      fontFamily: "'Courier New', monospace", fontSize: '0.65rem',
+      fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase',
+      color: '#4ECDC4', marginBottom: '16px',
+      display: 'flex', alignItems: 'center', gap: '12px',
+    }}>
+      <span style={{ width: '20px', height: '1px', background: '#4ECDC4', display: 'inline-block' }} />
+      {children}
+    </div>
+  )
+}
+
 export default function HomePage() {
-  const [activePersona, setActivePersona] = useState(0)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const persona = PERSONAS[activePersona]
+  const [activeTab, setActiveTab] = useState(0)
+
+  const audiences = [
+    {
+      id: 'pe',
+      tab: 'PE PORTFOLIO',
+      headline: 'Your competitors are getting AI playbooks at exit.',
+      subhead: 'Yours already has one.',
+      brief: 'Deploy a repeatable AI operating layer across your entire portfolio. 90-day deployment per portco. Quarterly EBITDA report. Scales without headcount.',
+      stats: [
+        { value: '$200K–$400K', label: 'Annual EBITDA recovery per 100-person portco' },
+        { value: '90 days', label: 'Full deployment timeline' },
+        { value: '3 patents', label: 'Pending IP protection' },
+      ],
+      objection: 'Big 4 engagement: $50K–$500K for a deck. OWL: $3,500/portco/month for a running system that stays.',
+    },
+    {
+      id: 'smb',
+      tab: '$5M–$50M',
+      headline: 'Your competitors are still managing.',
+      subhead: "You're operating.",
+      brief: 'The intelligence layer Fortune 500 companies pay $500K/year for — deployed to your business in 90 days. No rip-and-replace. Works on what you have.',
+      stats: [
+        { value: '8–12 hrs', label: 'Recovered per team member per week' },
+        { value: '180+', label: 'Specialized agents deployed' },
+        { value: '$2,500/mo', label: 'vs. $120K/yr for one junior hire' },
+      ],
+      objection: 'You don\'t need another tool that requires a new hire to manage. You need a system that runs while you sleep.',
+    },
+    {
+      id: 'solo',
+      tab: 'OPERATORS',
+      headline: 'Your competitors hire.',
+      subhead: 'You compound.',
+      brief: '180+ agents working in shifts. Revenue intelligence, competitive analysis, outreach — all running before you open your laptop.',
+      stats: [
+        { value: '24/7', label: 'Autonomous operation' },
+        { value: '$997/mo', label: 'Half the cost of one intern' },
+        { value: '7 days', label: 'To first intelligence output' },
+      ],
+      objection: 'The operators who move first set the standard everyone else chases.',
+    },
+  ]
+
+  const aud = audiences[activeTab]
 
   return (
     <div className="grain">
+      {/* ── Scanline overlay ── */}
+      <div style={{
+        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+        background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px)',
+        pointerEvents: 'none', zIndex: 9998,
+      }} />
+
       {/* ── Nav ── */}
-      <nav
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          background: 'rgba(15, 16, 20, 0.85)',
-          backdropFilter: 'blur(12px)',
-          borderBottom: '1px solid var(--border)',
-        }}
-      >
-        <div
-          className="container"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '16px 24px',
-          }}
-        >
-          <a href="#" style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '0.08em' }}>
-            OWL
-          </a>
-          <div className="hide-mobile" style={{ display: 'flex', gap: '32px', alignItems: 'center', fontSize: '0.875rem', fontWeight: 500 }}>
-            <a href="#what" style={{ color: 'var(--bone-mid)', transition: 'color 0.2s' }}>What</a>
-            <a href="#capabilities" style={{ color: 'var(--bone-mid)', transition: 'color 0.2s' }}>Capabilities</a>
-            <a href="#who" style={{ color: 'var(--bone-mid)', transition: 'color 0.2s' }}>Who It's For</a>
-            <a href="#pricing" style={{ color: 'var(--bone-mid)', transition: 'color 0.2s' }}>Pricing</a>
-            <a href="#how" style={{ color: 'var(--bone-mid)', transition: 'color 0.2s' }}>How It Works</a>
-            <a
-              href="#contact"
-              style={{
-                padding: '10px 24px',
-                background: 'var(--copper)',
-                color: 'var(--bone)',
-                borderRadius: '6px',
-                fontWeight: 600,
-                fontSize: '0.8rem',
-                letterSpacing: '0.05em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Talk to James
-            </a>
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
+        background: 'rgba(10,11,14,0.9)', backdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(78,205,196,0.08)',
+      }}>
+        <div style={{
+          maxWidth: '1200px', margin: '0 auto', display: 'flex',
+          alignItems: 'center', justifyContent: 'space-between', padding: '14px 24px',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#4ECDC4', animation: 'pulse 2s infinite' }} />
+            <span style={{
+              fontFamily: 'var(--font-serif)', fontSize: '1.3rem', fontWeight: 700,
+              letterSpacing: '0.15em', color: '#F2EDE4',
+            }}>OWL</span>
+            <span style={{
+              fontFamily: "'Courier New', monospace", fontSize: '0.55rem',
+              color: 'rgba(78,205,196,0.4)', letterSpacing: '0.15em', marginLeft: '4px',
+            }}>SYSTEMS OPERATIONAL</span>
           </div>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{
-              display: 'none',
-              background: 'none',
-              border: 'none',
-              color: 'var(--bone)',
-              fontSize: '1.5rem',
-              cursor: 'pointer',
-            }}
-            className="mobile-menu-btn"
-          >
-            {mobileMenuOpen ? '✕' : '☰'}
-          </button>
+          <div className="hide-mobile" style={{ display: 'flex', gap: '28px', alignItems: 'center', fontSize: '0.78rem' }}>
+            {['Intelligence', 'Capabilities', 'Deploy'].map((item) => (
+              <a key={item} href={`#${item.toLowerCase()}`} style={{
+                color: 'rgba(242,237,228,0.45)', fontFamily: "'Courier New', monospace",
+                fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase',
+                transition: 'color 0.2s',
+              }}>{item}</a>
+            ))}
+            <a href="#contact" style={{
+              padding: '8px 20px', border: '1px solid rgba(78,205,196,0.3)',
+              color: '#4ECDC4', borderRadius: '4px', fontFamily: "'Courier New', monospace",
+              fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase',
+              transition: 'all 0.2s',
+            }}>REQUEST BRIEFING</a>
+          </div>
         </div>
-        {mobileMenuOpen && (
-          <div style={{ padding: '0 24px 24px', display: 'flex', flexDirection: 'column', gap: '16px', fontSize: '1rem' }}>
-            <a href="#what" onClick={() => setMobileMenuOpen(false)}>What</a>
-            <a href="#capabilities" onClick={() => setMobileMenuOpen(false)}>Capabilities</a>
-            <a href="#who" onClick={() => setMobileMenuOpen(false)}>Who It's For</a>
-            <a href="#pricing" onClick={() => setMobileMenuOpen(false)}>Pricing</a>
-            <a href="#how" onClick={() => setMobileMenuOpen(false)}>How It Works</a>
-            <a href="#contact" onClick={() => setMobileMenuOpen(false)} style={{ color: 'var(--copper)' }}>Talk to James</a>
-          </div>
-        )}
       </nav>
 
       {/* ── Hero ── */}
-      <section
-        style={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          textAlign: 'center',
-          padding: '140px 24px 100px',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Glow */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '20%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '600px',
-            height: '600px',
-            background: 'radial-gradient(circle, rgba(200,98,42,0.08) 0%, transparent 70%)',
-            pointerEvents: 'none',
-          }}
-        />
-        <Badge>The AI Operating System</Badge>
-        <h1
-          className="font-serif"
-          style={{
-            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-            lineHeight: 1.1,
-            marginTop: '32px',
-            maxWidth: '900px',
-            fontWeight: 400,
-          }}
-        >
-          Your competitors are still managing.{' '}
-          <span className="text-copper" style={{ fontStyle: 'italic' }}>
-            You're operating.
-          </span>
-        </h1>
-        <p
-          style={{
-            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-            color: 'var(--bone-mid)',
-            maxWidth: '680px',
-            marginTop: '28px',
-            lineHeight: 1.7,
-          }}
-        >
-          OWL deploys 180+ specialized AI agents across your business — revenue intelligence,
-          org decomposition, competitive analysis, and sales acceleration. Fully managed.
-          Deployed in 90 days. Zero added headcount.
-        </p>
-        <div style={{ display: 'flex', gap: '16px', marginTop: '48px', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <a
-            href="#contact"
-            style={{
-              padding: '16px 36px',
-              background: 'var(--copper)',
-              color: 'var(--bone)',
-              borderRadius: '6px',
-              fontWeight: 700,
-              fontSize: '0.85rem',
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase',
-              transition: 'transform 0.2s, box-shadow 0.2s',
-            }}
-          >
-            See What OWL Removes From Your Plate
-          </a>
-          <a
-            href="#what"
-            style={{
-              padding: '16px 36px',
-              border: '1px solid var(--border2)',
-              color: 'var(--bone-mid)',
-              borderRadius: '6px',
-              fontWeight: 600,
-              fontSize: '0.85rem',
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase',
-            }}
-          >
-            How It Works
-          </a>
-        </div>
+      <section style={{
+        minHeight: '100vh', display: 'flex', flexDirection: 'column',
+        justifyContent: 'center', padding: '160px 24px 80px', position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Grid background */}
+        <div style={{
+          position: 'absolute', inset: 0, opacity: 0.03,
+          backgroundImage: 'linear-gradient(rgba(78,205,196,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(78,205,196,0.3) 1px, transparent 1px)',
+          backgroundSize: '60px 60px',
+        }} />
+        {/* Radial glow */}
+        <div style={{
+          position: 'absolute', top: '30%', right: '10%', width: '500px', height: '500px',
+          background: 'radial-gradient(circle, rgba(78,205,196,0.04) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute', bottom: '20%', left: '5%', width: '400px', height: '400px',
+          background: 'radial-gradient(circle, rgba(200,98,42,0.04) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
 
-        {/* Scroll indicator */}
-        <div style={{ position: 'absolute', bottom: '40px', left: '50%', transform: 'translateX(-50%)' }}>
-          <div style={{ width: '1px', height: '48px', background: 'linear-gradient(to bottom, var(--copper), transparent)' }} />
+        <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative' }}>
+          <SectionLabel>Managed AI Operating System // Est. 2024</SectionLabel>
+
+          <h1 className="font-serif" style={{
+            fontSize: 'clamp(3rem, 7vw, 5.5rem)', lineHeight: 1.05,
+            fontWeight: 400, maxWidth: '900px', marginTop: '16px',
+          }}>
+            The intelligence layer<br />
+            <span style={{ color: '#C8622A', fontStyle: 'italic' }}>
+              your business is missing.
+            </span>
+          </h1>
+
+          <div style={{
+            marginTop: '40px', maxWidth: '540px',
+            fontFamily: "'Courier New', monospace", fontSize: '0.85rem',
+            color: 'rgba(242,237,228,0.5)', lineHeight: 1.8,
+          }}>
+            <TypingText texts={[
+              '> Deploying 180+ autonomous agents across revenue, operations, and intelligence...',
+              '> EBITDA attribution active. Patent-pending methodology online.',
+              '> FORGE org decomposition complete. Retention radar scanning.',
+              '> Morning brief compiled. 3 actionable signals detected.',
+            ]} />
+          </div>
+
+          <div style={{ display: 'flex', gap: '16px', marginTop: '48px' }}>
+            <a href="#contact" style={{
+              padding: '14px 32px', background: '#C8622A', color: '#F2EDE4',
+              borderRadius: '4px', fontFamily: "'Courier New', monospace",
+              fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em',
+              textTransform: 'uppercase', transition: 'all 0.2s',
+            }}>Request Intelligence Briefing</a>
+            <a href="#intelligence" style={{
+              padding: '14px 32px', border: '1px solid rgba(242,237,228,0.12)',
+              color: 'rgba(242,237,228,0.5)', borderRadius: '4px',
+              fontFamily: "'Courier New', monospace", fontSize: '0.75rem',
+              letterSpacing: '0.1em', textTransform: 'uppercase',
+            }}>View Live Systems</a>
+          </div>
         </div>
       </section>
 
-      {/* ── What OWL Is ── */}
-      <Section id="what">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '64px', alignItems: 'center' }}>
-          <div>
-            <Badge>Not a tool. An operating system.</Badge>
-            <h2
-              className="font-serif"
-              style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', marginTop: '24px', lineHeight: 1.15 }}
-            >
-              The infrastructure layer that{' '}
-              <span className="text-copper" style={{ fontStyle: 'italic' }}>runs your business</span>
-            </h2>
-            <p style={{ color: 'var(--bone-mid)', marginTop: '24px', lineHeight: 1.8, fontSize: '1.05rem' }}>
-              OWL is to your business what an operating system is to a computer. It doesn't run one
-              program at a time. It runs everything simultaneously — allocates resources, manages
-              intelligence, and restores from failures — while you focus on what only you can do.
-            </p>
-            <p style={{ color: 'var(--bone-mid)', marginTop: '16px', lineHeight: 1.8, fontSize: '1.05rem' }}>
-              The closest comparison is the Big 4 — except OWL delivers a running system in 90 days
-              instead of a deck in 6 months. At 1/10th the cost. And it stays.
-            </p>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            {[
-              { num: '180+', label: 'Specialized Agents' },
-              { num: '90', label: 'Day Deployment' },
-              { num: '7', label: 'Intelligence Systems' },
-              { num: '24/7', label: 'Autonomous Operation' },
-            ].map((s) => (
-              <div
-                key={s.label}
-                style={{
-                  background: 'var(--ink2)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '12px',
-                  padding: '32px 24px',
-                  textAlign: 'center',
-                }}
-              >
-                <div className="font-serif text-copper" style={{ fontSize: '2.5rem', fontWeight: 700 }}>
-                  {s.num}
-                </div>
-                <div style={{ color: 'var(--bone-mid)', fontSize: '0.85rem', marginTop: '8px', fontWeight: 500 }}>
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* ── Live Command Center ── */}
+      <Section id="intelligence">
+        <SectionLabel>Live System Status</SectionLabel>
+        <h2 className="font-serif" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.1, marginBottom: '48px' }}>
+          This is what's running <span style={{ color: '#C8622A', fontStyle: 'italic' }}>right now.</span>
+        </h2>
+        <DashboardMock />
       </Section>
 
-      {/* ── The Gap ── */}
+      {/* ── What separates OWL ── */}
       <Section>
-        <div style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
-          <Badge>The Market Gap</Badge>
-          <h2 className="font-serif" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', marginTop: '24px', lineHeight: 1.2 }}>
-            Every AI product makes you build it yourself.{' '}
-            <span className="text-copper" style={{ fontStyle: 'italic' }}>OWL shows up built.</span>
-          </h2>
-        </div>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '24px',
-            marginTop: '56px',
-          }}
-        >
-          {[
-            {
-              gap: 'No managed AI OS at SMB price points',
-              detail: 'Lindy and Relevance require you to build it. Enterprise platforms require 300+ seats. OWL is fully managed for companies under $50M.',
-            },
-            {
-              gap: 'No org intelligence as a monthly service',
-              detail: 'FORGE — continuous org decomposition, retention radar, living job descriptions — has zero direct competitors in managed form.',
-            },
-            {
-              gap: 'No PE portfolio deployment layer',
-              detail: 'No product deploys a repeatable AI playbook across multiple portcos with unified EBITDA reporting. OWL is the first.',
-            },
-          ].map((g) => (
-            <div
-              key={g.gap}
-              style={{
-                background: 'var(--ink2)',
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-                padding: '36px 28px',
-              }}
-            >
-              <div className="text-signal" style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                Uncontested
-              </div>
-              <h3 className="font-serif" style={{ fontSize: '1.25rem', marginTop: '12px', lineHeight: 1.3 }}>
-                {g.gap}
-              </h3>
-              <p style={{ color: 'var(--bone-mid)', fontSize: '0.95rem', marginTop: '12px', lineHeight: 1.7 }}>
-                {g.detail}
-              </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '48px' }}>
+          <div>
+            <SectionLabel>Why This Is Different</SectionLabel>
+            <h2 className="font-serif" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', lineHeight: 1.15, marginBottom: '32px' }}>
+              Not another AI tool.<br />
+              <span style={{ color: '#C8622A', fontStyle: 'italic' }}>An operating system.</span>
+            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              {[
+                { marker: '01', title: 'Managed, not DIY', body: 'Lindy gives you a toolkit. OWL shows up built, configured, and running on your specific business. We are the contractor, not the hardware store.' },
+                { marker: '02', title: 'EBITDA attribution, not vibes', body: 'Patent-pending ledger traces every agent output to measurable business impact. Your board doesn\'t want "we use AI." They want a number.' },
+                { marker: '03', title: 'Org intelligence no one else has', body: 'FORGE decomposes your organization continuously — living job descriptions, retention radar, performance signals. This product does not exist anywhere else in managed form.' },
+                { marker: '04', title: 'Governed, not reckless', body: '4-tier permission architecture. Values-governed output pipeline. Quality gate on every deliverable. Nothing touches your clients without oversight.' },
+              ].map((d) => (
+                <div key={d.marker} style={{ display: 'flex', gap: '20px' }}>
+                  <div style={{
+                    fontFamily: "'Courier New', monospace", fontSize: '0.7rem',
+                    color: '#C8622A', fontWeight: 700, flexShrink: 0, marginTop: '2px',
+                  }}>{d.marker}</div>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '1rem', marginBottom: '6px' }}>{d.title}</div>
+                    <div style={{ color: 'rgba(242,237,228,0.5)', fontSize: '0.9rem', lineHeight: 1.7 }}>{d.body}</div>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <EbitdaDashboard />
+            <ForgePanel />
+          </div>
         </div>
       </Section>
 
       {/* ── Capabilities ── */}
       <Section id="capabilities">
-        <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-          <Badge>Capabilities</Badge>
-          <h2 className="font-serif" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', marginTop: '24px', lineHeight: 1.15 }}>
-            Six intelligence layers.{' '}
-            <span className="text-copper" style={{ fontStyle: 'italic' }}>One operating system.</span>
-          </h2>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
-          {CAPABILITIES.map((c) => (
-            <div
-              key={c.title}
-              style={{
-                background: 'var(--ink2)',
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-                padding: '36px 28px',
-                transition: 'border-color 0.3s',
-              }}
-            >
-              <div style={{ fontSize: '2rem', marginBottom: '16px' }}>{c.icon}</div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '12px' }}>{c.title}</h3>
-              <p style={{ color: 'var(--bone-mid)', fontSize: '0.95rem', lineHeight: 1.7 }}>{c.desc}</p>
+        <SectionLabel>Intelligence Architecture</SectionLabel>
+        <h2 className="font-serif" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.1, marginBottom: '56px' }}>
+          Seven systems. One mission.
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1px', background: 'rgba(78,205,196,0.06)', borderRadius: '12px', overflow: 'hidden' }}>
+          {[
+            { code: 'ORACLE', name: 'Strategic Intelligence', desc: '7-agent adversarial synthesis. Sees what one analyst can\'t.' },
+            { code: 'FORGE', name: 'Org Decomposition', desc: 'Living org chart. Retention radar. Performance signals. No equivalent exists.' },
+            { code: 'GRIND', name: 'Revenue Engine', desc: 'Pipeline building, lead scoring, outreach sequencing. Running by 6am.' },
+            { code: 'SENTINEL', name: 'Threat Detection', desc: 'Daily health scans. Weekly threat briefs. Anomaly detection across all systems.' },
+            { code: 'DEMING', name: 'Quality Assurance', desc: 'Every output scored before delivery. Continuous improvement across the OS.' },
+            { code: 'RADAR', name: 'Competitive Intelligence', desc: 'Monthly landscape scans. Competitor pricing, funding, and feature tracking.' },
+          ].map((sys) => (
+            <div key={sys.code} style={{
+              background: '#0a0b0e', padding: '32px 28px',
+            }}>
+              <div style={{
+                fontFamily: "'Courier New', monospace", fontSize: '0.65rem',
+                color: '#4ECDC4', fontWeight: 700, letterSpacing: '0.15em', marginBottom: '12px',
+              }}>{sys.code}</div>
+              <div style={{ fontWeight: 700, fontSize: '1.05rem', marginBottom: '8px' }}>{sys.name}</div>
+              <div style={{ color: 'rgba(242,237,228,0.45)', fontSize: '0.88rem', lineHeight: 1.7 }}>{sys.desc}</div>
             </div>
           ))}
         </div>
       </Section>
 
-      {/* ── Who It's For (Personas) ── */}
-      <Section id="who">
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <Badge>Who It's For</Badge>
-          <h2 className="font-serif" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', marginTop: '24px', lineHeight: 1.15 }}>
-            Built for operators who{' '}
-            <span className="text-copper" style={{ fontStyle: 'italic' }}>mean business</span>
-          </h2>
-        </div>
+      {/* ── Audience Dossiers ── */}
+      <Section id="deploy">
+        <SectionLabel>Deployment Profiles</SectionLabel>
+        <h2 className="font-serif" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.1, marginBottom: '48px' }}>
+          Select your profile.
+        </h2>
 
-        {/* Persona tabs */}
-        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '48px', flexWrap: 'wrap' }}>
-          {PERSONAS.map((p, i) => (
-            <button
-              key={p.id}
-              onClick={() => setActivePersona(i)}
-              style={{
-                padding: '12px 28px',
-                borderRadius: '100px',
-                border: i === activePersona ? '1px solid var(--copper)' : '1px solid var(--border2)',
-                background: i === activePersona ? 'var(--copper-dim)' : 'transparent',
-                color: i === activePersona ? 'var(--copper)' : 'var(--bone-mid)',
-                cursor: 'pointer',
-                fontWeight: 600,
-                fontSize: '0.9rem',
-                fontFamily: 'var(--font-sans)',
-                transition: 'all 0.2s',
-              }}
-            >
-              {p.label}
-            </button>
+        {/* Tabs */}
+        <div style={{ display: 'flex', gap: '0', marginBottom: '40px', borderBottom: '1px solid rgba(78,205,196,0.1)' }}>
+          {audiences.map((a, i) => (
+            <button key={a.id} onClick={() => setActiveTab(i)} style={{
+              padding: '14px 28px', background: 'none', border: 'none',
+              fontFamily: "'Courier New', monospace", fontSize: '0.72rem',
+              letterSpacing: '0.12em', cursor: 'pointer',
+              color: i === activeTab ? '#4ECDC4' : 'rgba(242,237,228,0.3)',
+              borderBottom: i === activeTab ? '2px solid #4ECDC4' : '2px solid transparent',
+              transition: 'all 0.2s',
+            }}>{a.tab}</button>
           ))}
         </div>
 
-        {/* Persona content */}
-        <div
-          key={persona.id}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '48px',
-            alignItems: 'start',
-            animation: 'fade-in 0.5s ease',
-          }}
-        >
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '48px' }}>
           <div>
-            <h3
-              className="font-serif"
-              style={{ fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', lineHeight: 1.2, marginBottom: '28px' }}
-            >
-              {persona.headline}
+            <h3 className="font-serif" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.5rem)', lineHeight: 1.15, marginBottom: '8px' }}>
+              {aud.headline}
             </h3>
-            <div style={{ marginBottom: '28px' }}>
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--bone-mid)', marginBottom: '16px' }}>
-                Problems We Solve
-              </div>
-              {persona.problems.map((prob) => (
-                <div
-                  key={prob}
-                  style={{
-                    display: 'flex',
-                    gap: '12px',
-                    alignItems: 'flex-start',
-                    marginBottom: '12px',
-                    color: 'var(--bone-mid)',
-                    fontSize: '0.95rem',
-                    lineHeight: 1.6,
-                  }}
-                >
-                  <span className="text-copper" style={{ flexShrink: 0, marginTop: '2px' }}>&#x2192;</span>
-                  {prob}
-                </div>
-              ))}
+            <h3 className="font-serif" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.5rem)', lineHeight: 1.15, color: '#C8622A', fontStyle: 'italic', marginBottom: '28px' }}>
+              {aud.subhead}
+            </h3>
+            <p style={{ color: 'rgba(242,237,228,0.55)', fontSize: '1rem', lineHeight: 1.8, marginBottom: '32px' }}>{aud.brief}</p>
+            <div style={{
+              padding: '16px 20px', background: 'rgba(200,98,42,0.05)',
+              border: '1px solid rgba(200,98,42,0.15)', borderRadius: '6px',
+              fontFamily: "'Courier New', monospace", fontSize: '0.8rem',
+              color: 'rgba(242,237,228,0.5)', lineHeight: 1.7, fontStyle: 'italic',
+            }}>
+              {aud.objection}
             </div>
           </div>
-          <div>
-            <div
-              style={{
-                background: 'var(--ink2)',
-                border: '1px solid var(--border)',
-                borderRadius: '16px',
-                padding: '36px 28px',
-              }}
-            >
-              <p style={{ fontSize: '1.05rem', lineHeight: 1.7, marginBottom: '24px' }}>{persona.solution}</p>
-              <div
-                style={{
-                  background: 'var(--copper-dim)',
-                  border: '1px solid rgba(200,98,42,0.2)',
-                  borderRadius: '10px',
-                  padding: '20px',
-                  marginBottom: '24px',
-                }}
-              >
-                <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--copper)', marginBottom: '6px' }}>
-                  Expected Impact
-                </div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 600 }}>{persona.metric}</div>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '8px' }}>
-                <div>
-                  <span className="font-serif text-copper" style={{ fontSize: '1.5rem', fontWeight: 700 }}>
-                    {persona.price}
-                  </span>
-                </div>
-                <div style={{ color: 'var(--bone-mid)', fontSize: '0.85rem' }}>{persona.anchor}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ── How It Works ── */}
-      <Section id="how">
-        <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-          <Badge>90-Day Deployment</Badge>
-          <h2 className="font-serif" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', marginTop: '24px', lineHeight: 1.15 }}>
-            From conversation to{' '}
-            <span className="text-copper" style={{ fontStyle: 'italic' }}>measurable EBITDA impact</span>
-          </h2>
-          <p style={{ color: 'var(--bone-mid)', marginTop: '16px', fontSize: '1.05rem' }}>
-            90-day deployment or we don't invoice month four.
-          </p>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
-          {HOW_IT_WORKS.map((step, i) => (
-            <div
-              key={step.title}
-              style={{
-                position: 'relative',
-                background: 'var(--ink2)',
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-                padding: '36px 28px',
-              }}
-            >
-              <div className="text-copper" style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                {step.week}
-              </div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '12px 0' }}>{step.title}</h3>
-              <p style={{ color: 'var(--bone-mid)', fontSize: '0.95rem', lineHeight: 1.7 }}>{step.desc}</p>
-              {i < HOW_IT_WORKS.length - 1 && (
-                <div
-                  className="hide-mobile"
-                  style={{
-                    position: 'absolute',
-                    right: '-14px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    color: 'var(--copper)',
-                    fontSize: '1.2rem',
-                    zIndex: 2,
-                  }}
-                >
-                  &#x2192;
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* ── Pricing ── */}
-      <Section id="pricing">
-        <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-          <Badge>Pricing</Badge>
-          <h2 className="font-serif" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', marginTop: '24px', lineHeight: 1.15 }}>
-            Land small.{' '}
-            <span className="text-copper" style={{ fontStyle: 'italic' }}>Expand with proof.</span>
-          </h2>
-          <p style={{ color: 'var(--bone-mid)', marginTop: '16px', fontSize: '1.05rem' }}>
-            Every tier delivers standalone value. The 3x minimum value ratio is non-negotiable.
-          </p>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
-          {PRICING.map((p) => (
-            <div
-              key={p.tier}
-              style={{
-                background: p.highlight ? 'var(--ink3)' : 'var(--ink2)',
-                border: p.highlight ? '1px solid var(--copper)' : '1px solid var(--border)',
-                borderRadius: '16px',
-                padding: '36px 28px',
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'relative',
-              }}
-            >
-              {p.highlight && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '-12px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    background: 'var(--copper)',
-                    color: 'var(--bone)',
-                    padding: '4px 16px',
-                    borderRadius: '100px',
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.1em',
-                  }}
-                >
-                  No Competitor
-                </div>
-              )}
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>{p.tier}</h3>
-              <div style={{ margin: '16px 0' }}>
-                <span className="font-serif text-copper" style={{ fontSize: '2.5rem', fontWeight: 700 }}>
-                  {p.price}
-                </span>
-                <span style={{ color: 'var(--bone-mid)', fontSize: '0.9rem' }}>{p.period}</span>
-              </div>
-              <p style={{ color: 'var(--bone-mid)', fontSize: '0.9rem', marginBottom: '20px' }}>{p.desc}</p>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, flex: 1 }}>
-                {p.features.map((f) => (
-                  <li
-                    key={f}
-                    style={{
-                      display: 'flex',
-                      gap: '10px',
-                      alignItems: 'flex-start',
-                      marginBottom: '10px',
-                      color: 'var(--bone-mid)',
-                      fontSize: '0.9rem',
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    <span className="text-signal" style={{ flexShrink: 0 }}>&#x2713;</span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href="#contact"
-                style={{
-                  display: 'block',
-                  textAlign: 'center',
-                  padding: '14px',
-                  marginTop: '24px',
-                  borderRadius: '8px',
-                  fontWeight: 700,
-                  fontSize: '0.85rem',
-                  letterSpacing: '0.04em',
-                  textTransform: 'uppercase',
-                  background: p.highlight ? 'var(--copper)' : 'transparent',
-                  color: p.highlight ? 'var(--bone)' : 'var(--copper)',
-                  border: p.highlight ? 'none' : '1px solid var(--copper)',
-                }}
-              >
-                {p.cta}
-              </a>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* ── Comparison ── */}
-      <Section>
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <Badge>Comparison</Badge>
-          <h2 className="font-serif" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', marginTop: '24px', lineHeight: 1.2 }}>
-            OWL vs. everything else
-          </h2>
-        </div>
-        <div style={{ overflowX: 'auto' }}>
-          <table
-            style={{
-              width: '100%',
-              borderCollapse: 'collapse',
-              fontSize: '0.9rem',
-              minWidth: '640px',
-            }}
-          >
-            <thead>
-              <tr>
-                {['', 'Managed', 'Org Intel', 'EBITDA Proof', 'PE-Ready', 'Guarantee', 'Entry Price'].map((h) => (
-                  <th
-                    key={h}
-                    style={{
-                      textAlign: 'left',
-                      padding: '14px 16px',
-                      borderBottom: '1px solid var(--border2)',
-                      color: 'var(--bone-mid)',
-                      fontWeight: 600,
-                      fontSize: '0.8rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.08em',
-                    }}
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {COMPARISONS.map((c) => (
-                <tr
-                  key={c.name}
-                  style={{
-                    background: c.name === 'OWL' ? 'var(--copper-dim)' : 'transparent',
-                  }}
-                >
-                  <td style={{ padding: '14px 16px', fontWeight: c.name === 'OWL' ? 700 : 400, borderBottom: '1px solid var(--border)' }}>
-                    {c.name}
-                  </td>
-                  {[c.managed, c.org, c.ebitda, c.pe, c.guarantee].map((v, i) => (
-                    <td
-                      key={i}
-                      style={{
-                        padding: '14px 16px',
-                        borderBottom: '1px solid var(--border)',
-                        color: v ? 'var(--signal)' : 'rgba(242,237,228,0.25)',
-                      }}
-                    >
-                      {v ? '✓' : '—'}
-                    </td>
-                  ))}
-                  <td style={{ padding: '14px 16px', borderBottom: '1px solid var(--border)', color: 'var(--bone-mid)' }}>
-                    {c.price}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Section>
-
-      {/* ── Architecture (from docs) ── */}
-      <Section>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '48px', alignItems: 'center' }}>
-          <div>
-            <Badge>Architecture</Badge>
-            <h2 className="font-serif" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', marginTop: '24px', lineHeight: 1.2 }}>
-              Governed. Self-calibrating.{' '}
-              <span className="text-copper" style={{ fontStyle: 'italic' }}>Self-scheduling.</span>
-            </h2>
-            <p style={{ color: 'var(--bone-mid)', marginTop: '20px', lineHeight: 1.8, fontSize: '1.05rem' }}>
-              OWL isn't a collection of AI tools duct-taped together. It's a single architecture
-              where every agent operates within a governed permission system, every output passes
-              through a quality gate, and every result gets attributed to measurable business impact.
-            </p>
-          </div>
-          <div style={{ display: 'grid', gap: '16px' }}>
-            {[
-              { label: 'Agent Governance', detail: '4-tier permission system — from fully autonomous to James-only decisions' },
-              { label: 'Quality Gate', detail: 'Every output scored 0–40 before it ships. Nothing goes out unchecked.' },
-              { label: 'Signal Bus', detail: 'Every agent output routes to downstream agents automatically. Knowledge compounds.' },
-              { label: 'Canon System', detail: 'Living organizational knowledge base. Every engagement gets a Canon — the AI equivalent of institutional memory.' },
-            ].map((a) => (
-              <div
-                key={a.label}
-                style={{
-                  background: 'var(--ink2)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '10px',
-                  padding: '24px',
-                }}
-              >
-                <div style={{ fontWeight: 700, marginBottom: '6px' }}>{a.label}</div>
-                <div style={{ color: 'var(--bone-mid)', fontSize: '0.9rem', lineHeight: 1.6 }}>{a.detail}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {aud.stats.map((s) => (
+              <div key={s.label} style={{
+                background: '#0a0b0e', border: '1px solid rgba(78,205,196,0.1)',
+                borderRadius: '8px', padding: '28px 24px',
+              }}>
+                <div className="font-serif" style={{ fontSize: '2rem', color: '#D4A853', fontWeight: 700, marginBottom: '6px' }}>{s.value}</div>
+                <div style={{ fontFamily: "'Courier New', monospace", fontSize: '0.7rem', color: 'rgba(242,237,228,0.35)', letterSpacing: '0.08em' }}>{s.label}</div>
               </div>
             ))}
           </div>
         </div>
       </Section>
 
-      {/* ── IP / Moat ── */}
+      {/* ── Timeline ── */}
       <Section>
-        <div style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
-          <Badge>Defensible</Badge>
-          <h2 className="font-serif" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', marginTop: '24px', lineHeight: 1.2 }}>
-            3 patents pending.{' '}
-            <span className="text-copper" style={{ fontStyle: 'italic' }}>A moat that compounds.</span>
-          </h2>
-          <p style={{ color: 'var(--bone-mid)', marginTop: '20px', fontSize: '1.05rem', lineHeight: 1.7 }}>
-            Most AI products aren't patentable — they're applications of existing models. OWL introduces
-            novel architectures for governing, attributing value to, and operationalizing AI agents in
-            enterprise environments.
-          </p>
-        </div>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '20px',
-            marginTop: '48px',
-          }}
-        >
+        <SectionLabel>Deployment Protocol</SectionLabel>
+        <h2 className="font-serif" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.1, marginBottom: '56px' }}>
+          90 days to measurable impact.<br />
+          <span style={{ color: 'rgba(242,237,228,0.3)', fontSize: '0.5em', fontFamily: "'Courier New', monospace", fontStyle: 'normal', letterSpacing: '0.1em' }}>
+            OR WE DON'T INVOICE MONTH FOUR.
+          </span>
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1px', background: 'rgba(78,205,196,0.06)', borderRadius: '12px', overflow: 'hidden' }}>
           {[
-            { title: 'Agent Action Firewall', desc: 'Governance layer for AI agent output control' },
-            { title: 'EBITDA Attribution Ledger', desc: 'Tracing AI value to business operations' },
-            { title: 'Canon-to-Policy Compiler', desc: 'Org knowledge to enforceable agent rules' },
-          ].map((p) => (
-            <div
-              key={p.title}
-              style={{
-                background: 'var(--ink2)',
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-                padding: '28px 24px',
-                textAlign: 'center',
-              }}
-            >
-              <div className="text-gold" style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '10px' }}>
-                Patent Pending
-              </div>
-              <h4 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '8px' }}>{p.title}</h4>
-              <p style={{ color: 'var(--bone-mid)', fontSize: '0.85rem', lineHeight: 1.6 }}>{p.desc}</p>
+            { phase: 'PHASE 1', time: 'Week 1–2', name: 'Decomposition', desc: 'Map every function, workflow, and decision point. Build the Canon. No agent output yet.' },
+            { phase: 'PHASE 2', time: 'Week 3–4', name: 'Configuration', desc: 'Agents configured to your business. First test outputs. Rough edges smoothed.' },
+            { phase: 'PHASE 3', time: 'Month 2', name: 'Activation', desc: 'System live. Intelligence deliverables within 48 hours. Weekly progress reports begin.' },
+            { phase: 'PHASE 4', time: 'Month 3', name: 'Proof', desc: 'EBITDA impact measured. Quarterly report delivered. Board-ready numbers.' },
+          ].map((step) => (
+            <div key={step.phase} style={{ background: '#0a0b0e', padding: '32px 28px' }}>
+              <div style={{ fontFamily: "'Courier New', monospace", fontSize: '0.6rem', color: '#4ECDC4', letterSpacing: '0.15em', marginBottom: '4px' }}>{step.phase}</div>
+              <div style={{ fontFamily: "'Courier New', monospace", fontSize: '0.7rem', color: 'rgba(242,237,228,0.3)', marginBottom: '12px' }}>{step.time}</div>
+              <div style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: '8px' }}>{step.name}</div>
+              <div style={{ color: 'rgba(242,237,228,0.45)', fontSize: '0.88rem', lineHeight: 1.7 }}>{step.desc}</div>
             </div>
           ))}
         </div>
       </Section>
 
       {/* ── CTA ── */}
-      <section
-        id="contact"
-        style={{
-          padding: '120px 24px',
-          textAlign: 'center',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '0',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '800px',
-            height: '400px',
-            background: 'radial-gradient(ellipse, rgba(200,98,42,0.06) 0%, transparent 70%)',
-            pointerEvents: 'none',
-          }}
-        />
-        <div className="container" style={{ position: 'relative' }}>
-          <h2
-            className="font-serif"
-            style={{
-              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-              lineHeight: 1.15,
-              maxWidth: '700px',
-              margin: '0 auto',
-            }}
-          >
-            30-minute conversation.{' '}
-            <span className="text-copper" style={{ fontStyle: 'italic' }}>No pitch deck.</span>
+      <section id="contact" style={{
+        padding: '140px 24px', position: 'relative', overflow: 'hidden',
+      }}>
+        <div style={{
+          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+          width: '600px', height: '600px',
+          background: 'radial-gradient(circle, rgba(200,98,42,0.05) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center', position: 'relative' }}>
+          <SectionLabel>Initiate Contact</SectionLabel>
+          <h2 className="font-serif" style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', lineHeight: 1.1, marginBottom: '24px' }}>
+            30-minute intelligence briefing.<br />
+            <span style={{ color: '#C8622A', fontStyle: 'italic' }}>No pitch deck.</span>
           </h2>
-          <p style={{ color: 'var(--bone-mid)', marginTop: '20px', fontSize: '1.1rem', maxWidth: '550px', margin: '20px auto 0' }}>
-            You'll leave knowing your highest-leverage activation point. If OWL isn't the right fit,
-            we'll tell you.
+          <p style={{ color: 'rgba(242,237,228,0.5)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '40px' }}>
+            You'll leave knowing your highest-leverage activation point. If OWL isn't the right fit, we'll tell you. Classified until you say otherwise.
           </p>
-          <a
-            href="mailto:james@moburg.com"
-            style={{
-              display: 'inline-block',
-              marginTop: '40px',
-              padding: '18px 48px',
-              background: 'var(--copper)',
-              color: 'var(--bone)',
-              borderRadius: '8px',
-              fontWeight: 700,
-              fontSize: '1rem',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-              transition: 'transform 0.2s',
-            }}
-          >
-            Talk to James
-          </a>
-          <p style={{ color: 'var(--bone-mid)', marginTop: '16px', fontSize: '0.85rem' }}>
-            james@moburg.com
-          </p>
+          <a href="mailto:james@moburg.com" style={{
+            display: 'inline-block', padding: '16px 48px',
+            background: '#C8622A', color: '#F2EDE4', borderRadius: '4px',
+            fontFamily: "'Courier New', monospace", fontSize: '0.8rem',
+            fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase',
+          }}>REQUEST BRIEFING</a>
+          <div style={{
+            marginTop: '24px', fontFamily: "'Courier New', monospace",
+            fontSize: '0.7rem', color: 'rgba(242,237,228,0.25)', letterSpacing: '0.1em',
+          }}>james@moburg.com // OvermatchLabs / Mi12 LLC</div>
         </div>
       </section>
 
       {/* ── Footer ── */}
-      <footer
-        style={{
-          borderTop: '1px solid var(--border)',
-          padding: '40px 24px',
-        }}
-      >
-        <div
-          className="container"
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: '16px',
-          }}
-        >
-          <div>
-            <span className="font-serif" style={{ fontWeight: 700, letterSpacing: '0.08em' }}>OWL</span>
-            <span style={{ color: 'var(--bone-mid)', fontSize: '0.85rem', marginLeft: '16px' }}>
-              OvermatchLabs / Mi12 LLC
+      <footer style={{ borderTop: '1px solid rgba(78,205,196,0.06)', padding: '24px' }}>
+        <div style={{
+          maxWidth: '1200px', margin: '0 auto', display: 'flex',
+          justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ECDC4' }} />
+            <span style={{ fontFamily: "'Courier New', monospace", fontSize: '0.65rem', color: 'rgba(242,237,228,0.25)', letterSpacing: '0.1em' }}>
+              OWL // ALL SYSTEMS OPERATIONAL
             </span>
           </div>
-          <div style={{ color: 'var(--bone-mid)', fontSize: '0.8rem' }}>
-            The AI Operating System for Business. Confidential.
-          </div>
+          <span style={{ fontFamily: "'Courier New', monospace", fontSize: '0.6rem', color: 'rgba(242,237,228,0.15)', letterSpacing: '0.1em' }}>
+            3 PATENTS PENDING // CONFIDENTIAL
+          </span>
         </div>
       </footer>
 
-      {/* ── Mobile menu button visibility ── */}
       <style>{`
+        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes fadeRow { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes growBar { from { width: 0; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
         @media (max-width: 768px) {
-          .mobile-menu-btn { display: block !important; }
+          .hide-mobile { display: none !important; }
         }
       `}</style>
     </div>
