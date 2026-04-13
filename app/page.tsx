@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 
 /* ─────────────────────────────────────────────
    OWL — The AI Operating System for Business
@@ -186,35 +186,9 @@ const COMPARISONS = [
   { name: 'Big 4', managed: false, org: false, ebitda: false, pe: true, guarantee: false, price: '$50K+' },
 ]
 
-function useInView(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true) },
-      { threshold }
-    )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [threshold])
-  return { ref, visible }
-}
-
 function Section({ children, id, className = '' }: { children: React.ReactNode; id?: string; className?: string }) {
-  const { ref, visible } = useInView()
   return (
-    <section
-      id={id}
-      ref={ref}
-      className={`section-padding ${className}`}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(30px)',
-        transition: 'opacity 0.7s ease, transform 0.7s ease',
-      }}
-    >
+    <section id={id} className={`section-padding ${className}`}>
       <div className="container">{children}</div>
     </section>
   )
