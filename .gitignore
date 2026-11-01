@@ -1,7 +1,4 @@
-node_modules
-.next
-.env.local
-.env
-.vercel
-
-.vercel
+node_modules/
+.DS_Store
+*.log
+docs/screens/zz-*.png

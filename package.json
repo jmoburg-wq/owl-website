@@ -1,19 +1,15 @@
 {
-  "name": "owl-website",
+  "name": "fullbid",
   "version": "1.0.0",
+  "description": "Measure it. Configure it. Bid it complete. Mobile-first contractor PWA.",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev -p 3002",
-    "build": "next build",
-    "start": "next start"
+    "start": "python3 -m http.server 8080",
+    "test:unit": "node test/unit.mjs",
+    "test:e2e": "node test/e2e.mjs",
+    "test:e2e2": "node test/e2e-v2.mjs",
+    "test": "node test/unit.mjs && node test/e2e.mjs && node test/e2e-v2.mjs"
   },
-  "dependencies": {
-    "next": "14.2.0",
-    "react": "^18",
-    "react-dom": "^18"
-  },
-  "devDependencies": {
-    "@types/node": "25.6.0",
-    "@types/react": "19.2.14",
-    "typescript": "6.0.2"
-  }
+  "notes": "Three.js r170 is vendored under vendor/three (no build step). Tests need Playwright with Chromium; e2e expects the app served at http://127.0.0.1:8080."
 }
