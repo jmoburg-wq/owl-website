@@ -4,6 +4,7 @@ import { ASSEMBLY_MAP } from './catalog.js';
 import { SYSTEM_MAP, compileProduct, defaultAttrs } from './products.js';
 import { recompute, totals, buildCtx, measureQty } from './estimator.js';
 import { kindOf } from '../geometry.js';
+import { swapCvsOption } from '../cvs/import.js';
 
 export const TIER_KEYS = ['good', 'better', 'best'];
 const QUALITY = new Set(['grade', 'tier', 'profile', 'decking', 'finish', 'type', 'material', 'core', 'insul', 'hp']);
@@ -36,10 +37,11 @@ export function generateTiers(project) {
     }
   }
   const prev = est.tiers || {};
-  return { on: true, names: { good: 'Good', better: 'Better', best: 'Best', ...(prev.names || {}) }, blurbs: prev.blurbs || { good: 'Solid, budget-friendly materials', better: 'Our most popular choice', best: 'Premium materials and finishes' }, overrides: ov, addons: prev.addons || [], chosen: null, chosenAddons: [] };
+  return { on: true, names: { good: 'Good', better: 'Better', best: 'Best', ...(prev.names || {}) }, blurbs: prev.blurbs || { good: 'Solid, budget-friendly materials', better: 'Our most popular choice', best: 'Premium materials and finishes' }, overrides: ov, addons: prev.addons || [], chosen: null, chosenAddons: [], cvsOptions: prev.cvsOptions || null };
 }
 
 function applyOverrides(est, tierKey, addonKeys = []) {
+  swapCvsOption(est, tierKey); // design packages: each tier is its own set of lines
   const ov = (est.tiers && est.tiers.overrides && est.tiers.overrides[tierKey]) || { a: {}, p: {} };
   est.assemblies = (est.assemblies || []).map((s) => (ov.a[s.key] ? { ...s, opts: { ...(s.opts || {}), ...ov.a[s.key] } } : s));
   est.products = (est.products || []).map((p) => (ov.p[p.id] ? { ...p, attrs: { ...(p.attrs || {}), ...ov.p[p.id] }, price: null } : p));
@@ -74,7 +76,7 @@ export function addonPrices(project, settings, tierKey = 'better') {
 
 /** Client chose a tier (+ add-ons): bake it into the estimate. */
 export function applyChoice(project, settings, tierKey, addonKeys = []) {
-  const est = project.estimate; applyOverrides(est, tierKey, addonKeys);
+  const est = project.estimate; applyOverrides(est, tierKey, addonKeys); if (project.cvs && est.cvsActive) project.cvs.activeOption = est.cvsActive;
   est.tiers = { ...(est.tiers || {}), chosen: tierKey, chosenAddons: addonKeys, overrides: { good: { a: {}, p: {} }, best: { a: {}, p: {} } }, on: false, history: [...((est.tiers && est.tiers.history) || []), { tier: tierKey, addons: addonKeys, at: new Date().toISOString() }] };
   recompute(project, settings); return est;
 }

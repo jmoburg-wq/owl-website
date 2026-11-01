@@ -6,6 +6,7 @@ import { groupBySupplier, materialOrderCSV, materialOrderText, supplierById } fr
 import { TRADES } from './pricing/profile.js';
 import { compileProduct, SYSTEM_MAP } from './pricing/products.js';
 import { BRAND } from './brand.js';
+import { checkReadyToSend, onChangeOrderApproved } from './cvs-ui.js';
 import { metrics, fmtArea, fmtLen, fmtLF, kindOf, KINDS, areaSummary } from './geometry.js';
 import { floorPlanSVG } from './floorplan.js';
 import { el, h, $, $$, toast, sheet, panel, icons, fmtMoney, fmtNum, fmtDate, esc, shareOrCopy, confirmDialog, promptDialog, download, isEmbedded, money0, segEl, switchEl } from './ui.js';
@@ -20,7 +21,7 @@ export function renderDocumentHTML(project, settings, { mode = 'estimate' } = {}
   const terms = (est.terms || '').replace('{validDays}', est.validDays || 30).replace('{depositPct}', est.adj.depositPct || 0);
   const rooms = project.rooms || [];
   const roomRows = rooms.map((r) => `<tr><td>${esc(r.name)}</td><td>${esc(KINDS[kindOf(r)].short)}</td><td>${esc(areaSummary(r, units))}</td></tr>`).join('');
-  const groups = itemsByGroup(est.items).map((g) => `<tr class="grp"><td colspan="5">${esc(g.name)}</td></tr>` + g.items.map((i) => `<tr><td>${esc(i.name)}${i.note ? `<div style="color:#777;font-size:11px">${esc(i.note)}</div>` : ''}</td><td class="r">${fmtNum(i.qty, 2)}</td><td>${esc(i.unit)}</td><td class="r">${fmtMoney(i.unitCost * f)}</td><td class="r">${fmtMoney(lineTotal(i) * f)}</td></tr>`).join('')).join('');
+  const groups = itemsByGroup(est.items).map((g) => `<tr class="grp"><td colspan="5">${esc(g.name)}</td></tr>` + g.items.map((i) => `<tr><td>${esc(i.name)}${i.note ? `<div style="color:#777;font-size:11px">${esc(i.note)}</div>` : ''}</td><td class="r">${fmtNum(i.qty, 2)}</td><td>${esc(i.unit)}</td>${i.unitCost == null ? '<td class="r" colspan="2">Needs a price</td>' : `<td class="r">${fmtMoney(i.unitCost * f)}</td><td class="r">${fmtMoney(lineTotal(i) * f)}</td>`}</tr>`).join('')).join('');
   const figures = rooms.slice(0, 2).map((r) => `<div>${floorPlanSVG(r, { units, width: 600, compact: true, title: false })}${r.snapshot ? `<img src="${r.snapshot}" alt="3D model of ${esc(r.name)}" style="margin-top:6px">` : ''}</div>`).join('');
   const payments = isInv && inv.payments.length ? `<h2>Payments received</h2><table><thead><tr><th>Date</th><th>Method</th><th>Note</th><th class="r">Amount</th></tr></thead><tbody>${inv.payments.map((p) => `<tr><td>${fmtDate(p.date)}</td><td>${esc(p.method || '')}</td><td>${esc(p.note || '')}</td><td class="r">${fmtMoney(p.amount)}</td></tr>`).join('')}</tbody></table>` : '';
   return `<div class="doc">
@@ -43,7 +44,7 @@ export function renderDocumentHTML(project, settings, { mode = 'estimate' } = {}
     ${payments}
     ${project.photos && project.photos.length ? `<h2>Site photos</h2><div class="photos">${project.photos.slice(0, 6).map((p) => `<img src="${p}" alt="site photo">`).join('')}</div>` : ''}
     ${est.notes ? `<h2>Notes</h2><p>${esc(est.notes).replace(/\n/g, '<br>')}</p>` : ''}
-    <h2>Terms</h2><p style="color:#444">${esc(terms)}</p>
+    <h2>Terms</h2><p style="color:#444">${esc(terms)}</p>${project.cvs && project.cvs.conceptNotice ? `<p style="color:#666;font-size:11px;margin-top:12px">${esc(project.cvs.conceptNotice)}</p>` : ''}
     <div class="sig"><div class="slot">${esc(co.name || 'Contractor')}<br><span style="color:#888">Authorized signature · date</span></div><div class="slot">${est.signature ? `<img src="${est.signature.dataURL}" alt="signature">` : ''}${esc(est.signature ? est.signature.name : project.client.name || 'Client')}<br><span style="color:#888">${est.signature ? `Accepted ${fmtDate(est.signature.signedAt)}` : 'Client acceptance · date'}</span></div></div>
     <p style="color:#999;font-size:10px;margin-top:18px">Quantities derived from on-site measurements. Prepared with ${BRAND.name}.</p>
   </div>`;
@@ -61,6 +62,7 @@ export function openDocument(project, { mode = 'estimate', onChange } = {}) {
     const act = e.target.closest('[data-act]')?.dataset.act; if (!act) return;
     if (act === 'close') close();
     if (act === 'print') { if (isEmbedded() || (window.claude && typeof window.claude.use === 'function')) { toast('Preparing printable file…'); download(`${isInv ? est.invoice.number : est.number}.html`, await standaloneHTML(project, s, mode), 'text/html'); } else window.print(); }
+    if (['share', 'sign', 'sent', 'email'].includes(act) && !(await checkReadyToSend(project))) return;
     if (act === 'share') { const url = await buildShareLink(project, s); const T = totals(est); const r = await shareOrCopy({ title: `${est.number} — ${project.name}`, text: `${s.company.name || 'Estimate'} ${est.number}: ${fmtMoney(T.total)} for ${project.name}`, url }); if (r === 'copied') toast('Link copied — paste it to your client'); if (r !== 'cancelled' && r !== 'failed' && project.status === 'draft') { project.status = 'sent'; est.sentAt = new Date().toISOString(); commit(); render(); } }
     if (act === 'sign') {
       let choice = null; if (est.tiers && est.tiers.on && !est.tiers.chosen) { choice = await tierChoiceSheet(project, s); if (!choice) return; }
@@ -166,7 +168,7 @@ export function openCODocument(project, co, { onChange } = {}) {
   view.addEventListener('click', async (e) => { const act = e.target.closest('[data-act]')?.dataset.act; if (!act) return;
     if (act === 'close') { view.remove(); onChange && onChange(); }
     if (act === 'print') { if (isEmbedded() || (window.claude && typeof window.claude.use === 'function')) download(`CO-${co.n}-${project.estimate.number}.html`, await standaloneCO(project, co, s), 'text/html'); else window.print(); }
-    if (act === 'approve') { const sig = await signatureSheet(project.client.name); if (sig) { co.signature = sig; co.status = 'approved'; co.approvedAt = new Date().toISOString(); commit(); render(); $('.doc-actions', view).innerHTML = ''; toast('Change order approved — contract updated'); if (project.sharedFrom) offerResponse(project, { coApprovals: [{ coId: co.id, n: co.n, signature: sig, approvedAt: co.approvedAt, total: coTotals(co, project.estimate).total }] }); } }
+    if (act === 'approve') { const sig = await signatureSheet(project.client.name); if (sig) { co.signature = sig; co.status = 'approved'; co.approvedAt = new Date().toISOString(); onChangeOrderApproved(project, co); commit(); render(); $('.doc-actions', view).innerHTML = ''; toast('Change order approved — contract updated'); if (project.sharedFrom) offerResponse(project, { coApprovals: [{ coId: co.id, n: co.n, signature: sig, approvedAt: co.approvedAt, total: coTotals(co, project.estimate).total }] }); } }
     if (act === 'share') { const url = await buildShareLink(project, s, { focusCO: co.id }); const r = await shareOrCopy({ title: `Change order #${co.n} — ${project.name}`, text: `${s.company.name || ''} change order #${co.n} for ${project.name}: ${fmtMoney(coTotals(co, project.estimate).total)}. Review and approve:`, url }); if (r !== 'cancelled' && r !== 'failed') { if (co.status === 'draft') co.status = 'sent'; co.sentAt = new Date().toISOString(); commit(); toast(r === 'copied' ? 'Approval link copied' : 'Sent'); } }
   });
 }
@@ -216,6 +218,6 @@ async function offerResponse(project, what) {
 export function applyResponse(data, settings) {
   const p = store.projects().find((x) => x.id === (data.ref && data.ref.sourceId)) || store.projects().find((x) => x.estimate.number === (data.ref && data.ref.number)); if (!p) return null; const est = p.estimate; const out = [];
   if (data.accept) { if (data.accept.tier && est.tiers && est.tiers.on && !est.tiers.chosen) applyChoice(p, settings, data.accept.tier, data.accept.addons || []); est.signature = data.accept.signature; est.signedTotal = Math.round(totals(est).total * 100) / 100; p.status = 'signed'; out.push(`Estimate accepted${data.accept.tier ? ` (${(est.tiers.names || {})[data.accept.tier] || data.accept.tier})` : ''} — ${fmtMoney(est.signedTotal)}`); if (data.accept.total && Math.abs(data.accept.total - est.signedTotal) > 1) out.push(`Note: client saw ${fmtMoney(data.accept.total)}; your bid recomputes to ${fmtMoney(est.signedTotal)}.`); }
-  for (const c of data.coApprovals || []) { const co = (p.changeOrders || []).find((x) => x.id === c.coId); if (co && co.status !== 'approved') { co.status = 'approved'; co.signature = c.signature; co.approvedAt = c.approvedAt; out.push(`Change order #${co.n} approved`); } }
+  for (const c of data.coApprovals || []) { const co = (p.changeOrders || []).find((x) => x.id === c.coId); if (co && co.status !== 'approved') { co.status = 'approved'; co.signature = c.signature; co.approvedAt = c.approvedAt; onChangeOrderApproved(p, co); out.push(`Change order #${co.n} approved`); } }
   store.update((st) => { st.activeProjectId = p.id; }, 'project'); return { project: p, summary: out.join(' · ') };
 }

@@ -59,10 +59,11 @@ export function matchPriceRow(line, rows, supplierId) {
   return bestScore >= 0.75 ? best : null;
 }
 
-/** Group material lines by supplier for ordering. */
+const PICK_SUPPLIER = { id: '_pick', name: 'Supplier not picked yet', short: 'Pick a supplier', classes: [], factor: 1, delivery: 0 };
+/** Group material lines by supplier for ordering. Contractor-stock lines (noOrder) are never ordered. */
 export function groupBySupplier(items, settings) {
   const groups = new Map();
-  for (const i of items || []) { if (i.cat !== 'material') continue; const sup = supplierById(settings, i.supplierId) || supplierFor(settings, i.cls || 'building'); if (!groups.has(sup.id)) groups.set(sup.id, { supplier: sup, lines: [], subtotal: 0 }); const g = groups.get(sup.id); g.lines.push(i); g.subtotal += (Number(i.qty) || 0) * (Number(i.unitCost) || 0); }
+  for (const i of items || []) { if (i.cat !== 'material' || i.noOrder) continue; const sup = supplierById(settings, i.supplierId) || (i.needsSupplier ? PICK_SUPPLIER : supplierFor(settings, i.cls || 'building')); if (!groups.has(sup.id)) groups.set(sup.id, { supplier: sup, lines: [], subtotal: 0 }); const g = groups.get(sup.id); g.lines.push(i); g.subtotal += (Number(i.qty) || 0) * (Number(i.unitCost) || 0); }
   return [...groups.values()].map((g) => ({ ...g, subtotal: Math.round(g.subtotal * 100) / 100, delivery: Number(g.supplier.delivery) || 0 })).sort((a, b) => b.subtotal - a.subtotal);
 }
 export function materialOrderCSV(groups, { project } = {}) {

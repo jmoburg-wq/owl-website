@@ -280,3 +280,8 @@ textarea { min-height: 88px; resize: vertical; }
 .doc .tiers .t ul { margin: 6px 0 0; padding-left: 16px; color: #444; font-size: 11px; }
 .doc .ledger .trow { display: flex; justify-content: space-between; padding: 4px 0; }
 @media (max-width: 560px) { .doc .tiers { grid-template-columns: 1fr; } }
+
+/* design jobs (CVS) */
+.src.needs { background: rgba(235,87,87,.14); color: #b42318; } .src.starter { background: rgba(255,176,32,.18); color: #8a5a00; } .src.typical { background: var(--bg-sunken); color: var(--fg-2); }
+.needs-price { color: #b42318; font-weight: 700; font-size: 13px; white-space: nowrap; }
+.dropping { outline: 3px dashed var(--primary); outline-offset: -6px; }

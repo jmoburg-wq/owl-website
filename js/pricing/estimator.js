@@ -64,6 +64,7 @@ export function takeoff(project, settings, env = envFor(project, settings)) {
   const est = project.estimate; const rooms = project.rooms || []; const out = [];
   for (const sel of est.assemblies || []) {
     const def = ASSEMBLY_MAP[sel.key]; if (!def) continue;
+    if ((est.cvsReplaces || []).includes(sel.key)) continue; // CVS design lines replace the pack's own calculator
     const opts = { ...(sel.opts || {}), __def: def }; const kinds = def.kinds || ['room'];
     const eligible = rooms.filter((r) => kinds.includes(kindOf(r)) && (!sel.roomIds || sel.roomIds.includes(r.id)));
     const targets = def.scope === 'project' || !rooms.length ? [null] : eligible;

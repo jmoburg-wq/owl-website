@@ -1,0 +1,415 @@
+{
+  "schema": "cvs.job-package",
+  "version": 1,
+  "_note": "SYNTHETIC STAND-IN: not a real CVS export. Replace with the real fixture.",
+  "futureField": {
+    "ignored": true
+  },
+  "source": {
+    "app": "Contractor Visual Studio",
+    "module": "shower",
+    "appVersion": "0.0-synthetic",
+    "createdAt": "2026-10-01T15:00:00Z"
+  },
+  "company": {
+    "id": "co-neenan",
+    "name": "Neenan",
+    "role": "supplier",
+    "conceptNotice": "Design concept only. Final selections, sizes and prices are confirmed by your contractor."
+  },
+  "customer": {
+    "name": "Pat Sample",
+    "address": "100 Sample St, Springfield",
+    "email": "pat@example.com",
+    "phone": "555-0100"
+  },
+  "design": {
+    "id": "design-bath-001",
+    "title": "Remodel hall, tub to shower",
+    "summary": "Tub-to-shower conversion with glue-up wall panels and a framed glass door.",
+    "url": null,
+    "pictures": [
+      {
+        "url": "https://example.com/after.png",
+        "kind": "after",
+        "caption": "After"
+      }
+    ],
+    "scope": [
+      "Remove the tub and surround.",
+      "Install a 60 × 32 in. shower base with glue-up wall panels.",
+      "Install a framed glass door."
+    ],
+    "notes": [
+      "Same layout; the drain moves to center."
+    ]
+  },
+  "measurements": [
+    {
+      "kind": "bath.showerW",
+      "value": 60,
+      "unit": "in",
+      "source": "typical"
+    },
+    {
+      "kind": "bath.showerD",
+      "value": 32,
+      "unit": "in",
+      "source": "typical"
+    },
+    {
+      "kind": "bath.wallH",
+      "value": 84,
+      "unit": "in",
+      "source": "typical"
+    }
+  ],
+  "options": [
+    {
+      "id": "opt-1",
+      "name": "Chosen design",
+      "tier": null,
+      "band": "$$",
+      "picture": null,
+      "shoppingList": [
+        {
+          "group": "Fixtures",
+          "rows": [
+            {
+              "name": "Shower base 60 × 32 in",
+              "maker": null,
+              "finish": "White",
+              "qty": 1,
+              "picture": null
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "id": "m1",
+          "area": "Shower",
+          "item": "Shower base 60 × 32 in",
+          "maker": null,
+          "collection": null,
+          "finish": "White",
+          "sku": null,
+          "qty": 1,
+          "unit": "each",
+          "how": null,
+          "typical": false,
+          "group": "Fixtures",
+          "from": "supplier",
+          "fromLabel": "Neenan showroom",
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m2",
+          "area": "Shower",
+          "item": "Glue-up wall panel kit",
+          "maker": null,
+          "collection": null,
+          "finish": "White",
+          "sku": null,
+          "qty": 1,
+          "unit": "kits",
+          "how": null,
+          "typical": true,
+          "group": "Wall panels",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m3",
+          "area": "Shower",
+          "item": "Shower valve rough-in",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "each",
+          "how": null,
+          "typical": false,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m4",
+          "area": "Shower",
+          "item": "Shower valve trim",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed nickel",
+          "sku": null,
+          "qty": 1,
+          "unit": "sets",
+          "how": null,
+          "typical": false,
+          "group": "Fixtures",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m5",
+          "area": "Shower",
+          "item": "Framed glass door",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed nickel",
+          "sku": null,
+          "qty": 1,
+          "unit": "each",
+          "how": null,
+          "typical": true,
+          "group": "Glass",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m6",
+          "area": "Shower",
+          "item": "Panel adhesive",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 6,
+          "unit": "tubes (10.1 oz)",
+          "how": "About one tube per 15 sq ft of panel",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m7",
+          "area": "Shower",
+          "item": "Silicone sealant",
+          "maker": null,
+          "collection": null,
+          "finish": "White",
+          "sku": null,
+          "qty": 3,
+          "unit": "tubes (10.1 oz)",
+          "how": null,
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m8",
+          "area": "Shower",
+          "item": "Moisture-resistant drywall",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 4,
+          "unit": "sheets (4 × 8 ft)",
+          "how": null,
+          "typical": true,
+          "group": "Drywall",
+          "from": "home-center",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m9",
+          "area": "Shower",
+          "item": "2×4 stud, 8 ft",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 6,
+          "unit": "pieces",
+          "how": null,
+          "typical": false,
+          "group": "Lumber and framing",
+          "from": "home-center",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m10",
+          "area": "Bathroom",
+          "item": "Floor protection",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "rolls",
+          "how": null,
+          "typical": false,
+          "group": "Demo and protection",
+          "from": "contractor",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m11",
+          "area": "Bathroom",
+          "item": "Haul-away and disposal",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "job",
+          "how": null,
+          "typical": false,
+          "group": "Demo and protection",
+          "from": "contractor",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        }
+      ],
+      "labor": [
+        {
+          "id": "l1",
+          "trade": "demo",
+          "name": "Remove tub and surround",
+          "why": null,
+          "hours": [
+            3,
+            5
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l2",
+          "trade": "plumbing",
+          "name": "Move drain, set valve",
+          "why": null,
+          "hours": [
+            4,
+            6
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l3",
+          "trade": "carpentry",
+          "name": "Frame and block",
+          "why": null,
+          "hours": [
+            2,
+            4
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l4",
+          "trade": "drywall",
+          "name": "Hang and finish drywall",
+          "why": null,
+          "hours": [
+            3,
+            5
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l5",
+          "trade": "tile",
+          "name": "Set base and wall panels",
+          "why": null,
+          "hours": [
+            6,
+            10
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l6",
+          "trade": "glass",
+          "name": "Measure and hang glass door",
+          "why": null,
+          "hours": [
+            2,
+            3
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l7",
+          "trade": "paint",
+          "name": "Paint ceiling and walls",
+          "why": null,
+          "hours": [
+            2,
+            4
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l8",
+          "trade": "cleanup",
+          "name": "Final cleanup",
+          "why": null,
+          "hours": [
+            1,
+            2
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        }
+      ],
+      "priceBookRefs": [
+        {
+          "item": "Shower base 60 × 32 in",
+          "from": "supplier",
+          "note": "Showroom starter estimate on request"
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

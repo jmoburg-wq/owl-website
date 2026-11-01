@@ -17,6 +17,7 @@ import { openPricingPanel } from './pricing-ui.js';
 import { openSuppliersPanel } from './suppliers-ui.js';
 import { profileOf, METHOD_LABELS, markupFromMargin } from './pricing/profile.js';
 import { suppliersOf } from './pricing/suppliers.js';
+import { handleCvsHash, importCvsFile, enableCvsDrop } from './cvs-ui.js';
 
 const TABS = ['home', 'build', 'scan', 'model', 'estimate', 'settings'];
 const TITLES = { home: BRAND.name, build: 'Build', scan: 'Measure', model: '3D & plan', estimate: 'Bid', settings: 'Settings' };
@@ -45,6 +46,8 @@ function renderHome(root, { navigate }) {
   const embedded = window.self !== window.top;
   if (embedded || !window.isSecureContext) root.append(el(`<div class="flag mt12">${icons.warn}<div class="grow"><b>Preview mode.</b> ${embedded ? 'This page is running inside another site, which blocks the camera, AR, downloads and printing.' : 'This page is not on HTTPS, so the camera and motion sensors are blocked.'} Everything else works — try <b>Scan → Load demo room</b>. Install the app from your own HTTPS host for the full scanner.</div></div>`));
   if (!s.company.name) root.append(el(`<div class="flag info mt12">${icons.info}<div class="grow">Add your company name, logo and ZIP in <b>Settings</b> for branded, regionally priced estimates.</div><button class="btn xs neutral" data-act="settings">Go</button></div>`));
+  root.append(el(`<div class="row mt12" style="gap:8px"><label class="btn sm secondary grow" data-role="cvs-import">${icons.download} Import a design (.json)<input type="file" accept="application/json,.json" hidden data-act="cvs-file"></label></div>`));
+  enableCvsDrop(root, { navigate });
   const folders = [...new Set(projects.map((p) => p.folder).filter(Boolean))];
   const filters = h('div', { class: 'row mt12', style: { gap: '8px' } }, el(`<input type="search" placeholder="Search jobs, clients…" class="grow" data-role="q">`)); root.append(filters);
   if (folders.length) { const ch = h('div', { class: 'chips mt8' }, el(`<button class="chip on" data-folder="">All</button>`)); folders.forEach((f) => ch.append(el(`<button class="chip" data-folder="${esc(f)}">${icons.folder} ${esc(f)}</button>`))); root.append(ch); }
@@ -59,9 +62,10 @@ function renderHome(root, { navigate }) {
   };
   draw();
   $('[data-role="q"]', root).addEventListener('input', debounce((e) => { q = e.target.value.toLowerCase().trim(); draw(); }, 120));
+  bind(root, 'change', (e) => { if (e.target.dataset.act === 'cvs-file' && e.target.files[0]) { importCvsFile(e.target.files[0], { navigate }); e.target.value = ''; } });
   bind(root, 'click', async (e) => {
     const fb = e.target.closest('[data-folder]'); if (fb) { folder = fb.dataset.folder; $$('[data-folder]', root).forEach((x) => x.classList.toggle('on', x === fb)); draw(); return; }
-    const open = e.target.closest('[data-open]'); if (open) { store.setActiveProject(open.dataset.open); const p = store.activeProject(); navigate(p.rooms.length ? 'estimate' : 'scan'); return; }
+    const open = e.target.closest('[data-open]'); if (open) { store.setActiveProject(open.dataset.open); const p = store.activeProject(); navigate(p.rooms.length || p.cvs ? 'estimate' : 'scan'); return; }
     const act = e.target.closest('[data-act]')?.dataset.act; if (!act) return;
     if (act === 'new') { const p = store.createProject({}); const ok = await editClient(p); if (!ok) { p.name = p.name; } navigate('scan'); }
     if (act === 'scan') { if (!store.activeProject()) store.createProject({}); navigate('scan'); }
@@ -164,10 +168,10 @@ function boot() {
   applyTheme();
   $$('.tabbar button').forEach((b) => b.addEventListener('click', () => navigate(b.dataset.tab)));
   store.subscribe((_, tag) => { if (['room', 'project', 'active', 'import', 'reset'].includes(tag)) { if (current === 'home') render('home'); } });
-  window.addEventListener('hashchange', () => { if (location.hash.includes('share=')) { handleShareLink(location.hash); return; } const m = /#\/(\w+)/.exec(location.hash); if (m && m[1] !== current && TABS.includes(m[1])) navigate(m[1]); });
+  window.addEventListener('hashchange', () => { if (/[#&]cvs(-url)?=/.test(location.hash)) { handleCvsHash(location.hash, { navigate }); return; } if (location.hash.includes('share=')) { handleShareLink(location.hash); return; } const m = /#\/(\w+)/.exec(location.hash); if (m && m[1] !== current && TABS.includes(m[1])) navigate(m[1]); });
   const initialHash = location.hash;
   const m = /#\/(\w+)/.exec(initialHash); navigate(m && TABS.includes(m[1]) ? m[1] : 'home');
-  handleShareLink(initialHash);
+  if (/[#&]cvs(-url)?=/.test(initialHash)) handleCvsHash(initialHash, { navigate }); else handleShareLink(initialHash);
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(() => {});
   window.__fullbid = window.__roompilot = { store, navigate, recompute };
   document.title = `${BRAND.name} — ${BRAND.tagline}`;

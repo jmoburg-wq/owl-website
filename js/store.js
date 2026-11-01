@@ -23,6 +23,7 @@ export const DEFAULTS = {
     ai: { apiKey: '', endpoint: '', model: 'claude-opus-5-5' },
     profile: structuredClone(DEFAULT_PROFILE),
     suppliers: null, supplierPrefs: {}, priceList: [],
+    cvs: { origins: ['https://rrg-studio.vercel.app'] }, // where #cvs-url= links may load designs from (one setting)
     nextEstimateNo: 1001, nextInvoiceNo: 1001,
     onboarded: false,
   },
