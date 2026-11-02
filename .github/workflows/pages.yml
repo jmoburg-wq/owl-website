@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node test/unit.mjs
+      - run: node test/unit.mjs && node test/cvs.mjs
 
   deploy:
     needs: test

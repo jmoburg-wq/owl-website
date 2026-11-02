@@ -1,0 +1,2011 @@
+{
+  "schema": "cvs.job-package",
+  "version": 1,
+  "source": {
+    "app": "contractor-visual-studio",
+    "module": "bathroom",
+    "appVersion": "main",
+    "createdAt": "2026-11-01T22:00:00.000Z"
+  },
+  "company": {
+    "id": "fergusonhome",
+    "name": "Ferguson Home",
+    "role": "supplier",
+    "conceptNotice": "A concept prepared for Ferguson Home: not an official Ferguson site."
+  },
+  "customer": null,
+  "design": {
+    "id": "bathroom-lNGJflIqz8",
+    "title": "Design and build, spa",
+    "summary": "A wet room with a freestanding tub, a steam shower behind a sealed door, a heated floor and a floating double vanity.",
+    "url": null,
+    "pictures": [],
+    "scope": [
+      "Who is it for: Home",
+      "New construction, a remodel, or design and build: Design and build",
+      "Which bathroom: Primary (master) bath",
+      "Just the tub or shower, or the whole room: The whole bathroom",
+      "A shower, or a tub with a shower over it: A shower",
+      "What's there now: Wet room",
+      "How big is the space: another size",
+      "How do you step in: Barrier-free roll-in",
+      "A window in the shower: No window",
+      "Which look is closest: Spa wet room",
+      "What are the walls made of: Traditional tile",
+      "Shower heads: Rain head",
+      "Anything extra: Body sprays, Steam shower",
+      "The way in: Hinged frameless door",
+      "Where do the bottles go: Horizontal niche",
+      "A seat: Bench along the long wall",
+      "Grab bars: None",
+      "The bathroom floor: Porcelain tile",
+      "A heated floor: Heated floor",
+      "The vanity: Two sinks",
+      "The vanity's style: Floating",
+      "The vanity top: Solid surface to match the shower walls",
+      "Where does the top come from: From the showroom",
+      "When do you need the materials: Custom made, however long it takes"
+    ],
+    "notes": [
+      "Quantities are estimated for the material list from the sizes shown; the builder or installer sets the final design and measures before ordering.",
+      "Typical sizes used where nothing was measured: ceiling height, shower or tub width, shower or tub depth, shower wall height, vanity wall. Measure to firm up the list."
+    ]
+  },
+  "measurements": [
+    {
+      "kind": "bath.roomL",
+      "value": 14,
+      "unit": "ft",
+      "source": "typed"
+    },
+    {
+      "kind": "bath.roomW",
+      "value": 12,
+      "unit": "ft",
+      "source": "typed"
+    }
+  ],
+  "options": [
+    {
+      "id": "opt-design-and-build-spa",
+      "name": "Design and build, spa",
+      "tier": null,
+      "band": "$$$",
+      "picture": null,
+      "shoppingList": [
+        {
+          "group": "Shower walls and base",
+          "rows": [
+            {
+              "name": "Tub and shower walls: tile",
+              "maker": null,
+              "finish": "Large-format",
+              "qty": "216 sq ft",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#e8e4dc"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Glass",
+          "rows": [
+            {
+              "name": "Tub glass",
+              "maker": null,
+              "finish": "Frameless glass | Brushed nickel",
+              "qty": "3 pieces",
+              "picture": {
+                "kind": "option",
+                "option": "door",
+                "choice": "frameless"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Fixtures",
+          "rows": [
+            {
+              "name": "Lavatory faucet",
+              "maker": null,
+              "finish": "Brushed nickel",
+              "qty": "2",
+              "picture": {
+                "kind": "option",
+                "option": "faucet-type",
+                "choice": "single-hole"
+              }
+            },
+            {
+              "name": "Tub and shower valve trim",
+              "maker": null,
+              "finish": "Brushed nickel",
+              "qty": "1",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#a7a8a3",
+                "metal": true
+              }
+            },
+            {
+              "name": "Shower head",
+              "maker": null,
+              "finish": "Brushed nickel",
+              "qty": "1",
+              "picture": {
+                "kind": "option",
+                "option": "head",
+                "choice": "spa"
+              }
+            },
+            {
+              "name": "Hand shower on a slide bar",
+              "maker": null,
+              "finish": "Brushed nickel",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "head-handheld"
+              }
+            },
+            {
+              "name": "Body sprays",
+              "maker": null,
+              "finish": "Brushed nickel",
+              "qty": "3",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "head-spa"
+              }
+            },
+            {
+              "name": "Floor-mount tub filler",
+              "maker": null,
+              "finish": "Brushed nickel",
+              "qty": "1",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#a7a8a3",
+                "metal": true
+              }
+            },
+            {
+              "name": "Toilet",
+              "maker": null,
+              "finish": "",
+              "qty": "1",
+              "picture": {
+                "kind": "option",
+                "option": "toilet-style",
+                "choice": "one-piece"
+              }
+            },
+            {
+              "name": "Bathtub",
+              "maker": null,
+              "finish": "White",
+              "qty": "1",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#f3f2ee"
+              }
+            },
+            {
+              "name": "Steam generator, steam head and control",
+              "maker": null,
+              "finish": "",
+              "qty": "1 set",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "steam"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Storage and safety",
+          "rows": [
+            {
+              "name": "Recessed niche kit",
+              "maker": null,
+              "finish": "Warm white porcelain, the walls' material",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "niche-horizontal"
+              }
+            },
+            {
+              "name": "Built-in bench",
+              "maker": null,
+              "finish": "Warm white porcelain, the walls' material",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "seat-bench"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Vanity",
+          "rows": [
+            {
+              "name": "Double vanity",
+              "maker": null,
+              "finish": "White oak",
+              "qty": "1",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#c9a97e"
+              }
+            },
+            {
+              "name": "Vanity top",
+              "maker": null,
+              "finish": "Solid surface to match the walls",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "top-solid"
+              }
+            },
+            {
+              "name": "Mirror",
+              "maker": null,
+              "finish": "",
+              "qty": "2",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "mirror-framed"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Floor",
+          "rows": [
+            {
+              "name": "Bathroom floor",
+              "maker": null,
+              "finish": "Large porcelain tile",
+              "qty": "162 sq ft",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#cbc5ba"
+              }
+            },
+            {
+              "name": "Electric floor-heating mat",
+              "maker": null,
+              "finish": "",
+              "qty": "143 sq ft",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "heat-yes"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Lighting",
+          "rows": [
+            {
+              "name": "Vanity lights",
+              "maker": null,
+              "finish": "",
+              "qty": "3",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "lights-bar"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Accessories",
+          "rows": [
+            {
+              "name": "Exhaust fan, ducted outdoors",
+              "maker": null,
+              "finish": "",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "fan"
+              }
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "id": "fixtures.lavatory-faucet",
+          "area": "fixtures",
+          "item": "Lavatory faucet",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed nickel",
+          "sku": null,
+          "qty": 2,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [
+            "Single hole (picked to suit the sink)",
+            "One for each sink of the double vanity"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.tub-and-shower-valve-trim",
+          "area": "fixtures",
+          "item": "Tub and shower valve trim",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed nickel",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [
+            "Valve: a new rough-in valve goes in with the new walls",
+            "Rough-in valve: the one the trim's spec sheet names (see the checklist)"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.shower-head",
+          "area": "fixtures",
+          "item": "Shower head",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed nickel",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [
+            "Rain, handheld and body sprays"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.hand-shower-on-a-slide-bar",
+          "area": "fixtures",
+          "item": "Hand shower on a slide bar",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed nickel",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [
+            "A diverter or second outlet on the valve"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "body-sprays.body-sprays",
+          "area": "body-sprays",
+          "item": "Body sprays",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed nickel",
+          "sku": null,
+          "qty": 3,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [
+            "Each on its own outlet: confirm the valve's outlets and the home's water supply"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.floor-mount-tub-filler",
+          "area": "fixtures",
+          "item": "Floor-mount tub filler",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed nickel",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [
+            "Needs its floor rough-in kit set before the floor is finished (see the checklist)",
+            "About 6 in. clear around the tub to clean"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "toilets.toilet",
+          "area": "toilets",
+          "item": "Toilet",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [
+            "One-piece (picked to fit)",
+            "Check the rough-in (finished wall to the flange's center) against the toilet's spec sheet"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "tubs.bathtub",
+          "area": "tubs",
+          "item": "Bathtub",
+          "maker": null,
+          "collection": null,
+          "finish": "White",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [
+            "Oval (picked to fit)",
+            "Freestanding: confirm the floor's load and the drain's spot under it"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "tubs.tub-drain-and-overflow",
+          "area": "tubs",
+          "item": "Tub drain and overflow",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed nickel",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "glass.glass",
+          "area": "glass",
+          "item": "Tub glass",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed nickel",
+          "sku": null,
+          "qty": 3,
+          "unit": "pieces",
+          "how": "About 72 in. across the opening and 96 in. tall: a door and a fixed panel, and a transom above it to the ceiling",
+          "typical": true,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [
+            "Frameless glass",
+            "Measured after the walls are finished",
+            "Sealed to a fixed glass transom above it, for the steam"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "steam.steam",
+          "area": "steam",
+          "item": "Steam generator, steam head and control",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "set",
+          "how": "The enclosure about 72 \u00d7 42 in. and 96 in. high (168 cu ft), tile walls: the maker sizes the generator from these dimensions and the wall material",
+          "typical": true,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [
+            "The generator sits in a nearby closet or vanity",
+            "Sized by the maker for the shower's volume",
+            "Ordered through Ferguson Home, not stocked"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "vanities.double-vanity",
+          "area": "vanities",
+          "item": "Double vanity",
+          "maker": null,
+          "collection": null,
+          "finish": "White oak",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [
+            "72 in. wide, two sinks",
+            "Floating",
+            "Cabinet: white oak",
+            "Needs a wall 60 in. or longer",
+            "A second drain and supplies"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "tops.vanity-top",
+          "area": "tops",
+          "item": "Vanity top",
+          "maker": null,
+          "collection": null,
+          "finish": "Solid surface to match the walls",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [
+            "Two bowls",
+            "Templated after the vanity is set",
+            "Ordered through Ferguson Home"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.shower-drain",
+          "area": "fixtures",
+          "item": "Shower drain kit for a tiled floor",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "A drain that bonds to the floor's membrane",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "fixtures.valve-rough",
+          "area": "fixtures",
+          "item": "Rough-in valve",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "The valve body the trim's spec sheet names",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "vanities.mirror",
+          "area": "vanities",
+          "item": "Mirror",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "ea",
+          "how": "One over each sink",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "lighting.lights",
+          "area": "lighting",
+          "item": "Vanity lights",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 3,
+          "unit": "ea",
+          "how": "Sconces beside the two mirrors, one shared between them",
+          "typical": true,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "toilets.toilet-set",
+          "area": "toilets",
+          "item": "Wax ring and toilet supply line",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "set",
+          "how": "New with the toilet",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "fixtures.pex",
+          "area": "fixtures",
+          "item": "Supply line, 1/2-in. PEX",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 140,
+          "unit": "linear ft",
+          "how": "About 127 ft to the shower valve, two sinks, the toilet, the body sprays, the steam generator and the tub filler, under the floor (typical runs), + 10%",
+          "typical": true,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "fixtures.pex-fittings",
+          "area": "fixtures",
+          "item": "PEX fittings and rings",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 33,
+          "unit": "ea",
+          "how": "About three a line for 11 lines: an elbow or tee, a coupling and a stub-out (typical)",
+          "typical": true,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "fixtures.stop-valves",
+          "area": "fixtures",
+          "item": "Quarter-turn stop valves",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 5,
+          "unit": "ea",
+          "how": "Two a sink and one for the toilet",
+          "typical": false,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "fixtures.faucet-supplies",
+          "area": "fixtures",
+          "item": "Faucet supply lines, braided",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 4,
+          "unit": "ea",
+          "how": "Two a sink, if the faucet doesn't come with them",
+          "typical": false,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "fixtures.p-trap",
+          "area": "fixtures",
+          "item": "P-trap and drain kit",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "ea",
+          "how": "One a sink: the second drain for the double vanity",
+          "typical": false,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "toilets.flange-kit",
+          "area": "toilets",
+          "item": "Toilet flange repair kit",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "Where the toilet moves or the old flange is damaged",
+          "typical": true,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": "From Ferguson Home",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-tile",
+          "area": "walls",
+          "item": "Tub and shower walls: tile",
+          "maker": null,
+          "collection": null,
+          "finish": "Large-format",
+          "sku": null,
+          "qty": 216,
+          "unit": "sq ft",
+          "how": "152 sq ft of 4 walls (72 \u00d7 42 in., 96 in. high), plus the niche's returns, plus the bench, plus the steam shower's ceiling, + 10% for cuts (straight lay); 24 \u00d7 48 in. tile",
+          "typical": true,
+          "group": null,
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Or a tile store"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "walls.wall-board",
+          "area": "walls",
+          "item": "Cement board or foam board",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 15,
+          "unit": "sheets (3 \u00d7 5 ft)",
+          "how": "193 sq ft + 10% for cuts, 15 sq ft a sheet",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Screws and seam tape with it"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-membrane",
+          "area": "walls",
+          "item": "Liquid waterproofing membrane",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 4,
+          "unit": "gal",
+          "how": "196 sq ft at about 55 sq ft a gallon (RedGard's figure)",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "A steam shower needs a membrane its maker rates for steam: confirm before ordering"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-thinset",
+          "area": "walls",
+          "item": "Thin-set mortar",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 5,
+          "unit": "bags (50 lb)",
+          "how": "196 sq ft at about 42 sq ft a bag with a 1/2 \u00d7 1/2 in. square notch trowel (VersaBond's chart)",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-grout",
+          "area": "walls",
+          "item": "Grout",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "bags (25 lb)",
+          "how": "196 sq ft at about 917 sq ft a bag for 24 \u00d7 48 in. tile with 1/8-in. joints (Polyblend HP's chart)",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-trim",
+          "area": "walls",
+          "item": "Tile edge trim",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "pieces (8 ft 2 1/2 in.)",
+          "how": "8 linear ft: the front edges, around the niche",
+          "typical": true,
+          "group": "Tile and flooring",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.niche-1",
+          "area": "walls",
+          "item": "Recessed niche kit",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "About 36 \u00d7 12 in., horizontal",
+          "typical": false,
+          "group": null,
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Or a tile store"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "walls.shower-floor",
+          "area": "walls",
+          "item": "Shower floor mosaic",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 24,
+          "unit": "sq ft",
+          "how": "21 sq ft (72 \u00d7 42 in.) + 10% for cuts; 2 \u00d7 2 in. mosaic",
+          "typical": true,
+          "group": "Tile and flooring",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Or a tile store"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.preslope",
+          "area": "walls",
+          "item": "Sand mix for the pre-slope",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 5,
+          "unit": "bags (60 lb)",
+          "how": "21 sq ft about 1.3 in. thick on average (2.2 cu ft), about 0.5 cu ft a bag (Quikrete's figure)",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.floor-liner",
+          "area": "walls",
+          "item": "Shower floor liner or membrane",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 28,
+          "unit": "sq ft",
+          "how": "The floor, about 6 in. up the walls",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.shower-floor-thinset",
+          "area": "walls",
+          "item": "Thin-set mortar for the shower floor",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "bags (50 lb)",
+          "how": "21 sq ft at about 90 sq ft a bag (VersaBond's chart)",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.shower-floor-grout",
+          "area": "walls",
+          "item": "Grout for the shower floor",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "bags (25 lb)",
+          "how": "21 sq ft at about 96 sq ft a bag (Polyblend HP's chart)",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.paint-walls",
+          "area": "walls",
+          "item": "Wall paint, bath (mildew-resistant)",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "gal",
+          "how": "247 sq ft of wall outside the shower, less the door, two coats at about 350 sq ft a gallon (Sherwin-Williams' figure)",
+          "typical": true,
+          "group": "Paint and finishing",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.paint-ceiling",
+          "area": "walls",
+          "item": "Ceiling paint",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "gal",
+          "how": "147 sq ft of ceiling, two coats at about 350 sq ft a gallon",
+          "typical": false,
+          "group": "Paint and finishing",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "flooring.baseboard",
+          "area": "flooring",
+          "item": "Baseboard",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 37,
+          "unit": "linear ft",
+          "how": "36.5 linear ft (about 5 lengths of 8 ft): the room's perimeter less the door, the shower and the vanity; or tile base to match the floor",
+          "typical": false,
+          "group": "Paint and finishing",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "lighting.fan",
+          "area": "lighting",
+          "item": "Exhaust fan, ducted outdoors",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "About 100 CFM for a 168 sq ft room (the Home Ventilating Institute's sizing)",
+          "typical": false,
+          "group": "Electrical",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "walls.blocking",
+          "area": "walls",
+          "item": "Blocking, 2 \u00d7 8",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 3,
+          "unit": "pieces (8 ft)",
+          "how": "About 17 linear ft between the studs behind the glass (its jamb, about 6 ft), the vanity (about 7 ft) and a towel bar and ring (typical, about 2 ft each)",
+          "typical": true,
+          "group": "Lumber and framing",
+          "from": "home-center",
+          "fromLabel": "A lumberyard or home center",
+          "notes": [
+            "Or a lumberyard"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.framing",
+          "area": "walls",
+          "item": "Studs and plates, 2 \u00d7 4",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 12,
+          "unit": "pieces (8 ft)",
+          "how": "4 full-height studs and about 64 linear ft of plates and short pieces: the niche's doubled header and sill, a framed bench about 72 in. long (none for a foam bench kit) and a moved wall about 42 in. long, to the ceiling",
+          "typical": true,
+          "group": "Lumber and framing",
+          "from": "home-center",
+          "fromLabel": "A lumberyard or home center",
+          "notes": [
+            "Or a lumberyard"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.framing-repair",
+          "area": "walls",
+          "item": "Sistering and repair lumber, as found",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 4,
+          "unit": "pieces (8 ft)",
+          "how": "An allowance for rot or damage behind the old walls: what's found when the walls are open sets the real count",
+          "typical": true,
+          "group": "Lumber and framing",
+          "from": "home-center",
+          "fromLabel": "A lumberyard or home center",
+          "notes": [
+            "Or a lumberyard"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.framing-fasteners",
+          "area": "walls",
+          "item": "Framing screws or nails",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "box",
+          "how": "For the blocking and framing above (typical)",
+          "typical": true,
+          "group": "Lumber and framing",
+          "from": "home-center",
+          "fromLabel": "A lumberyard or home center",
+          "notes": [
+            "Or a lumberyard"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.drywall",
+          "area": "walls",
+          "item": "Moisture-resistant drywall, 1/2 in.",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 10,
+          "unit": "sheets (4 \u00d7 8 ft)",
+          "how": "275 sq ft of wall + 10% for cuts, 32 sq ft a sheet",
+          "typical": true,
+          "group": "Drywall",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [
+            "Or a lumberyard"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.ceiling-board",
+          "area": "walls",
+          "item": "Ceiling drywall, 1/2 in. sag-resistant",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "sheets (4 \u00d7 8 ft)",
+          "how": "32 sq ft of ceiling + 10% for cuts",
+          "typical": true,
+          "group": "Drywall",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [
+            "Or a lumberyard"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.joint-compound",
+          "area": "walls",
+          "item": "Joint compound",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "pails (4.5 gal)",
+          "how": "307 sq ft: the room's walls outside the shower (247 sq ft), the moved wall's outside face and a sheet's worth of ceiling patches where the steam shower's ceiling is opened; about 500 sq ft a pail (USG's figure for its all-purpose compound)",
+          "typical": true,
+          "group": "Drywall",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.joint-tape",
+          "area": "walls",
+          "item": "Drywall tape",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "rolls (500 ft)",
+          "how": "About 114 ft of joints (typical)",
+          "typical": true,
+          "group": "Drywall",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.corner-bead",
+          "area": "walls",
+          "item": "Corner bead",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 3,
+          "unit": "pieces (8 ft)",
+          "how": "The outside corners (typical)",
+          "typical": true,
+          "group": "Drywall",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.drywall-screws",
+          "area": "walls",
+          "item": "Drywall screws, 1 1/4 in.",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "boxes (1 lb)",
+          "how": "About 32 screws a sheet for 11 sheets (typical)",
+          "typical": true,
+          "group": "Drywall",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.primer",
+          "area": "walls",
+          "item": "Drywall primer",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "gal",
+          "how": "307 sq ft of new board at about 180 sq ft a gallon (USG's figure for its First Coat primer)",
+          "typical": true,
+          "group": "Paint and finishing",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "lighting.cable",
+          "area": "lighting",
+          "item": "Electrical cable",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 180,
+          "unit": "ft",
+          "how": "About 180 ft for the vanity's outlet (a new run), the heated floor's own circuit, the steam generator's own circuit, the fan and the vanity lights (typical runs; the electrician sizes the wire and sets the runs)",
+          "typical": true,
+          "group": "Electrical",
+          "from": "home-center",
+          "fromLabel": "An electrical supply house or home center",
+          "notes": [
+            "By a licensed electrician",
+            "Or an electrical supply house"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "lighting.gfci",
+          "area": "lighting",
+          "item": "GFCI receptacle",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "ea",
+          "how": "One by each sink",
+          "typical": false,
+          "group": "Electrical",
+          "from": "home-center",
+          "fromLabel": "An electrical supply house or home center",
+          "notes": [
+            "By a licensed electrician",
+            "Or an electrical supply house"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "lighting.switches",
+          "area": "lighting",
+          "item": "Switches and dimmers",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "ea",
+          "how": "A dimmer for the vanity lights and the fan's switch or timer",
+          "typical": false,
+          "group": "Electrical",
+          "from": "home-center",
+          "fromLabel": "An electrical supply house or home center",
+          "notes": [
+            "By a licensed electrician",
+            "Or an electrical supply house"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "lighting.boxes",
+          "area": "lighting",
+          "item": "Electrical boxes",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 7,
+          "unit": "ea",
+          "how": "Two for the outlets, one for the switches, 3 for the vanity lights and one for the thermostat: new-work or old-work as the walls are",
+          "typical": false,
+          "group": "Electrical",
+          "from": "home-center",
+          "fromLabel": "An electrical supply house or home center",
+          "notes": [
+            "By a licensed electrician",
+            "Or an electrical supply house"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.floor-protection",
+          "area": "walls",
+          "item": "Floor protection",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "rolls (38 in. \u00d7 100 ft)",
+          "how": "The path from the door to the bathroom: about 317 sq ft a roll (Ram Board's 38 in. \u00d7 100 ft roll)",
+          "typical": true,
+          "group": "Demo and protection",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.dust-door",
+          "area": "walls",
+          "item": "Zipper dust door for the doorway",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "Plastic over the bathroom's doorway with a zipper to walk through (typical)",
+          "typical": true,
+          "group": "Demo and protection",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.plastic",
+          "area": "walls",
+          "item": "Plastic sheeting",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "rolls (10 \u00d7 25 ft)",
+          "how": "Over the vanity, the tub or a return vent while the dust flies (typical)",
+          "typical": true,
+          "group": "Demo and protection",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.bags",
+          "area": "walls",
+          "item": "Contractor bags",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "boxes",
+          "how": "For the small debris (typical)",
+          "typical": true,
+          "group": "Demo and protection",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.silicone",
+          "area": "walls",
+          "item": "100% silicone sealant",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 4,
+          "unit": "tubes (10.1 oz)",
+          "how": "About 85 linear ft: the shower's 4 inside corners and where the walls meet the floor, the glass, the vanity top and the toilet's base, about 24 ft a tube with a 1/4-in. bead",
+          "typical": true,
+          "group": "Paint and finishing",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.trim-caulk",
+          "area": "walls",
+          "item": "Paintable caulk for the trim",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 3,
+          "unit": "tubes (10.1 oz)",
+          "how": "About 53 linear ft: the baseboard's top edge and the door's casing, about 24 ft a tube",
+          "typical": true,
+          "group": "Paint and finishing",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "seats.bench",
+          "area": "seats",
+          "item": "Built-in bench",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "A foam bench kit or a framed bench, about 72 in. long, 15 in. deep and 18 in. high",
+          "typical": true,
+          "group": null,
+          "from": "contractor",
+          "fromLabel": "Your contractor",
+          "notes": [
+            "Along the long wall",
+            "Built and finished with the walls"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "flooring.floor",
+          "area": "flooring",
+          "item": "Bathroom floor",
+          "maker": null,
+          "collection": null,
+          "finish": "Large porcelain tile",
+          "sku": null,
+          "qty": 162,
+          "unit": "sq ft",
+          "how": "147 sq ft (14 \u00d7 12 ft less the shower (21 sq ft)), + 10% for cuts (straight lay); a typical 12 \u00d7 24 in.",
+          "typical": true,
+          "group": null,
+          "from": "contractor",
+          "fromLabel": "Your contractor",
+          "notes": [
+            "A flooring store or your contractor"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "heated-floor.heat-mat",
+          "area": "heated-floor",
+          "item": "Electric floor-heating mat",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 143,
+          "unit": "sq ft",
+          "how": "The open floor, 143 sq ft, out from under the toilet and the vanity: the maker sizes the mat or cable to this area",
+          "typical": true,
+          "group": null,
+          "from": "contractor",
+          "fromLabel": "Your contractor",
+          "notes": [
+            "The mat goes under tile",
+            "A flooring store or your contractor"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "flooring.floor-membrane",
+          "area": "flooring",
+          "item": "Uncoupling membrane for the heating cable",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 155,
+          "unit": "sq ft",
+          "how": "147 sq ft + 5% for laps (typical); Schluter DITRA rolls come in 54 and 323 sq ft; a heating membrane like DITRA-HEAT in its place",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "contractor",
+          "fromLabel": "Your contractor",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "flooring.floor-thinset",
+          "area": "flooring",
+          "item": "Thin-set mortar for the floor",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 5,
+          "unit": "bags (50 lb)",
+          "how": "147 sq ft of tile at about 42 sq ft a bag (VersaBond's chart, 1/2 \u00d7 1/2 in. square notch), and under the membrane at about 100 a bag (typical)",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "contractor",
+          "fromLabel": "Your contractor",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "flooring.floor-grout",
+          "area": "flooring",
+          "item": "Grout for the floor",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "bags (25 lb)",
+          "how": "147 sq ft at about 461 sq ft a bag for a typical 12 \u00d7 24 in. with 1/8-in. joints (Polyblend HP's chart)",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "contractor",
+          "fromLabel": "Your contractor",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "heated-floor.thermostat",
+          "area": "heated-floor",
+          "item": "Floor-heating thermostat",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "On the wall by the door, on the heat's own circuit",
+          "typical": false,
+          "group": null,
+          "from": "contractor",
+          "fromLabel": "Your contractor",
+          "notes": [
+            "A flooring store or your contractor"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.haul-away",
+          "area": "walls",
+          "item": "Debris haul-away",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 8,
+          "unit": "cu yd",
+          "how": "About 100 cu ft out (the shower's walls, the old tub or base, the floor, the vanity and toilet and the drywall opened), about twice that loose: a 10-yard dumpster",
+          "typical": true,
+          "group": "Demo and protection",
+          "from": "contractor",
+          "fromLabel": "Your contractor",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        }
+      ],
+      "labor": [
+        {
+          "id": "tear-out",
+          "trade": "demo",
+          "name": "Tear-out of the room",
+          "why": "Fixtures, tile and the floor out and hauled away, the walls opened to the studs where they're redone",
+          "hours": [
+            8,
+            16
+          ],
+          "units": 1,
+          "size": null,
+          "area": null
+        },
+        {
+          "id": "walls-tile",
+          "trade": "tile",
+          "name": "Tile walls (4 walls, about 196 sq ft of wall, typical size)",
+          "why": "Backer board, waterproofing, then tile and grout, wall by wall, with time for each to set",
+          "hours": [
+            63,
+            104
+          ],
+          "units": 1,
+          "size": "about 196 sq ft of wall, typical size",
+          "area": "walls"
+        },
+        {
+          "id": "valve",
+          "trade": "plumbing",
+          "name": "Valve and trim",
+          "why": "The rough-in valve replaced (or reused) while the walls are open, then the trim, heads and spout",
+          "hours": [
+            3,
+            6
+          ],
+          "units": 1,
+          "size": null,
+          "area": "fixtures"
+        },
+        {
+          "id": "body-sprays",
+          "trade": "plumbing",
+          "name": "Body sprays",
+          "why": "Each spray piped on its own outlet, with a valve that has enough outlets",
+          "hours": [
+            4,
+            8
+          ],
+          "units": 1,
+          "size": null,
+          "area": "body-sprays"
+        },
+        {
+          "id": "steam",
+          "trade": "plumbing",
+          "name": "Steam shower",
+          "why": "A generator in a nearby closet or vanity on its own circuit, the door sealed to a transom, the ceiling sloped so drips run down the wall",
+          "hours": [
+            10,
+            20
+          ],
+          "units": 1,
+          "size": null,
+          "area": "steam"
+        },
+        {
+          "id": "niche",
+          "trade": "carpentry",
+          "name": "Recessed niche",
+          "why": "Framed between the studs and waterproofed with the walls",
+          "hours": [
+            2,
+            4
+          ],
+          "units": 1,
+          "size": null,
+          "area": "walls"
+        },
+        {
+          "id": "bench",
+          "trade": "carpentry",
+          "name": "Built-in bench",
+          "why": "Framed, waterproofed and finished with the walls",
+          "hours": [
+            6,
+            12
+          ],
+          "units": 1,
+          "size": null,
+          "area": "seats"
+        },
+        {
+          "id": "glass-custom",
+          "trade": "glass",
+          "name": "Custom frameless glass",
+          "why": "Measured after the walls are finished, then hung on a second trip",
+          "hours": [
+            4,
+            8
+          ],
+          "units": 1,
+          "size": null,
+          "area": "glass"
+        },
+        {
+          "id": "tub",
+          "trade": "plumbing",
+          "name": "Tub set",
+          "why": "Set level on a bed, connected to the drain and overflow",
+          "hours": [
+            4,
+            8
+          ],
+          "units": 1,
+          "size": null,
+          "area": "tubs"
+        },
+        {
+          "id": "room-floor",
+          "trade": "tile",
+          "name": "Tile floor (about 147 sq ft of floor)",
+          "why": "The floor prepared, tile set and grouted",
+          "hours": [
+            28,
+            47
+          ],
+          "units": 1,
+          "size": "about 147 sq ft of floor",
+          "area": "flooring"
+        },
+        {
+          "id": "heated-floor",
+          "trade": "electrical",
+          "name": "Heated floor",
+          "why": "An electric mat laid and tested under the tile, a thermostat wired on its own circuit",
+          "hours": [
+            4,
+            8
+          ],
+          "units": 1,
+          "size": null,
+          "area": "heated-floor"
+        },
+        {
+          "id": "vanity",
+          "trade": "finish_carpentry",
+          "name": "Vanity, top and faucet set",
+          "why": "The vanity set level, the top set, the faucet and drain connected",
+          "hours": [
+            3,
+            5
+          ],
+          "units": 1,
+          "size": null,
+          "area": "vanities"
+        },
+        {
+          "id": "vanity-double",
+          "trade": "plumbing",
+          "name": "Double vanity plumbing",
+          "why": "A second drain and a second set of supplies in the wall",
+          "hours": [
+            4,
+            8
+          ],
+          "units": 1,
+          "size": null,
+          "area": "vanities"
+        },
+        {
+          "id": "toilet",
+          "trade": "plumbing",
+          "name": "Toilet set",
+          "why": "A new wax seal and supply, set and checked on the flange",
+          "hours": [
+            1.5,
+            3
+          ],
+          "units": 1,
+          "size": null,
+          "area": "toilets"
+        },
+        {
+          "id": "paint",
+          "trade": "paint",
+          "name": "Paint (about 394 sq ft painted, typical size)",
+          "why": "Patch, prime and two coats on the walls and ceiling outside the shower",
+          "hours": [
+            6,
+            11
+          ],
+          "units": 1,
+          "size": "about 394 sq ft painted, typical size",
+          "area": null
+        },
+        {
+          "id": "fan",
+          "trade": "electrical",
+          "name": "Exhaust fan",
+          "why": "The housing set in the ceiling, ducted outdoors and wired to its switch",
+          "hours": [
+            2,
+            4
+          ],
+          "units": 1,
+          "size": null,
+          "area": "lighting"
+        },
+        {
+          "id": "rough-in",
+          "trade": "plumbing",
+          "name": "Supply lines and drains to the new layout",
+          "why": "Run to where each fixture goes while the walls and floor are open, then tested before they close",
+          "hours": [
+            8,
+            16
+          ],
+          "units": 1,
+          "size": null,
+          "area": "fixtures"
+        },
+        {
+          "id": "rough-electrical",
+          "trade": "electrical",
+          "name": "Outlet, switches and boxes",
+          "why": "The vanity's GFCI outlet, the switches and their boxes wired while the walls are open, by a licensed electrician",
+          "hours": [
+            2,
+            5
+          ],
+          "units": 1,
+          "size": null,
+          "area": "lighting"
+        },
+        {
+          "id": "drywall",
+          "trade": "drywall",
+          "name": "Drywall (about 307 sq ft of drywall, typical size)",
+          "why": "Board hung where the walls were opened, then taped and finished over three visits for the mud to dry",
+          "hours": [
+            15.5,
+            29.5
+          ],
+          "units": 1,
+          "size": "about 307 sq ft of drywall, typical size",
+          "area": null
+        },
+        {
+          "id": "cleanup",
+          "trade": "cleanup",
+          "name": "Cleanup",
+          "why": "A sweep-up each day and a final clean: dust down, fixtures and glass wiped, the floor protection taken up",
+          "hours": [
+            2,
+            4
+          ],
+          "units": 1,
+          "size": null,
+          "area": null
+        }
+      ],
+      "priceBookRefs": [
+        {
+          "item": "The bathroom: full remodel, new layout",
+          "from": "Ferguson Home's price book",
+          "note": "The store's starter estimate for this scope"
+        },
+        {
+          "item": "Frameless glass shower door",
+          "from": "Ferguson Home's price book",
+          "note": "The store's starter estimate, per each"
+        },
+        {
+          "item": "Heated floor",
+          "from": "Ferguson Home's price book",
+          "note": "The store's starter estimate, per sq ft"
+        },
+        {
+          "item": "Second sink for a double vanity",
+          "from": "Ferguson Home's price book",
+          "note": "The store's starter estimate, per job"
+        }
+      ],
+      "notes": [
+        "Hours are typical hours, your contractor edits: typical ranges from trade practice, not a quote.",
+        "180 to 326.5 hours for this design.",
+        "Hours that follow the size: tile walls: about 196 sq ft of wall, typical size; tile floor: about 147 sq ft of floor; paint: about 394 sq ft painted, typical size; drywall: about 307 sq ft of drywall, typical size.",
+        "Allowances name the store's starter estimates only; the store sets each figure in its price book and confirms it on the bid."
+      ]
+    }
+  ]
+}

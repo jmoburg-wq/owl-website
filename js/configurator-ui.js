@@ -125,7 +125,7 @@ export function openConfigurator(inst, { isNew = true, onDone, navigate } = {}) 
   refresh(); return pn;
 }
 
-export function srcBadge(i) { const s = i.priceSource; if (!s || s === 'catalog') return ''; const cls = s === 'price list' ? 'list' : s === 'live' ? 'live' : s === 'edited' ? 'edited' : 'yours'; return `<span class="src ${cls}">${esc(s)}</span>`; }
+export function srcBadge(i) { const s = i.priceSource; if (!s || s === 'catalog' || i.origin === 'cvs') return ''; const cls = s === 'price list' ? 'list' : s === 'live' ? 'live' : s === 'edited' ? 'edited' : 'yours'; return `<span class="src ${cls}">${esc(s)}</span>`; }
 
 function describeSheet({ onDone, navigate }) {
   const s = store.settings; const project = store.activeProject(); const photos = [];

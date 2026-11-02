@@ -112,6 +112,53 @@ try {
     const sample = async () => ({ text: JSON.stringify(canned), truncated: false }); sample.json = async () => canned; sample.limits = async () => ({ maxPromptBytes: 262144 }); window.claude = { use: async (n) => (n === 'sample' ? sample : null) }; });
   const ap = await actx.newPage(); watch(ap, 'ai'); await ap.goto(BASE + '#/build', { waitUntil: 'networkidle' }); await ap.waitForSelector('[data-ai="1"]'); await ap.click('[data-ai="1"]'); await ap.waitForSelector('.sheet [data-f="d"]'); await ap.fill('.sheet [data-f="d"]', 'Pella Lifestyle double-hung 36x60, replacing three old wood windows'); await ap.fill('.sheet [data-f="q"]', '3'); await ap.click('.sheet button:has-text("List everything it needs")');
   await ap.waitForSelector('.panel .need-line', { timeout: 15000 }); const aiTxt = await ap.textContent('.panel'); check(/Flashing tape/.test(aiTxt) && /Interior trim/.test(aiTxt) && /Window disposal/.test(aiTxt), 'AI-described product lists parts, labor and fees'); await shot(ap, 'v2-23-describe-anything'); await actx.close();
+  // ---------------- J. design packages from Contractor Visual Studio
+  log('J. CVS design import');
+  const fx = (n) => new URL(`./fixtures/cvs-synthetic/${n}.json`, import.meta.url).pathname;
+  const jctx = await browser.newContext(ctxOpts); const jp = await jctx.newPage(); watch(jp, 'cvs');
+  await jp.goto(BASE, { waitUntil: 'networkidle' }); await jp.waitForSelector('#screen-home .hero');
+  const v2 = JSON.parse(fs.readFileSync(fx('bath-neenan'), 'utf8')); v2.version = 2; const v2path = new URL('../docs/screens/zz-v2.json', import.meta.url).pathname; fs.writeFileSync(v2path, JSON.stringify(v2));
+  await jp.setInputFiles('#screen-home [data-act="cvs-file"]', v2path); await jp.waitForSelector('.sheet:has-text("Could not import")'); check(/newer version; update Fullbid/.test(await jp.textContent('.sheet')), 'version 2 package refused with the plain message'); await jp.click('.sheet button:has-text("OK")'); fs.unlinkSync(v2path);
+  await jp.setInputFiles('#screen-home [data-act="cvs-file"]', fx('bath-neenan')); await jp.waitForSelector('.sheet:has-text("Import a design")');
+  const pvTxt = await jp.textContent('.sheet'); check(pvTxt.includes("Import 'Remodel hall, tub to shower' from Neenan: 11 materials, 8 labor items, 1 option. 4 lines use typical sizes."), 'preview sheet shows the counts', pvTxt.slice(0, 200)); await jp.waitForTimeout(450); await shot(jp, 'v3-01-cvs-preview');
+  await jp.click('.sheet button:has-text("Import")'); await jp.waitForSelector('#screen-estimate [data-role="cvs-card"]');
+  const estTxt = await jp.textContent('#screen-estimate'); check(/Needs a price/.test(estTxt) && /typical size/i.test(estTxt) && !/\$0\.00<\/div>/.test(await jp.innerHTML('#screen-estimate')), 'imported lines show "needs a price" and "typical size", never $0'); await shot(jp, 'v3-02-cvs-bid');
+  let jst = await S(jp); check(jst.project.cvs && jst.project.estimate.items.filter((i) => i.origin === 'cvs' && i.cat === 'material').length === 11 && jst.settings.suppliers.some((x) => x.name === 'Neenan'), 'job created with 11 materials and a Neenan supplier');
+  await jp.click('#screen-estimate [data-act="preview"]'); await jp.waitForSelector('.doc-actions'); await jp.click('.doc-actions [data-act="share"]'); await jp.waitForSelector('.sheet:has-text("Not ready to send")'); check(true, 'proposal refuses to send while lines need a price'); await jp.waitForTimeout(450); await shot(jp, 'v3-03-not-ready'); await jp.click('.sheet button:has-text("OK")'); await jp.click('.doc-bar [data-act="close"]');
+  await jp.click('[data-cvs="price"]'); await jp.waitForSelector('.sheet [data-cvs-id]'); const inputs = await jp.$$('.sheet [data-cvs-id]'); for (const inp of inputs) await inp.fill('12.5'); await jp.click('.sheet button:has-text("Save prices")'); await jp.waitForTimeout(200);
+  await jp.click('[data-cvs="accept"]'); await jp.click('.sheet button:has-text("Accept")'); await jp.waitForTimeout(200);
+  jst = await S(jp); const r = await jp.evaluate(async () => { const m = await import('./js/cvs/import.js'); return m.sendReadiness(window.__fullbid.store.activeProject()).ok; }); check(r && /ready to send/.test(await jp.textContent('[data-role="cvs-card"]')), 'ready to send once priced and starter rates accepted'); await shot(jp, 'v3-04-cvs-ready');
+  await jp.click('[data-cvs="labor"]'); await jp.waitForSelector('.sheet [data-level]'); await jp.click('.sheet [data-trade="tile"][data-level="high"]'); await jp.click('.sheet button:has-text("Done")'); jst = await S(jp); check(jst.project.cvs.laborChoice.tile === 'high', 'labor level per trade');
+  const three = JSON.parse(fs.readFileSync(fx('bath-three-options'), 'utf8')); const enc = await jp.evaluate(async (pkg) => { const m = await import('./js/cvs/import.js'); return m.encodeCvsPackage(pkg); }, three);
+  await jp.goto(BASE + '#cvs=' + enc, { waitUntil: 'networkidle' }); await jp.waitForSelector('.sheet:has-text("Import a design")'); check(/3 options/.test(await jp.textContent('.sheet')), '#cvs=d: link opens the import preview');
+  await jp.click('.sheet button:has-text("Import")'); await jp.waitForSelector('[data-cvs-opt]'); check((await jp.$$('[data-cvs-opt]')).length === 3, 'three options shown as Good / Better / Best'); await shot(jp, 'v3-05-cvs-options');
+  // a real link: the 3-option Neenan package from the CVS exporter, encoded the way CVS's "Bid it in Fullbid" link is
+  const realFx = (n) => new URL(`./fixtures/cvs/${n}.json`, import.meta.url).pathname;
+  const n3 = JSON.parse(fs.readFileSync(realFx('cvs-shower-neenan-3options'), 'utf8')); const enc3 = await jp.evaluate(async (pkg) => { const m = await import('./js/cvs/import.js'); return m.encodeCvsPackage(pkg); }, n3);
+  check(enc3.startsWith('d:') && enc3.length <= 8000, 'real 3-option package fits a #cvs=d: link', enc3.length);
+  await jp.goto(BASE + '#cvs=' + enc3, { waitUntil: 'networkidle' }); await jp.waitForSelector('.sheet:has-text("Import a design")');
+  const pv3 = await jp.textContent('.sheet'); check(pv3.includes("Import 'Builder primary, panels' from Neenan:") && /3 options/.test(pv3), 'real link opens the import preview', pv3.slice(0, 160)); await jp.waitForTimeout(450); await shot(jp, 'v3-06-cvs-real-link');
+  await jp.click('.sheet button:has-text("Import")'); await jp.waitForSelector('[data-cvs-opt]');
+  jst = await S(jp); check(jst.project.cvs.designId === n3.design.id && Object.keys(jst.project.estimate.cvsLines).length === 3 && (await jp.$$('[data-cvs-opt]')).length === 3 && jst.project.estimate.tiers.cvsOptions.best === 'opt-builder-primary-walk-in', 'importing the real link creates the job with 3 options');
+  // an exterior staff bid: priced work items print on the bid; the takeoff is the order list only
+  await jp.goto(BASE + '#/home', { waitUntil: 'networkidle' }); await jp.waitForSelector('#screen-home .hero');
+  await jp.setInputFiles('#screen-home [data-act="cvs-file"]', realFx('cvs-roof-bid-timbercrest-3options')); await jp.waitForSelector('.sheet:has-text("Import a design")');
+  check(/12 priced work items/.test(await jp.textContent('.sheet')) && /order list/.test(await jp.textContent('.sheet')), 'staff bid preview explains priced work and the order list');
+  await jp.click('.sheet button:has-text("Import")'); await jp.waitForSelector('[data-role="cvs-totals"]');
+  const tt = await jp.textContent('[data-role="cvs-totals"]'); check(/your bid \$15,924\.50 · Fullbid \$15,924\.50/.test(tt) && !(await jp.$('[data-role="cvs-total-warn"]')), "each option's total shown beside Fullbid's, matching", tt.slice(0, 200)); await shot(jp, 'v3-07-cvs-staff-bid');
+  await jp.click('#screen-estimate [data-act="preview"]'); await jp.waitForSelector('.doc-actions'); const docTxt = await jp.textContent('.doc');
+  check(docTxt.includes('GAF Timberline HDZ shingles, installed, Charcoal') && !docTxt.includes('Starter strip') && !docTxt.includes('Hidden hangers'), "the client's bid shows the priced work, not the order list"); await jp.click('.doc-bar [data-act="close"]');
+  await jp.click('[data-cvs="price"]'); await jp.waitForSelector('.sheet [data-work-key]'); const wk = await jp.$$('.sheet [data-work-key]'); for (const inp of wk) await inp.fill('18'); await jp.click('.sheet button:has-text("Save prices")'); await jp.waitForTimeout(200);
+  check(wk.length === 3 && /ready to send/.test(await jp.textContent('[data-role="cvs-card"]')) && /Fullbid \$15,996\.50/.test(await jp.textContent('[data-role="cvs-totals"]')), 'pricing the downspouts readies the bid; the order list never blocks it');
+  // a contractor's own package with no labor: Fullbid works out the roofing hours and asks for the pitch
+  await jp.goto(BASE + '#/home', { waitUntil: 'networkidle' }); await jp.waitForSelector('#screen-home .hero');
+  await jp.setInputFiles('#screen-home [data-act="cvs-file"]', realFx('cvs-roof-timbercrest')); await jp.waitForSelector('.sheet:has-text("Import a design")');
+  check(/enter the roof pitch/.test(await jp.textContent('.sheet')) && !/adds “TimberCrest/.test(await jp.textContent('.sheet')), 'roof preview asks for the pitch and adds no supplier named after the contractor');
+  await jp.click('.sheet button:has-text("Import")'); await jp.waitForSelector('[data-role="cvs-need"]'); await shot(jp, 'v3-08-cvs-roof-pitch');
+  jst = await S(jp); check(jst.project.estimate.items.some((i) => i.origin === 'pack' && i.cat === 'labor' && i.hours > 0) && !jst.settings.suppliers.some((x) => /TimberCrest/.test(x.name)), 'roof job gets pack labor and no TimberCrest supplier');
+  await jp.click('[data-cvs-need="roof_pitch"]'); await jp.fill('.sheet input', '7'); await jp.click('.sheet button:has-text("Save")'); await jp.waitForTimeout(200);
+  jst = await S(jp); check(!(await jp.$('[data-role="cvs-need"]')) && jst.project.measurements.some((m) => m.kind === 'roof_pitch' && m.value === 7) && jst.project.estimate.items.some((i) => /Install shingles \(7\/12\)/.test(i.name)), 'entering the pitch finishes the roofing labor');
+  await jctx.close();
 } catch (e) { console.log('\nE2E-V2 FAILURE:', e.message.split('\n')[0]); fails.push('exception: ' + e.message.split('\n')[0]); try { await page.screenshot({ path: `${OUT}/zz-failure.png` }); } catch {} }
 await browser.close();
 console.log(`\nchecks failed: ${fails.length}`); fails.forEach((f) => console.log('  -', f));

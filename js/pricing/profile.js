@@ -23,6 +23,13 @@ export const TRADES = {
   siding: { label: 'Siding installer', rate: 48 },
   mason: { label: 'Concrete / mason', rate: 52 },
   paving: { label: 'Paving crew', rate: 50 },
+  demo: { label: 'Demolition', rate: 36 },
+  finish_carpentry: { label: 'Finish carpenter', rate: 56 },
+  glass: { label: 'Glass installer', rate: 55 },
+  cleanup: { label: 'Cleanup', rate: 30 },
+  marine: { label: 'Marine crew', rate: 62 },
+  fencing: { label: 'Fence installer', rate: 44 },
+  landscaping: { label: 'Landscaper', rate: 38 },
 };
 
 export const DEFAULT_PROFILE = {

@@ -1,0 +1,2190 @@
+{
+  "schema": "cvs.job-package",
+  "version": 1,
+  "source": {
+    "app": "contractor-visual-studio",
+    "module": "shower",
+    "appVersion": "main",
+    "createdAt": "2026-11-01T22:00:00.000Z"
+  },
+  "company": {
+    "id": "neenan",
+    "name": "Neenan",
+    "role": "supplier",
+    "conceptNotice": "A concept prepared for Neenan Company: not an official Neenan site."
+  },
+  "customer": null,
+  "design": {
+    "id": "shower-DONwtMcsh2",
+    "title": "Builder primary, panels",
+    "summary": "A one-piece unit set before the drywall, chrome trim and a framed slider: the production-builder shower.",
+    "url": null,
+    "pictures": [],
+    "scope": [
+      "Who is it for: Home",
+      "New construction, a remodel, or design and build: New construction",
+      "Which bathroom: Primary (master) bath",
+      "Just the tub or shower, or the whole room: Just the tub or shower",
+      "A shower, or a tub with a shower over it: A shower",
+      "What's there now: Shower stall",
+      "How big is the space: 60 \u00d7 36",
+      "How do you step in: Low threshold",
+      "A window in the shower: No window",
+      "Which look is closest: Classic white",
+      "What are the walls made of: One-piece unit",
+      "Shower heads: Shower head and handheld",
+      "The way in: Sliding glass",
+      "Where do the bottles go: Corner shelves",
+      "A seat: No seat",
+      "Grab bars: None",
+      "When do you need the materials: In 2 to 5 days"
+    ],
+    "notes": [
+      "Quantities are estimated for the material list from the sizes shown; the builder or installer sets the final design and measures before ordering."
+    ]
+  },
+  "measurements": [
+    {
+      "kind": "bath.showerW",
+      "value": 60,
+      "unit": "in",
+      "source": "typed"
+    },
+    {
+      "kind": "bath.showerD",
+      "value": 32,
+      "unit": "in",
+      "source": "typed"
+    },
+    {
+      "kind": "bath.wallH",
+      "value": 84,
+      "unit": "in",
+      "source": "typed"
+    }
+  ],
+  "options": [
+    {
+      "id": "opt-builder-primary-panels",
+      "name": "Builder primary, panels",
+      "tier": "good",
+      "band": "$",
+      "picture": null,
+      "shoppingList": [
+        {
+          "group": "Shower walls and base",
+          "rows": [
+            {
+              "name": "Shower walls",
+              "maker": null,
+              "finish": "White marble-look",
+              "qty": "1 kit (3 walls)",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#ecebe6"
+              }
+            },
+            {
+              "name": "Panel trim kit",
+              "maker": null,
+              "finish": "White marble-look (matches the walls)",
+              "qty": "1 kit",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#ecebe6"
+              }
+            },
+            {
+              "name": "Shower base",
+              "maker": null,
+              "finish": "White",
+              "qty": "1",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#f3f2ee"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Glass",
+          "rows": [
+            {
+              "name": "Shower door or glass panel",
+              "maker": null,
+              "finish": "Framed sliding door | Chrome",
+              "qty": "2 pieces",
+              "picture": {
+                "kind": "option",
+                "option": "glass",
+                "choice": "framed-slider"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Fixtures",
+          "rows": [
+            {
+              "name": "Shower valve trim",
+              "maker": null,
+              "finish": "Chrome",
+              "qty": "1",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#c9cbcc",
+                "metal": true
+              }
+            },
+            {
+              "name": "Shower head",
+              "maker": null,
+              "finish": "Chrome",
+              "qty": "1",
+              "picture": {
+                "kind": "option",
+                "option": "head",
+                "choice": "combo"
+              }
+            },
+            {
+              "name": "Hand shower on a slide bar",
+              "maker": null,
+              "finish": "Chrome",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "head-handheld"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Storage and safety",
+          "rows": [
+            {
+              "name": "Corner shelves",
+              "maker": null,
+              "finish": "White marble-look (matches the walls)",
+              "qty": "2",
+              "picture": {
+                "kind": "option",
+                "option": "caddy",
+                "choice": "matching"
+              }
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "id": "fixtures.shower-valve-trim",
+          "area": "fixtures",
+          "item": "Shower valve trim",
+          "maker": null,
+          "collection": null,
+          "finish": "Chrome",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Valve: stay exactly where they are, with new trim and a new head on the same valve; a tub spout is capped behind the panels",
+            "Rough-in valve: the one the trim's spec sheet names (see the checklist)"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.shower-head",
+          "area": "fixtures",
+          "item": "Shower head",
+          "maker": null,
+          "collection": null,
+          "finish": "Chrome",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Wall head and handheld"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.hand-shower-on-a-slide-bar",
+          "area": "fixtures",
+          "item": "Hand shower on a slide bar",
+          "maker": null,
+          "collection": null,
+          "finish": "Chrome",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "A diverter or second outlet on the valve"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "glass.glass",
+          "area": "glass",
+          "item": "Shower door or glass panel",
+          "maker": null,
+          "collection": null,
+          "finish": "Chrome",
+          "sku": null,
+          "qty": 2,
+          "unit": "pieces",
+          "how": "About 60 in. across the opening and 76 in. tall: two sliding panels",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Framed sliding door",
+            "Measured after the walls are finished"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.shower-drain",
+          "area": "fixtures",
+          "item": "Shower drain for the base",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "The drain the base's maker names",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "fixtures.valve-rough",
+          "area": "fixtures",
+          "item": "Rough-in valve",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "The valve body the trim's spec sheet names",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-panels",
+          "area": "walls",
+          "item": "Shower walls",
+          "maker": null,
+          "collection": null,
+          "finish": "White marble-look",
+          "sku": null,
+          "qty": 1,
+          "unit": "kit (3 walls)",
+          "how": "A 3-wall kit for a 60 \u00d7 32 in. space, 84 in. high",
+          "typical": false,
+          "group": null,
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Acrylic panels"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "walls.corner-shelves",
+          "area": "walls",
+          "item": "Corner shelves",
+          "maker": null,
+          "collection": null,
+          "finish": "White marble-look (matches the walls)",
+          "sku": null,
+          "qty": 2,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "In the walls' own material: one at shampoo height, one lower"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "walls.panel-adhesive",
+          "area": "walls",
+          "item": "Panel adhesive and sealant",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 4,
+          "unit": "cartridges",
+          "how": "About one a panel plus one for the seams: the adhesive the panel maker names",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.panel-trim",
+          "area": "walls",
+          "item": "Panel trim kit",
+          "maker": null,
+          "collection": null,
+          "finish": "White marble-look (matches the walls)",
+          "sku": null,
+          "qty": 1,
+          "unit": "kit",
+          "how": "Corner and edge trim in the panels' color",
+          "typical": false,
+          "group": "Tile and flooring",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "walls.silicone",
+          "area": "walls",
+          "item": "100% silicone sealant",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "tubes (10.1 oz)",
+          "how": "About 42 linear ft: the shower's 2 inside corners and where the walls meet the floor and the glass, about 24 ft a tube with a 1/4-in. bead",
+          "typical": false,
+          "group": "Paint and finishing",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.shower-floor",
+          "area": "walls",
+          "item": "Shower base",
+          "maker": null,
+          "collection": null,
+          "finish": "White",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "60 \u00d7 32 in.",
+          "typical": false,
+          "group": null,
+          "from": "contractor",
+          "fromLabel": "Your contractor",
+          "notes": [
+            "60 \u00d7 36 in.: a plumbing supply house's stock size (typical)",
+            "Colors vary by maker: the seller shows the exact ones."
+          ],
+          "designItem": true,
+          "price": null
+        }
+      ],
+      "labor": [
+        {
+          "id": "walls-panels",
+          "trade": "tile",
+          "name": "Acrylic panels (3 walls, about 72 sq ft of wall)",
+          "why": "Panels cut to fit, glued up and sealed at every seam and corner",
+          "hours": [
+            7,
+            13
+          ],
+          "units": 1,
+          "size": "about 72 sq ft of wall",
+          "area": "walls"
+        },
+        {
+          "id": "floor-pan",
+          "trade": "tile",
+          "name": "Shower pan set",
+          "why": "Set level in a bed of mortar and connected to the drain",
+          "hours": [
+            3,
+            6
+          ],
+          "units": 1,
+          "size": null,
+          "area": "walls"
+        },
+        {
+          "id": "valve",
+          "trade": "plumbing",
+          "name": "Valve and trim",
+          "why": "The rough-in valve replaced (or reused) while the walls are open, then the trim, heads and spout",
+          "hours": [
+            3,
+            6
+          ],
+          "units": 1,
+          "size": null,
+          "area": "fixtures"
+        },
+        {
+          "id": "glass-framed",
+          "trade": "glass",
+          "name": "Framed stock door",
+          "why": "A stock door in its own sizes, set in its frame and sealed",
+          "hours": [
+            2,
+            4
+          ],
+          "units": 1,
+          "size": null,
+          "area": "glass"
+        },
+        {
+          "id": "cleanup",
+          "trade": "cleanup",
+          "name": "Cleanup",
+          "why": "A sweep-up each day and a final clean: dust down, fixtures and glass wiped, the floor protection taken up",
+          "hours": [
+            1,
+            2
+          ],
+          "units": 1,
+          "size": null,
+          "area": null
+        }
+      ],
+      "priceBookRefs": [
+        {
+          "item": "The shower: panels and a new base",
+          "from": "Neenan's price book",
+          "note": "The store's starter estimate for this scope"
+        },
+        {
+          "item": "New shower valve",
+          "from": "Neenan's price book",
+          "note": "The store's starter estimate, per each"
+        }
+      ],
+      "notes": [
+        "Hours are typical hours, your contractor edits: typical ranges from trade practice, not a quote.",
+        "16 to 31 hours for this design.",
+        "Hours that follow the size: acrylic panels: about 72 sq ft of wall.",
+        "Allowances name the store's starter estimates only; the store sets each figure in its price book and confirms it on the bid."
+      ]
+    },
+    {
+      "id": "opt-builder-primary-tile",
+      "name": "Builder primary, tile",
+      "tier": "better",
+      "band": "$$",
+      "picture": null,
+      "shoppingList": [
+        {
+          "group": "Shower walls and base",
+          "rows": [
+            {
+              "name": "Shower walls: tile",
+              "maker": null,
+              "finish": "Marble-look porcelain",
+              "qty": "86 sq ft",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#ecebe6"
+              }
+            },
+            {
+              "name": "Shower floor: tile, mortar bed and waterproofing",
+              "maker": null,
+              "finish": "Mosaic",
+              "qty": "15 sq ft",
+              "picture": {
+                "kind": "option",
+                "option": "floor",
+                "choice": "mosaic"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Glass",
+          "rows": [
+            {
+              "name": "Shower door or glass panel",
+              "maker": null,
+              "finish": "Frameless door | Brushed brass",
+              "qty": "2 pieces",
+              "picture": {
+                "kind": "option",
+                "option": "glass",
+                "choice": "frameless"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Fixtures",
+          "rows": [
+            {
+              "name": "Shower valve trim",
+              "maker": null,
+              "finish": "Brushed brass",
+              "qty": "1",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#b89a5e",
+                "metal": true
+              }
+            },
+            {
+              "name": "Shower head",
+              "maker": null,
+              "finish": "Brushed brass",
+              "qty": "1",
+              "picture": {
+                "kind": "option",
+                "option": "head",
+                "choice": "rain"
+              }
+            },
+            {
+              "name": "Hand shower on a slide bar",
+              "maker": null,
+              "finish": "Brushed brass",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "head-handheld"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Storage and safety",
+          "rows": [
+            {
+              "name": "Recessed niche kit",
+              "maker": null,
+              "finish": "Marble-look porcelain, the walls' material",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "niche-horizontal"
+              }
+            },
+            {
+              "name": "Corner seat",
+              "maker": null,
+              "finish": "",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "seat-corner"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Lighting",
+          "rows": [
+            {
+              "name": "LED niche light and driver",
+              "maker": null,
+              "finish": "",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "niche-lit"
+              }
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "id": "fixtures.shower-valve-trim",
+          "area": "fixtures",
+          "item": "Shower valve trim",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed brass",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Valve: stay on the same wall, with a new valve in the same place, a wall head and a handheld on a slide bar",
+            "Rough-in valve: the one the trim's spec sheet names (see the checklist)"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.shower-head",
+          "area": "fixtures",
+          "item": "Shower head",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed brass",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Rain head and handheld"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.hand-shower-on-a-slide-bar",
+          "area": "fixtures",
+          "item": "Hand shower on a slide bar",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed brass",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "A diverter or second outlet on the valve"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "glass.glass",
+          "area": "glass",
+          "item": "Shower door or glass panel",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed brass",
+          "sku": null,
+          "qty": 2,
+          "unit": "pieces",
+          "how": "About 60 in. across the opening and 76 in. tall: a door and a fixed panel",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Frameless door",
+            "Measured after the walls are finished"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.shower-drain",
+          "area": "fixtures",
+          "item": "Shower drain kit for a tiled floor",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "A drain that bonds to the floor's membrane",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "fixtures.valve-rough",
+          "area": "fixtures",
+          "item": "Rough-in valve",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "The valve body the trim's spec sheet names",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-tile",
+          "area": "walls",
+          "item": "Shower walls: tile",
+          "maker": null,
+          "collection": null,
+          "finish": "Marble-look porcelain",
+          "sku": null,
+          "qty": 86,
+          "unit": "sq ft",
+          "how": "72 sq ft of 3 walls (60 \u00d7 32 in., 84 in. high), plus the niche's returns, plus the corner seat, + 10% for cuts (straight lay); 12 \u00d7 24 in. tile",
+          "typical": false,
+          "group": null,
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Or a tile store"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "walls.shower-floor",
+          "area": "walls",
+          "item": "Shower floor: tile, mortar bed and waterproofing",
+          "maker": null,
+          "collection": null,
+          "finish": "Mosaic",
+          "sku": null,
+          "qty": 15,
+          "unit": "sq ft",
+          "how": "13 sq ft (60 \u00d7 32 in.) + 10% for cuts; 2 \u00d7 2 in. mosaic",
+          "typical": false,
+          "group": null,
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Sloped to the drain",
+            "Or a tile store"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "lighting.led-niche-light-and-driver",
+          "area": "lighting",
+          "item": "LED niche light and driver",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Wired by an electrician"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "walls.wall-board",
+          "area": "walls",
+          "item": "Cement board or foam board",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 6,
+          "unit": "sheets (3 \u00d7 5 ft)",
+          "how": "75 sq ft + 10% for cuts, 15 sq ft a sheet",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Screws and seam tape with it"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-membrane",
+          "area": "walls",
+          "item": "Liquid waterproofing membrane",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "gal",
+          "how": "78 sq ft at about 55 sq ft a gallon (RedGard's figure)",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Or a sheet membrane"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-thinset",
+          "area": "walls",
+          "item": "Thin-set mortar",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "bags (50 lb)",
+          "how": "78 sq ft at about 42 sq ft a bag with a 1/2 \u00d7 1/2 in. square notch trowel (VersaBond's chart)",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-grout",
+          "area": "walls",
+          "item": "Grout",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "bags (25 lb)",
+          "how": "78 sq ft at about 461 sq ft a bag for 12 \u00d7 24 in. tile with 1/8-in. joints (Polyblend HP's chart)",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-trim",
+          "area": "walls",
+          "item": "Tile edge trim",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 5,
+          "unit": "pieces (8 ft 2 1/2 in.)",
+          "how": "32 linear ft: the front edges, across the top, around the niche",
+          "typical": false,
+          "group": "Tile and flooring",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.niche-1",
+          "area": "walls",
+          "item": "Recessed niche kit",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "About 36 \u00d7 12 in., horizontal",
+          "typical": false,
+          "group": null,
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Or a tile store"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "walls.preslope",
+          "area": "walls",
+          "item": "Sand mix for the pre-slope",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 3,
+          "unit": "bags (60 lb)",
+          "how": "13 sq ft about 1.3 in. thick on average (1.4 cu ft), about 0.5 cu ft a bag (Quikrete's figure)",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.floor-liner",
+          "area": "walls",
+          "item": "Shower floor liner or membrane",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 24,
+          "unit": "sq ft",
+          "how": "The floor, about 6 in. up the walls and over the curb",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.shower-floor-thinset",
+          "area": "walls",
+          "item": "Thin-set mortar for the shower floor",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "bags (50 lb)",
+          "how": "13 sq ft at about 90 sq ft a bag (VersaBond's chart)",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.shower-floor-grout",
+          "area": "walls",
+          "item": "Grout for the shower floor",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "bags (25 lb)",
+          "how": "13 sq ft at about 96 sq ft a bag (Polyblend HP's chart)",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.curb",
+          "area": "walls",
+          "item": "Shower curb",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "A foam curb kit or a framed curb, about 60 in. long",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.blocking",
+          "area": "walls",
+          "item": "Blocking, 2 \u00d7 8",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "pieces (8 ft)",
+          "how": "About 6 linear ft between the studs behind the glass (its jamb, about 6 ft)",
+          "typical": true,
+          "group": "Lumber and framing",
+          "from": "home-center",
+          "fromLabel": "A lumberyard or home center",
+          "notes": [
+            "Or a lumberyard"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.framing",
+          "area": "walls",
+          "item": "Studs and plates, 2 \u00d7 4",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 4,
+          "unit": "pieces (8 ft)",
+          "how": "About 28 linear ft of plates and short pieces: the niche's doubled header and sill and a framed curb, three 2 \u00d7 4s about 60 in. long (none for a foam curb kit)",
+          "typical": true,
+          "group": "Lumber and framing",
+          "from": "home-center",
+          "fromLabel": "A lumberyard or home center",
+          "notes": [
+            "Or a lumberyard"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.framing-fasteners",
+          "area": "walls",
+          "item": "Framing screws or nails",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "box",
+          "how": "For the blocking and framing above (typical)",
+          "typical": true,
+          "group": "Lumber and framing",
+          "from": "home-center",
+          "fromLabel": "A lumberyard or home center",
+          "notes": [
+            "Or a lumberyard"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "lighting.cable",
+          "area": "lighting",
+          "item": "Electrical cable",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 10,
+          "unit": "ft",
+          "how": "About 10 ft for an LED strip's driver (typical runs; the electrician sizes the wire and sets the runs)",
+          "typical": true,
+          "group": "Electrical",
+          "from": "home-center",
+          "fromLabel": "An electrical supply house or home center",
+          "notes": [
+            "By a licensed electrician",
+            "Or an electrical supply house"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "lighting.switches",
+          "area": "lighting",
+          "item": "Switches and dimmers",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "An LED strip's switch",
+          "typical": false,
+          "group": "Electrical",
+          "from": "home-center",
+          "fromLabel": "An electrical supply house or home center",
+          "notes": [
+            "By a licensed electrician",
+            "Or an electrical supply house"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "lighting.boxes",
+          "area": "lighting",
+          "item": "Electrical boxes",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "One for the switches: new-work or old-work as the walls are",
+          "typical": false,
+          "group": "Electrical",
+          "from": "home-center",
+          "fromLabel": "An electrical supply house or home center",
+          "notes": [
+            "By a licensed electrician",
+            "Or an electrical supply house"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.silicone",
+          "area": "walls",
+          "item": "100% silicone sealant",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "tubes (10.1 oz)",
+          "how": "About 42 linear ft: the shower's 2 inside corners and where the walls meet the floor and the glass, about 24 ft a tube with a 1/4-in. bead",
+          "typical": false,
+          "group": "Paint and finishing",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "seats.bench",
+          "area": "seats",
+          "item": "Corner seat",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "A corner seat form or a prefab corner seat, finished with the walls",
+          "typical": false,
+          "group": null,
+          "from": "contractor",
+          "fromLabel": "Your contractor",
+          "notes": [
+            "Built and finished with the walls"
+          ],
+          "designItem": true,
+          "price": null
+        }
+      ],
+      "labor": [
+        {
+          "id": "walls-tile",
+          "trade": "tile",
+          "name": "Tile walls (3 walls, about 78 sq ft of wall)",
+          "why": "Backer board, waterproofing, then tile and grout, wall by wall, with time for each to set",
+          "hours": [
+            27.5,
+            45
+          ],
+          "units": 1,
+          "size": "about 78 sq ft of wall",
+          "area": "walls"
+        },
+        {
+          "id": "floor-tile",
+          "trade": "tile",
+          "name": "Tiled shower floor",
+          "why": "A mortar bed sloped to the drain, waterproofing, then small tile",
+          "hours": [
+            10,
+            16
+          ],
+          "units": 1,
+          "size": null,
+          "area": "walls"
+        },
+        {
+          "id": "valve",
+          "trade": "plumbing",
+          "name": "Valve and trim",
+          "why": "The rough-in valve replaced (or reused) while the walls are open, then the trim, heads and spout",
+          "hours": [
+            3,
+            6
+          ],
+          "units": 1,
+          "size": null,
+          "area": "fixtures"
+        },
+        {
+          "id": "niche",
+          "trade": "carpentry",
+          "name": "Recessed niche",
+          "why": "Framed between the studs and waterproofed with the walls",
+          "hours": [
+            2,
+            4
+          ],
+          "units": 1,
+          "size": null,
+          "area": "walls"
+        },
+        {
+          "id": "niche-lit",
+          "trade": "electrical",
+          "name": "Lit niche",
+          "why": "An LED strip and its driver, wired by an electrician",
+          "hours": [
+            2,
+            4
+          ],
+          "units": 1,
+          "size": null,
+          "area": "lighting"
+        },
+        {
+          "id": "seat-corner",
+          "trade": "carpentry",
+          "name": "Corner seat",
+          "why": "Built into the corner and finished with the walls",
+          "hours": [
+            3,
+            6
+          ],
+          "units": 1,
+          "size": null,
+          "area": "seats"
+        },
+        {
+          "id": "glass-custom",
+          "trade": "glass",
+          "name": "Custom frameless glass",
+          "why": "Measured after the walls are finished, then hung on a second trip",
+          "hours": [
+            4,
+            8
+          ],
+          "units": 1,
+          "size": null,
+          "area": "glass"
+        },
+        {
+          "id": "cleanup",
+          "trade": "cleanup",
+          "name": "Cleanup",
+          "why": "A sweep-up each day and a final clean: dust down, fixtures and glass wiped, the floor protection taken up",
+          "hours": [
+            1,
+            2
+          ],
+          "units": 1,
+          "size": null,
+          "area": null
+        }
+      ],
+      "priceBookRefs": [
+        {
+          "item": "The shower: tile or solid surface",
+          "from": "Neenan's price book",
+          "note": "The store's starter estimate for this scope"
+        },
+        {
+          "item": "New shower valve",
+          "from": "Neenan's price book",
+          "note": "The store's starter estimate, per each"
+        }
+      ],
+      "notes": [
+        "Hours are typical hours, your contractor edits: typical ranges from trade practice, not a quote.",
+        "52.5 to 91 hours for this design.",
+        "Hours that follow the size: tile walls: about 78 sq ft of wall.",
+        "Allowances name the store's starter estimates only; the store sets each figure in its price book and confirms it on the bid."
+      ]
+    },
+    {
+      "id": "opt-builder-primary-walk-in",
+      "name": "Builder primary, walk-in",
+      "tier": "best",
+      "band": "$$$",
+      "picture": null,
+      "shoppingList": [
+        {
+          "group": "Shower walls and base",
+          "rows": [
+            {
+              "name": "Shower walls: tile",
+              "maker": null,
+              "finish": "Warm white porcelain",
+              "qty": "82 sq ft",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#e8e4dc"
+              }
+            },
+            {
+              "name": "Shower floor: tile, waterproofing and a linear drain",
+              "maker": null,
+              "finish": "",
+              "qty": "15 sq ft",
+              "picture": {
+                "kind": "option",
+                "option": "floor",
+                "choice": "curbless"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Glass",
+          "rows": [
+            {
+              "name": "Shower door or glass panel",
+              "maker": null,
+              "finish": "Sliding door and panel | Matte black",
+              "qty": "2 pieces",
+              "picture": {
+                "kind": "option",
+                "option": "glass",
+                "choice": "roller"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Fixtures",
+          "rows": [
+            {
+              "name": "Shower valve trim",
+              "maker": null,
+              "finish": "Matte black",
+              "qty": "1",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#2a2b2d",
+                "metal": true
+              }
+            },
+            {
+              "name": "Shower head",
+              "maker": null,
+              "finish": "Matte black",
+              "qty": "1",
+              "picture": {
+                "kind": "option",
+                "option": "head",
+                "choice": "spa"
+              }
+            },
+            {
+              "name": "Hand shower on a slide bar",
+              "maker": null,
+              "finish": "Matte black",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "head-handheld"
+              }
+            },
+            {
+              "name": "Body sprays",
+              "maker": null,
+              "finish": "Matte black",
+              "qty": "3",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "head-spa"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Storage and safety",
+          "rows": [
+            {
+              "name": "Recessed niche kit",
+              "maker": null,
+              "finish": "Warm white porcelain, the walls' material",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "niche-vertical"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Lighting",
+          "rows": [
+            {
+              "name": "LED niche light and driver",
+              "maker": null,
+              "finish": "",
+              "qty": "1",
+              "picture": {
+                "kind": "glyph",
+                "glyph": "niche-lit"
+              }
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "id": "fixtures.shower-valve-trim",
+          "area": "fixtures",
+          "item": "Shower valve trim",
+          "maker": null,
+          "collection": null,
+          "finish": "Matte black",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Valve: stay on the same wall or move within the new shower, never onto an outside wall, with a rain head, a wall head and a handheld",
+            "Rough-in valve: the one the trim's spec sheet names (see the checklist)"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.shower-head",
+          "area": "fixtures",
+          "item": "Shower head",
+          "maker": null,
+          "collection": null,
+          "finish": "Matte black",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Rain, handheld and body sprays"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.hand-shower-on-a-slide-bar",
+          "area": "fixtures",
+          "item": "Hand shower on a slide bar",
+          "maker": null,
+          "collection": null,
+          "finish": "Matte black",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "A diverter or second outlet on the valve"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "body-sprays.body-sprays",
+          "area": "body-sprays",
+          "item": "Body sprays",
+          "maker": null,
+          "collection": null,
+          "finish": "Matte black",
+          "sku": null,
+          "qty": 3,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Each on its own outlet: confirm the valve's outlets and the home's water supply",
+            "Ordered through Neenan, not stocked"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "glass.glass",
+          "area": "glass",
+          "item": "Shower door or glass panel",
+          "maker": null,
+          "collection": null,
+          "finish": "Matte black",
+          "sku": null,
+          "qty": 2,
+          "unit": "pieces",
+          "how": "About 60 in. across the opening and 76 in. tall: a sliding door and a fixed panel",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Sliding door and panel",
+            "Measured after the walls are finished"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "fixtures.linear-drain",
+          "area": "fixtures",
+          "item": "Linear drain",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "A 60-in. channel across the 60-in. shower (KERDI-LINE runs 20 to 72 in. in 4-in. steps)",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "fixtures.valve-rough",
+          "area": "fixtures",
+          "item": "Rough-in valve",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "The valve body the trim's spec sheet names",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "fixtures.pex",
+          "area": "fixtures",
+          "item": "Supply line, 1/2-in. PEX",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 14,
+          "unit": "linear ft",
+          "how": "About 12 ft to the body sprays (typical runs), + 10%",
+          "typical": true,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "fixtures.pex-fittings",
+          "area": "fixtures",
+          "item": "PEX fittings and rings",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 3,
+          "unit": "ea",
+          "how": "About three a line for 1 line: an elbow or tee, a coupling and a stub-out (typical)",
+          "typical": true,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-tile",
+          "area": "walls",
+          "item": "Shower walls: tile",
+          "maker": null,
+          "collection": null,
+          "finish": "Warm white porcelain",
+          "sku": null,
+          "qty": 82,
+          "unit": "sq ft",
+          "how": "72 sq ft of 3 walls (60 \u00d7 32 in., 84 in. high), plus the niche's returns, + 10% for cuts (straight lay); 24 \u00d7 48 in. tile",
+          "typical": false,
+          "group": null,
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Or a tile store"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "walls.shower-floor",
+          "area": "walls",
+          "item": "Shower floor: tile, waterproofing and a linear drain",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 15,
+          "unit": "sq ft",
+          "how": "13 sq ft (60 \u00d7 32 in.) + 10% for cuts; large-format tile",
+          "typical": false,
+          "group": null,
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Curbless: the floor recessed for a level entry",
+            "Or a tile store"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "lighting.led-niche-light-and-driver",
+          "area": "lighting",
+          "item": "LED niche light and driver",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Wired by an electrician"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "walls.wall-board",
+          "area": "walls",
+          "item": "Cement board or foam board",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 6,
+          "unit": "sheets (3 \u00d7 5 ft)",
+          "how": "72 sq ft + 10% for cuts, 15 sq ft a sheet",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Screws and seam tape with it"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-membrane",
+          "area": "walls",
+          "item": "Liquid waterproofing membrane",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "gal",
+          "how": "74 sq ft at about 55 sq ft a gallon (RedGard's figure)",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Or a sheet membrane"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-thinset",
+          "area": "walls",
+          "item": "Thin-set mortar",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "bags (50 lb)",
+          "how": "74 sq ft at about 42 sq ft a bag with a 1/2 \u00d7 1/2 in. square notch trowel (VersaBond's chart)",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-grout",
+          "area": "walls",
+          "item": "Grout",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "bags (25 lb)",
+          "how": "74 sq ft at about 917 sq ft a bag for 24 \u00d7 48 in. tile with 1/8-in. joints (Polyblend HP's chart)",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.wall-trim",
+          "area": "walls",
+          "item": "Tile edge trim",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 5,
+          "unit": "pieces (8 ft 2 1/2 in.)",
+          "how": "30 linear ft: the front edges, across the top, around the niche",
+          "typical": false,
+          "group": "Tile and flooring",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.niche-1",
+          "area": "walls",
+          "item": "Recessed niche kit",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "About 12 \u00d7 24 in., vertical",
+          "typical": false,
+          "group": null,
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [
+            "Or a tile store"
+          ],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "walls.preslope",
+          "area": "walls",
+          "item": "Sand mix for the pre-slope",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 3,
+          "unit": "bags (60 lb)",
+          "how": "13 sq ft about 1.1 in. thick on average (1.2 cu ft), about 0.5 cu ft a bag (Quikrete's figure)",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.floor-liner",
+          "area": "walls",
+          "item": "Shower floor liner or membrane",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 19,
+          "unit": "sq ft",
+          "how": "The floor, about 6 in. up the walls",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.shower-floor-thinset",
+          "area": "walls",
+          "item": "Thin-set mortar for the shower floor",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "bags (50 lb)",
+          "how": "13 sq ft at about 42 sq ft a bag (VersaBond's chart)",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.shower-floor-grout",
+          "area": "walls",
+          "item": "Grout for the shower floor",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "bags (25 lb)",
+          "how": "13 sq ft at about 461 sq ft a bag (Polyblend HP's chart)",
+          "typical": false,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "From a home center (Lowe's, Menards or Home Depot)",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.blocking",
+          "area": "walls",
+          "item": "Blocking, 2 \u00d7 8",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "pieces (8 ft)",
+          "how": "About 6 linear ft between the studs behind the glass (its jamb, about 6 ft)",
+          "typical": true,
+          "group": "Lumber and framing",
+          "from": "home-center",
+          "fromLabel": "A lumberyard or home center",
+          "notes": [
+            "Or a lumberyard"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.framing",
+          "area": "walls",
+          "item": "Studs and plates, 2 \u00d7 4",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "pieces (8 ft)",
+          "how": "About 2 linear ft of plates and short pieces: the niche's header and sill",
+          "typical": true,
+          "group": "Lumber and framing",
+          "from": "home-center",
+          "fromLabel": "A lumberyard or home center",
+          "notes": [
+            "Or a lumberyard"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.framing-fasteners",
+          "area": "walls",
+          "item": "Framing screws or nails",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "box",
+          "how": "For the blocking and framing above (typical)",
+          "typical": true,
+          "group": "Lumber and framing",
+          "from": "home-center",
+          "fromLabel": "A lumberyard or home center",
+          "notes": [
+            "Or a lumberyard"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "lighting.cable",
+          "area": "lighting",
+          "item": "Electrical cable",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 10,
+          "unit": "ft",
+          "how": "About 10 ft for an LED strip's driver (typical runs; the electrician sizes the wire and sets the runs)",
+          "typical": true,
+          "group": "Electrical",
+          "from": "home-center",
+          "fromLabel": "An electrical supply house or home center",
+          "notes": [
+            "By a licensed electrician",
+            "Or an electrical supply house"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "lighting.switches",
+          "area": "lighting",
+          "item": "Switches and dimmers",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "An LED strip's switch",
+          "typical": false,
+          "group": "Electrical",
+          "from": "home-center",
+          "fromLabel": "An electrical supply house or home center",
+          "notes": [
+            "By a licensed electrician",
+            "Or an electrical supply house"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "lighting.boxes",
+          "area": "lighting",
+          "item": "Electrical boxes",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "One for the switches: new-work or old-work as the walls are",
+          "typical": false,
+          "group": "Electrical",
+          "from": "home-center",
+          "fromLabel": "An electrical supply house or home center",
+          "notes": [
+            "By a licensed electrician",
+            "Or an electrical supply house"
+          ],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "walls.silicone",
+          "area": "walls",
+          "item": "100% silicone sealant",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "tubes (10.1 oz)",
+          "how": "About 42 linear ft: the shower's 2 inside corners and where the walls meet the floor and the glass, about 24 ft a tube with a 1/4-in. bead",
+          "typical": false,
+          "group": "Paint and finishing",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [],
+          "designItem": false,
+          "price": null
+        }
+      ],
+      "labor": [
+        {
+          "id": "walls-tile",
+          "trade": "tile",
+          "name": "Tile walls (3 walls, about 74 sq ft of wall)",
+          "why": "Backer board, waterproofing, then tile and grout, wall by wall, with time for each to set",
+          "hours": [
+            26,
+            43
+          ],
+          "units": 1,
+          "size": "about 74 sq ft of wall",
+          "area": "walls"
+        },
+        {
+          "id": "curbless",
+          "trade": "tile",
+          "name": "Curbless floor recessed",
+          "why": "The subfloor lowered for a level entry, a linear drain, then waterproofing and tile",
+          "hours": [
+            12,
+            24
+          ],
+          "units": 1,
+          "size": null,
+          "area": "walls"
+        },
+        {
+          "id": "valve",
+          "trade": "plumbing",
+          "name": "Valve and trim",
+          "why": "The rough-in valve replaced (or reused) while the walls are open, then the trim, heads and spout",
+          "hours": [
+            3,
+            6
+          ],
+          "units": 1,
+          "size": null,
+          "area": "fixtures"
+        },
+        {
+          "id": "body-sprays",
+          "trade": "plumbing",
+          "name": "Body sprays",
+          "why": "Each spray piped on its own outlet, with a valve that has enough outlets",
+          "hours": [
+            4,
+            8
+          ],
+          "units": 1,
+          "size": null,
+          "area": "body-sprays"
+        },
+        {
+          "id": "niche",
+          "trade": "carpentry",
+          "name": "Recessed niche",
+          "why": "Framed between the studs and waterproofed with the walls",
+          "hours": [
+            2,
+            4
+          ],
+          "units": 1,
+          "size": null,
+          "area": "walls"
+        },
+        {
+          "id": "niche-lit",
+          "trade": "electrical",
+          "name": "Lit niche",
+          "why": "An LED strip and its driver, wired by an electrician",
+          "hours": [
+            2,
+            4
+          ],
+          "units": 1,
+          "size": null,
+          "area": "lighting"
+        },
+        {
+          "id": "glass-custom",
+          "trade": "glass",
+          "name": "Custom frameless glass",
+          "why": "Measured after the walls are finished, then hung on a second trip",
+          "hours": [
+            4,
+            8
+          ],
+          "units": 1,
+          "size": null,
+          "area": "glass"
+        },
+        {
+          "id": "cleanup",
+          "trade": "cleanup",
+          "name": "Cleanup",
+          "why": "A sweep-up each day and a final clean: dust down, fixtures and glass wiped, the floor protection taken up",
+          "hours": [
+            1,
+            2
+          ],
+          "units": 1,
+          "size": null,
+          "area": null
+        }
+      ],
+      "priceBookRefs": [
+        {
+          "item": "The shower: bigger walk-in shower",
+          "from": "Neenan's price book",
+          "note": "The store's starter estimate for this scope"
+        },
+        {
+          "item": "Move the drain",
+          "from": "Neenan's price book",
+          "note": "The store's starter estimate, per job"
+        },
+        {
+          "item": "New shower valve",
+          "from": "Neenan's price book",
+          "note": "The store's starter estimate, per each"
+        }
+      ],
+      "notes": [
+        "Hours are typical hours, your contractor edits: typical ranges from trade practice, not a quote.",
+        "54 to 99 hours for this design.",
+        "Hours that follow the size: tile walls: about 74 sq ft of wall.",
+        "Allowances name the store's starter estimates only; the store sets each figure in its price book and confirms it on the bid."
+      ]
+    }
+  ]
+}

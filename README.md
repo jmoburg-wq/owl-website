@@ -88,8 +88,13 @@ js/scanner/*                  Measure tab, camera+sensor scanner, WebXR AR, shap
 js/measure.js                 quick measure + roof pitch gauge
 js/model3d.js, js/model-ui.js, js/floorplan.js   3D (rooms, houses with roofs, decks/slabs), plans, exports
 js/configurator-ui.js         Build tab + "everything this job needs"
-js/pricing/products.js        25 product systems: parts (required/recommended/optional + why), labor hours, fees, notes
-js/pricing/catalog.js         48 work items across 13 trades (interior + exterior)
+js/shared/vocab.js            the words Fullbid and CVS share: trades, units, measurement kinds + source ranks, where a line is bought
+js/trades/<pack>/pack.js      14 trade packs (bath, kitchen, flooring, painting, general, roofing, siding, gutters, windows & doors,
+                              decks, fences, concrete, asphalt, seawall): work items, products, sequence, hold points, proposal text
+js/cvs/import.js, js/cvs-ui.js   CVS job package import (importCvsPackage): preview, mapping, Good/Better/Best, labor by trade,
+                              send check, ranked measurements, re-import diff → update or change order
+js/pricing/products.js        25 product systems (defined in the trade packs)
+js/pricing/catalog.js         48 work items (defined in the trade packs) + bundles
 js/pricing/estimator.js       takeoff → supplier/price-list/labor-rate pricing → totals (markup/margin/hourly) → ledger, job plan, CSVs
 js/pricing/profile.js         how you price: margin↔markup, burden, overhead, billable rate, minimums, rounding
 js/pricing/suppliers.js       suppliers, preferences, CSV price lists + matching, order grouping
@@ -97,18 +102,35 @@ js/pricing/tiers.js           Good / Better / Best generation, pricing and choic
 js/pricing/regional.js, smart.js, ai.js, ai-prompt.js
 js/estimate-ui.js, js/pricing-ui.js, js/suppliers-ui.js, js/changeorder-ui.js, js/document.js
 server/worker.mjs             optional AI proxy
+docs/FULLBID-DIRECTION.md     what Fullbid is for, CVS compatibility, build order, guardrails (read first)
+docs/CVS-REQUESTS.md          what the CVS side needs to do
 docs/TEARDOWN.md              SimplyWise / Handoff / Joist teardown and how Fullbid answers each gap
-test/                         unit (Node) + Playwright end-to-end suites
+test/                         unit (Node) + CVS import + Playwright end-to-end suites; fixtures in test/fixtures/
 ```
 
 ## Tests
 
 ```bash
-npm run test:unit          # geometry, roof math, scanner trig, pricing methods, suppliers, products, tiers, ledger, AI request shapes
+npm test                   # everything below (serve the app on :8080 first for the browser suites)
+npm run test:unit          # geometry, roof math, scanner trig, pricing methods, suppliers, products, tiers, ledger, AI request shapes,
+                           #   plus test/cvs.mjs: trade packs, vocabulary and the CVS import acceptance checks
 npm run test:e2e           # Playwright: v1 flows (scan → 3D → estimate → sign → invoice → share → AI transports)
 node test/e2e-v2.mjs       # Playwright: pricing profile, price lists, all measurement kinds, configurator, underbid fix,
-                           #   Good/Better/Best signing, change orders, exports, client round trip, describe-anything
+                           #   Good/Better/Best signing, change orders, exports, client round trip, describe-anything,
+                           #   design import from a file and a #cvs= link, send check
 ```
+
+## Design jobs from Contractor Visual Studio
+
+Open a CVS `.json` package with **Import a design** on the Jobs screen (or drop it there), or follow a
+`#cvs=d:…` / `#cvs-url=…` link. Every route goes through `importCvsPackage`, which shows a preview before anything is
+created. Materials arrive without prices and say "needs a price" until priced from your price list or by you; labor
+arrives by trade at your rates (low / middle / high, or a sub's lump sum). The proposal won't go out while any line
+needs a price or a starter price hasn't been accepted. Sending the same design again shows the differences; after the
+contract is signed, they become a change order draft.
+
+Until the real CVS fixtures are in `test/fixtures/cvs/`, the tests use labeled stand-ins in
+`test/fixtures/cvs-synthetic/`.
 
 ## Known limits
 

@@ -1,0 +1,487 @@
+{
+  "schema": "cvs.job-package",
+  "version": 1,
+  "_note": "SYNTHETIC STAND-IN: not a real CVS export. Replace with the real fixture.",
+  "source": {
+    "app": "Contractor Visual Studio",
+    "module": "bathroom",
+    "appVersion": "0.0-synthetic",
+    "createdAt": "2026-10-03T15:00:00Z"
+  },
+  "company": {
+    "id": "co-sample-bath",
+    "name": "Sample Bath Showroom",
+    "role": "supplier",
+    "conceptNotice": null
+  },
+  "customer": {
+    "name": "Lee Sample",
+    "address": "",
+    "email": "",
+    "phone": ""
+  },
+  "design": {
+    "id": "design-bath-003",
+    "title": "Primary bath, three wall options",
+    "summary": "",
+    "url": null,
+    "pictures": [],
+    "scope": [
+      "Replace the shower walls."
+    ],
+    "notes": []
+  },
+  "measurements": [],
+  "options": [
+    {
+      "id": "o-good",
+      "name": "Standard panels",
+      "tier": "good",
+      "band": "$",
+      "picture": null,
+      "shoppingList": [],
+      "materials": [
+        {
+          "id": "m1",
+          "area": "Shower",
+          "item": "Shower base 60 × 32 in",
+          "maker": null,
+          "collection": null,
+          "finish": "White",
+          "sku": null,
+          "qty": 1,
+          "unit": "each",
+          "how": null,
+          "typical": false,
+          "group": "Fixtures",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m2",
+          "area": "Shower",
+          "item": "Smooth wall panel kit",
+          "maker": null,
+          "collection": null,
+          "finish": "White",
+          "sku": null,
+          "qty": 1,
+          "unit": "kits",
+          "how": null,
+          "typical": true,
+          "group": "Wall panels",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m3",
+          "area": "Shower",
+          "item": "Shower valve trim",
+          "maker": null,
+          "collection": null,
+          "finish": "Chrome",
+          "sku": null,
+          "qty": 1,
+          "unit": "sets",
+          "how": null,
+          "typical": false,
+          "group": "Fixtures",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m4",
+          "area": "Shower",
+          "item": "Panel adhesive",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 6,
+          "unit": "tubes (10.1 oz)",
+          "how": null,
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m5",
+          "area": "Bathroom",
+          "item": "Haul-away and disposal",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "job",
+          "how": null,
+          "typical": false,
+          "group": "Demo and protection",
+          "from": "contractor",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        }
+      ],
+      "labor": [
+        {
+          "id": "l1",
+          "trade": "demo",
+          "name": "Remove tub and surround",
+          "why": null,
+          "hours": [
+            3,
+            5
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l2",
+          "trade": "tile",
+          "name": "Set base and wall panels",
+          "why": null,
+          "hours": [
+            6,
+            10
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l3",
+          "trade": "plumbing",
+          "name": "Set valve",
+          "why": null,
+          "hours": [
+            2,
+            3
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        }
+      ],
+      "priceBookRefs": [],
+      "notes": [
+        "Standard panels wall system"
+      ]
+    },
+    {
+      "id": "o-better",
+      "name": "Textured panels",
+      "tier": "better",
+      "band": "$$",
+      "picture": null,
+      "shoppingList": [],
+      "materials": [
+        {
+          "id": "m1",
+          "area": "Shower",
+          "item": "Shower base 60 × 32 in",
+          "maker": null,
+          "collection": null,
+          "finish": "White",
+          "sku": null,
+          "qty": 1,
+          "unit": "each",
+          "how": null,
+          "typical": false,
+          "group": "Fixtures",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m2",
+          "area": "Shower",
+          "item": "Textured wall panel kit",
+          "maker": null,
+          "collection": null,
+          "finish": "White",
+          "sku": null,
+          "qty": 1,
+          "unit": "kits",
+          "how": null,
+          "typical": true,
+          "group": "Wall panels",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m3",
+          "area": "Shower",
+          "item": "Shower valve trim",
+          "maker": null,
+          "collection": null,
+          "finish": "Brushed nickel",
+          "sku": null,
+          "qty": 1,
+          "unit": "sets",
+          "how": null,
+          "typical": false,
+          "group": "Fixtures",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m4",
+          "area": "Shower",
+          "item": "Panel adhesive",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 6,
+          "unit": "tubes (10.1 oz)",
+          "how": null,
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m5",
+          "area": "Bathroom",
+          "item": "Haul-away and disposal",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "job",
+          "how": null,
+          "typical": false,
+          "group": "Demo and protection",
+          "from": "contractor",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        }
+      ],
+      "labor": [
+        {
+          "id": "l1",
+          "trade": "demo",
+          "name": "Remove tub and surround",
+          "why": null,
+          "hours": [
+            3,
+            5
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l2",
+          "trade": "tile",
+          "name": "Set base and wall panels",
+          "why": null,
+          "hours": [
+            6,
+            10
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l3",
+          "trade": "plumbing",
+          "name": "Set valve",
+          "why": null,
+          "hours": [
+            2,
+            3
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        }
+      ],
+      "priceBookRefs": [],
+      "notes": [
+        "Textured panels wall system"
+      ]
+    },
+    {
+      "id": "o-best",
+      "name": "Cast stone panels",
+      "tier": "best",
+      "band": "$$$",
+      "picture": null,
+      "shoppingList": [],
+      "materials": [
+        {
+          "id": "m1",
+          "area": "Shower",
+          "item": "Shower base 60 × 32 in",
+          "maker": null,
+          "collection": null,
+          "finish": "White",
+          "sku": null,
+          "qty": 1,
+          "unit": "each",
+          "how": null,
+          "typical": false,
+          "group": "Fixtures",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m2",
+          "area": "Shower",
+          "item": "Cast stone panel kit",
+          "maker": null,
+          "collection": null,
+          "finish": "White",
+          "sku": null,
+          "qty": 1,
+          "unit": "kits",
+          "how": null,
+          "typical": true,
+          "group": "Wall panels",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m3",
+          "area": "Shower",
+          "item": "Shower valve trim",
+          "maker": null,
+          "collection": null,
+          "finish": "Matte black",
+          "sku": null,
+          "qty": 1,
+          "unit": "sets",
+          "how": null,
+          "typical": false,
+          "group": "Fixtures",
+          "from": "supplier",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m4",
+          "area": "Shower",
+          "item": "Panel adhesive",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 6,
+          "unit": "tubes (10.1 oz)",
+          "how": null,
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m5",
+          "area": "Bathroom",
+          "item": "Haul-away and disposal",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "job",
+          "how": null,
+          "typical": false,
+          "group": "Demo and protection",
+          "from": "contractor",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        }
+      ],
+      "labor": [
+        {
+          "id": "l1",
+          "trade": "demo",
+          "name": "Remove tub and surround",
+          "why": null,
+          "hours": [
+            3,
+            5
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l2",
+          "trade": "tile",
+          "name": "Set base and wall panels",
+          "why": null,
+          "hours": [
+            6,
+            14
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l3",
+          "trade": "plumbing",
+          "name": "Set valve",
+          "why": null,
+          "hours": [
+            2,
+            3
+          ],
+          "units": 1,
+          "size": null,
+          "area": "Bathroom"
+        }
+      ],
+      "priceBookRefs": [],
+      "notes": [
+        "Cast stone panels wall system"
+      ]
+    }
+  ]
+}

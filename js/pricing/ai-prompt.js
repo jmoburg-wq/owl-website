@@ -107,11 +107,11 @@ export const CONFIGURE_SYSTEM = `You are a veteran residential contractor who ha
 Rules:
 - Quantities are for baseQty units of the product (baseQty = the quantity the contractor gave, default 1).
 - Prices are realistic current US national-average contractor costs in USD. Labor is in HOURS by trade, not dollars.
-- need: "required" (job cannot be done without it), "recommended" (good practice / code in most places / prevents callbacks), "optional" (upsell or situational).
+- need: "required" (job cannot be done without it), "recommended" (good practice / what the maker's instructions call for / prevents callbacks), "optional" (upsell or situational).
 - supplierClass for every part must be one of: ${CLASS_KEYS.join(', ')}.
 - trade for every labor task must be one of: ${TRADE_KEYS.join(', ')}.
 - why: one short sentence a homeowner would understand.
-- notes: measuring, lead-time, code and compatibility gotchas specific to this product.
+- notes: measuring, lead-time and compatibility gotchas specific to this product. Say what the maker's instructions call for or what a part does; never say what a building code requires.
 - unitPrice is your estimate of the product's own price per unit if the contractor did not give one.
 - Do not repeat the product itself in parts. Be complete and specific (sizes, ratings), not generic.`;
 export const CONFIGURE_SCHEMA = {

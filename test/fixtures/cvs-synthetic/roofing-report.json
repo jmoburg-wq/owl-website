@@ -1,0 +1,243 @@
+{
+  "schema": "cvs.job-package",
+  "version": 1,
+  "_note": "SYNTHETIC STAND-IN: not a real CVS export. Replace with the real fixture.",
+  "source": {
+    "app": "Contractor Visual Studio",
+    "module": "exterior",
+    "appVersion": "0.0-synthetic",
+    "createdAt": "2026-10-02T15:00:00Z"
+  },
+  "company": {
+    "id": "co-sample-roofing",
+    "name": "Sample Roofing Co",
+    "role": "contractor",
+    "conceptNotice": null
+  },
+  "customer": null,
+  "design": {
+    "id": "design-roof-001",
+    "title": "Re-roof, architectural shingles",
+    "summary": "Tear off one layer and re-roof.",
+    "url": null,
+    "pictures": [],
+    "scope": [
+      "Tear off one layer of shingles.",
+      "Install synthetic underlayment, ice and water barrier, and architectural shingles."
+    ],
+    "notes": []
+  },
+  "measurements": [
+    {
+      "kind": "roof_area",
+      "value": 2450,
+      "unit": "sq ft",
+      "source": "report"
+    },
+    {
+      "kind": "roof_pitch",
+      "value": 6,
+      "unit": "x/12",
+      "source": "report"
+    },
+    {
+      "kind": "eaves",
+      "value": 120,
+      "unit": "lf",
+      "source": "report"
+    },
+    {
+      "kind": "rakes",
+      "value": 80,
+      "unit": "lf",
+      "source": "report"
+    },
+    {
+      "kind": "ridges",
+      "value": 40,
+      "unit": "lf",
+      "source": "report"
+    },
+    {
+      "kind": "valleys",
+      "value": 24,
+      "unit": "lf",
+      "source": "report"
+    }
+  ],
+  "options": [
+    {
+      "id": "opt-1",
+      "name": "Architectural shingles",
+      "tier": null,
+      "band": "$$",
+      "picture": null,
+      "shoppingList": [],
+      "materials": [
+        {
+          "id": "m1",
+          "area": "Roof",
+          "item": "Architectural shingles",
+          "maker": null,
+          "collection": null,
+          "finish": "Weathered gray",
+          "sku": null,
+          "qty": 81,
+          "unit": "bundles",
+          "how": null,
+          "typical": false,
+          "group": "Roofing",
+          "from": "home-center",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": true,
+          "price": null
+        },
+        {
+          "id": "m2",
+          "area": "Roof",
+          "item": "Synthetic underlayment",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 3,
+          "unit": "rolls (10 sq)",
+          "how": null,
+          "typical": false,
+          "group": "Roofing",
+          "from": "home-center",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m3",
+          "area": "Roof",
+          "item": "Ice and water barrier",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 4,
+          "unit": "rolls (2 sq)",
+          "how": null,
+          "typical": false,
+          "group": "Roofing",
+          "from": "home-center",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m4",
+          "area": "Roof",
+          "item": "Drip edge",
+          "maker": null,
+          "collection": null,
+          "finish": "White",
+          "sku": null,
+          "qty": 20,
+          "unit": "pieces (10 ft)",
+          "how": null,
+          "typical": false,
+          "group": "Roofing",
+          "from": "home-center",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m5",
+          "area": "Roof",
+          "item": "Ridge cap shingles",
+          "maker": null,
+          "collection": null,
+          "finish": "Weathered gray",
+          "sku": null,
+          "qty": 2,
+          "unit": "bundles",
+          "how": null,
+          "typical": false,
+          "group": "Roofing",
+          "from": "home-center",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m6",
+          "area": "Roof",
+          "item": "Roofing nails, coil",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 4,
+          "unit": "boxes",
+          "how": null,
+          "typical": false,
+          "group": "Fasteners",
+          "from": "contractor",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        },
+        {
+          "id": "m7",
+          "area": "Roof",
+          "item": "Dumpster, 20 yd",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "job",
+          "how": null,
+          "typical": false,
+          "group": "Demo and protection",
+          "from": "contractor",
+          "fromLabel": null,
+          "notes": [],
+          "designItem": false,
+          "price": null
+        }
+      ],
+      "labor": [
+        {
+          "id": "l1",
+          "trade": "demo",
+          "name": "Tear off one layer",
+          "why": "Per square",
+          "hours": [
+            0.8,
+            1.2
+          ],
+          "units": 24.5,
+          "size": null,
+          "area": "Bathroom"
+        },
+        {
+          "id": "l2",
+          "trade": "roofing",
+          "name": "Install roof system",
+          "why": "Per square",
+          "hours": [
+            1.5,
+            2.0
+          ],
+          "units": 24.5,
+          "size": null,
+          "area": "Bathroom"
+        }
+      ],
+      "priceBookRefs": [],
+      "notes": []
+    }
+  ]
+}
