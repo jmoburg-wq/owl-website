@@ -64,5 +64,8 @@ Fullbid does not change CVS. These are the things CVS needs to do so the job pac
 
 ## Questions
 
-- Does an exterior staff bid's `option.total` include tax? Fullbid compares it with its own price before tax and
-  warns when they differ by more than 1%.
+- ~~Does an exterior staff bid's `option.total` include tax?~~ Answered (CVS, Nov 1, 2026): no. `total` is the bid's
+  lines summed (`subtotal`), less `discount`, rounded up to the company's rounding step and raised to its minimum job.
+  Compare it with Fullbid's price before tax; a difference within one rounding step is expected.
+- ~~A real discount field~~ Done (CVS, Nov 1, 2026): options carry `subtotal` and `discount` (null when none). Fullbid
+  reads `discount` first and falls back to the note for older packages.

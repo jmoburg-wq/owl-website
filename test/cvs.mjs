@@ -277,6 +277,7 @@ const hallChanged = () => { const n = structuredClone(hall); const m = n.options
   ok(work.filter((l) => l.cvsId !== 'discount').length === 12 && work.filter((l) => l.unitCost != null).every((l) => l.evidence === 'E2' && l.designItem), 'roof bid: work items are priced lines at E2 that print on the bid');
   ok(work.some((l) => l.name === 'GAF Timberline HDZ shingles, installed, Charcoal' && l.qty === 27.2 && l.unit === 'sq' && l.unitCost === 465), 'roof bid: name and detail (color) on the line');
   ok(work.find((l) => l.cvsId === 'discount' && l.cvsOption === 'opt-better').unitCost === -250 && discountFromNotes(['The total includes a $1,250.50 discount.']) === 1250.5, 'roof bid: the stated $250 discount is a line');
+  ok(work.find((l) => l.cvsId === 'discount' && l.cvsOption === 'opt-better').note === 'On your bid' && !work.some((l) => l.cvsId === 'discount' && l.cvsOption === 'opt-good'), 'roof bid: the discount comes from its own field, only where there is one');
   const sum = tierSummary(p, st.settings); const totalOf = (k) => roofBid.options.find((o) => o.tier === k).total;
   ok(sum.every((x) => near(x.preTax, totalOf(x.key))), "roof bid: each option's price equals its total", sum.map((x) => `${x.key} ${x.preTax}/${totalOf(x.key)}`).join(', '));
   const op = optionPrices(p, totals); ok(op.length === 3 && op.every((x) => !x.warn && x.diff === 0) && op[1].theirs === 15924.5, 'roof bid: option.total shown beside Fullbid’s total, no warning when they match');
