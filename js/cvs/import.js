@@ -167,8 +167,8 @@ export function linesForOption(pkg, opt, settings, { laborChoice = {}, companySu
     if (p) { if (p.priceLocked) line = { ...line, unitCost: p.unitCost, evidence: p.evidence, priceSource: p.priceSource, priceLocked: true, fromPackage: false }; if (p.accepted && p.evidence === line.evidence) line.accepted = true; if (p.locked) line = { ...line, locked: true, qty: p.qty, name: p.name, note: p.note, edited: p.edited || { qty: p.qty, name: p.name } }; }
     out.push(line);
   }
-  const discount = hasWork ? discountFromNotes(opt.notes) : 0;
-  if (discount > 0) out.push({ id: `cvs|${opt.id}|w|discount`, key: `cvs|${opt.id}|w|discount`, origin: 'cvs', cvsId: 'discount', cvsOption: opt.id, custom: true, cat: 'work', assembly: 'cvs', assemblyName: 'Work', trade: 'Work', roomId: null, roomName: '', name: 'Discount', item: 'Discount', qty: 1, unit: 'job', unitText: 'job', unitCost: -discount, baseCost: -discount, evidence: 'E2', priceSource: 'on your bid', fromPackage: true, note: 'From the bid’s notes', designItem: true, taxable: false, hours: 0 });
+  const discount = hasWork ? (Number(opt.discount) > 0 ? Number(opt.discount) : discountFromNotes(opt.notes)) : 0;
+  if (discount > 0) out.push({ id: `cvs|${opt.id}|w|discount`, key: `cvs|${opt.id}|w|discount`, origin: 'cvs', cvsId: 'discount', cvsOption: opt.id, custom: true, cat: 'work', assembly: 'cvs', assemblyName: 'Work', trade: 'Work', roomId: null, roomName: '', name: 'Discount', item: 'Discount', qty: 1, unit: 'job', unitText: 'job', unitCost: -discount, baseCost: -discount, evidence: 'E2', priceSource: 'on your bid', fromPackage: true, note: Number(opt.discount) > 0 ? 'On your bid' : 'From the bid’s notes', designItem: true, taxable: false, hours: 0 });
   for (const m of arr(opt.materials)) {
     const key = `cvs|${opt.id}|m|${m.id}`;
     const cls = classForGroup(m.group, m.item);

@@ -493,7 +493,9 @@
         "Gutters: count inside and outside corners (miters) on site.",
         "1 line has no price yet."
       ],
-      "total": 14950.5
+      "total": 14950.5,
+      "subtotal": 14950.5,
+      "discount": null
     },
     {
       "id": "opt-better",
@@ -888,7 +890,9 @@
         "The total includes a $250 discount.",
         "1 line has no price yet."
       ],
-      "total": 15924.5
+      "total": 15924.5,
+      "subtotal": 16174.5,
+      "discount": 250
     },
     {
       "id": "opt-best",
@@ -1284,7 +1288,9 @@
         "Gutters: count inside and outside corners (miters) on site.",
         "1 line has no price yet."
       ],
-      "total": 27734.5
+      "total": 27734.5,
+      "subtotal": 27734.5,
+      "discount": null
     }
   ]
 }
