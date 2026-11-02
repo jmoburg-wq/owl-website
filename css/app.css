@@ -104,7 +104,7 @@ textarea { min-height: 88px; resize: vertical; }
 .chip.add { border: 1px dashed var(--line); background: transparent; }
 .pill { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
 .pill.draft { background: var(--bg-sunken); color: var(--fg-2); } .pill.sent { background: rgba(31,111,235,.14); color: var(--primary); } .pill.signed { background: rgba(48,177,90,.16); color: #1d7a3d; } .pill.invoiced { background: rgba(142,68,173,.14); color: #7a3aa0; } .pill.paid { background: rgba(48,177,90,.25); color: #166534; }
-.pill.material { background: rgba(47,128,237,.14); color: var(--material); } .pill.labor { background: rgba(39,174,96,.14); color: var(--labor); } .pill.fee { background: rgba(142,68,173,.14); color: var(--fee); }
+.pill.material { background: rgba(47,128,237,.14); color: var(--material); } .pill.labor { background: rgba(39,174,96,.14); color: var(--labor); } .pill.fee { background: rgba(142,68,173,.14); color: var(--fee); } .pill.work { background: rgba(255,176,32,.18); color: #8a5a00; }
 
 .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .stat { background: var(--bg-sunken); border-radius: 12px; padding: 10px; }

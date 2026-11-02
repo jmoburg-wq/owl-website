@@ -140,6 +140,11 @@ Map these onto Fullbid's suppliers: `supplier` → a supplier record created or 
 map CVS's material groups ("Lumber and framing", "Drywall", "Plumbing rough-in", "Electrical", "Waterproofing and
 setting materials", "Paint and finishing", "Demo and protection") onto them in vocab.js.
 
+(Addendum 1.) When `company.role` is `"contractor"`, `from: "supplier"` means the contractor's preferred supplier for
+that material class, as set in Suppliers; with nothing set, a supplier whose classes include it, marked "Confirm
+supplier". A supplier record is matched by `company.id` first, then by name, and is never created from a contractor's
+own name.
+
 ## 4. The CVS job package (v1): import
 
 ### 4.1 Format
@@ -205,6 +210,14 @@ that validates, then shows a preview: "Import 'Remodel hall, tub to shower' from
 - Labor lines by trade from `labor`, at the contractor's rate per trade.
 - Nothing is re-derived: when a pack has its own work item for the same thing (Fullbid's `tile_shower`), the CVS lines
   replace it for this job. Fullbid's own calculators remain for jobs that didn't come from CVS.
+- (Addendum 1.) CVS lines replace a pack's own calculation only for what the package contains. When an option has
+  neither `labor` nor `workItems`, the pack works out labor (and fees it normally adds, such as a dumpster or permit,
+  when the package has none) from the imported measurements, tagged `origin: "pack"`, and asks for any measurement it
+  needs that the job lacks (a roof pitch) instead of assuming one.
+- (Addendum 2.) `workItems` are priced installed lines (E2) that print on the client's bid; on such an option the
+  materials are the order list and the job's cost only, never added to the price again, and no pack labor is added
+  unless the job's "price labor separately" switch is on. `option.total` is shown beside Fullbid's price, with a
+  warning past 1%.
 
 ### 4.4 Which pack takes a module
 

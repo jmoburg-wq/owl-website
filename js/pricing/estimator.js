@@ -126,35 +126,41 @@ export function customItem({ name, cat = 'material', unit = 'ea', qty = 1, unitC
 export const lineTotal = (i) => r2((Number(i.qty) || 0) * (Number(i.unitCost) || 0));
 export const lineHours = (i) => (i.cat !== 'labor' ? 0 : Number.isFinite(Number(i.hours)) && i.hours != null ? Number(i.hours) : i.unit === 'hr' ? Number(i.qty) || 0 : lineTotal(i) / LABOR_BASE);
 
-/** Totals, priced by the estimate's method: 'stack' (legacy markup stack), 'markup', 'margin' or 'rate'. */
+/**
+ * Totals, priced by the estimate's method: 'stack' (legacy markup stack), 'markup', 'margin' or 'rate'.
+ * Priced work items (cat 'work', a bid's installed lines) are already sell prices: added as they are, never marked up.
+ * Order-list materials (orderOnly, the takeoff behind priced work) are the job's cost, never added to the price again.
+ */
 export function totals(est) {
-  const a = est.adj || {}; const items = est.items || [];
+  const a = est.adj || {}; const all = est.items || []; const items = all.filter((i) => !i.orderOnly);
   const sum = (cat) => items.filter((i) => i.cat === cat).reduce((s, i) => s + lineTotal(i), 0);
   const materials = sum('material'), labor = sum('labor'), fees = sum('fee'); const cost = materials + labor + fees;
+  const work = sum('work'); const orderCost = all.filter((i) => i.orderOnly).reduce((s, i) => s + lineTotal(i), 0);
   const laborHours = items.reduce((s, i) => s + lineHours(i), 0);
   const method = a.method || 'stack'; const discount = Number(a.discount) || 0;
   let materialMarkup = 0, laborMarkup = 0, subtotal = cost, overhead = 0, profit = 0, contingency = 0, raw;
   if (method === 'margin') {
     const m = Math.min(95, Math.max(0, Number(a.targetMargin) || 0)) / 100; const sell = cost / (1 - m);
-    contingency = sell * (Number(a.contingency) || 0) / 100; subtotal = sell; raw = Math.max(0, sell + contingency - discount);
+    contingency = sell * (Number(a.contingency) || 0) / 100; subtotal = sell + work; raw = Math.max(0, sell + work + contingency - discount);
   } else if (method === 'rate') {
     materialMarkup = materials * (Number(a.materialMarkup) || 0) / 100;
     const laborSell = laborHours > 0 && Number(a.billRate) > 0 ? laborHours * Number(a.billRate) : labor * (1 + (Number(a.laborMarkup) || 0) / 100);
     laborMarkup = laborSell - labor; subtotal = cost + materialMarkup + laborMarkup;
-    contingency = subtotal * (Number(a.contingency) || 0) / 100; raw = Math.max(0, subtotal + contingency - discount);
+    contingency = subtotal * (Number(a.contingency) || 0) / 100; subtotal += work; raw = Math.max(0, subtotal + contingency - discount);
   } else {
     materialMarkup = materials * (Number(a.materialMarkup) || 0) / 100; laborMarkup = labor * (Number(a.laborMarkup) || 0) / 100;
     subtotal = cost + materialMarkup + laborMarkup; overhead = subtotal * (Number(a.overhead) || 0) / 100; profit = (subtotal + overhead) * (Number(a.profit) || 0) / 100;
-    contingency = subtotal * (Number(a.contingency) || 0) / 100; raw = Math.max(0, subtotal + overhead + profit + contingency - discount);
+    contingency = subtotal * (Number(a.contingency) || 0) / 100; raw = Math.max(0, subtotal + work + overhead + profit + contingency - discount); subtotal += work;
   }
-  const fin = finishPrice(raw, a); const preTax = cost > 0 || fin.price > 0 ? fin.price : 0;
-  if (method === 'margin' || method === 'rate') { overhead = preTax * (Number(a.overheadPct) || 0) / 100; profit = preTax - cost - overhead - contingency + discount; }
-  const sellFactor = cost > 0 ? preTax / cost : 1; // uniform gross-up so inline sell prices reconcile to preTax
+  const fin = finishPrice(raw, a); const preTax = cost > 0 || work !== 0 || fin.price > 0 ? fin.price : 0;
+  const jobCost = cost + orderCost; // what the job costs: priced lines plus the order list behind priced work
+  if (method === 'margin' || method === 'rate') { overhead = preTax * (Number(a.overheadPct) || 0) / 100; profit = preTax - jobCost - overhead - contingency + discount; }
+  const sellFactor = cost > 0 ? (preTax - work) / cost : 1; // uniform gross-up so inline sell prices reconcile to preTax (work items print as they are)
   const taxBase = a.taxMaterialsOnly ? items.filter((i) => i.cat === 'material' && i.taxable !== false).reduce((s, i) => s + lineTotal(i), 0) * sellFactor : preTax;
   const tax = taxBase * (Number(a.taxRate) || 0) / 100; const total = preTax + tax; const deposit = total * (Number(a.depositPct) || 0) / 100;
-  const grossProfit = preTax - cost; const grossMargin = preTax > 0 ? (grossProfit / preTax) * 100 : 0; const markupOnCost = cost > 0 ? (grossProfit / cost) * 100 : 0;
+  const grossProfit = preTax - jobCost; const grossMargin = preTax > 0 ? (grossProfit / preTax) * 100 : 0; const markupOnCost = jobCost > 0 ? (grossProfit / jobCost) * 100 : 0;
   const overheadAlloc = preTax * (Number(a.overheadPct ?? a.overhead) || 0) / 100; const net = grossProfit - overheadAlloc; const netPct = preTax > 0 ? (net / preTax) * 100 : 0;
-  return { method, materials, labor, fees, cost, laborHours, materialMarkup, laborMarkup, subtotal, overhead, profit, contingency, discount, adjustment: fin.adjustment, minApplied: fin.minApplied, preTax, sellFactor, taxBase, tax, total, deposit, markupTotal: preTax + discount - cost, grossProfit, grossMargin, markupOnCost, overheadAlloc, net, netPct, count: items.length };
+  return { method, materials, labor, fees, work, orderCost, cost, jobCost, laborHours, materialMarkup, laborMarkup, subtotal, overhead, profit, contingency, discount, adjustment: fin.adjustment, minApplied: fin.minApplied, preTax, sellFactor, taxBase, tax, total, deposit, markupTotal: preTax + discount - cost - work, grossProfit, grossMargin, markupOnCost, overheadAlloc, net, netPct, count: items.length };
 }
 
 export function projectAreaSF(project) { return (project.rooms || []).filter((r) => kindOf(r) === 'room').reduce((s, r) => s + toSF(metrics(r).floorArea), 0); }
@@ -190,7 +196,7 @@ export function toCSV(project) {
   const rows = [['Group', 'Item', 'Type', 'Area', 'Qty', 'Unit', 'Unit cost', 'Line total', 'Labor hours', 'Supplier', 'Price source', 'Note']];
   for (const i of project.estimate.items) rows.push([i.assemblyName, i.name, i.cat, i.roomName, i.qty, i.unit, i.unitCost, lineTotal(i), i.cat === 'labor' ? r2(lineHours(i)) : '', i.supplierId || '', i.priceSource || '', i.note]);
   const t = totals(project.estimate);
-  rows.push([], ['Materials', '', '', '', '', '', '', r2(t.materials)], ['Labor', '', '', '', '', '', '', r2(t.labor), r2(t.laborHours)], ['Fees', '', '', '', '', '', '', r2(t.fees)], ['Markup, overhead & profit', '', '', '', '', '', '', r2(t.markupTotal)], ['Tax', '', '', '', '', '', '', r2(t.tax)], ['Total', '', '', '', '', '', '', r2(t.total)]);
+  rows.push([], ['Materials', '', '', '', '', '', '', r2(t.materials)], ...(t.work ? [['Priced work', '', '', '', '', '', '', r2(t.work)]] : []), ...(t.orderCost ? [['Order list (cost, not in the price)', '', '', '', '', '', '', r2(t.orderCost)]] : []), ['Labor', '', '', '', '', '', '', r2(t.labor), r2(t.laborHours)], ['Fees', '', '', '', '', '', '', r2(t.fees)], ['Markup, overhead & profit', '', '', '', '', '', '', r2(t.markupTotal)], ['Tax', '', '', '', '', '', '', r2(t.tax)], ['Total', '', '', '', '', '', '', r2(t.total)]);
   return rows.map((r) => r.map((c) => `"${String(c ?? '').replace(/"/g, '""')}"`).join(',')).join('\n');
 }
 
@@ -199,7 +205,7 @@ export function quickBooksCSV(project, { invoiceNo, date, dueDate } = {}) {
   const est = project.estimate; const T = totals(est); const f = est.adj && est.adj.inlineMarkup === false ? 1 : T.sellFactor; const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
   const d = (iso) => { const x = new Date(iso || Date.now()); return `${String(x.getMonth() + 1).padStart(2, '0')}/${String(x.getDate()).padStart(2, '0')}/${x.getFullYear()}`; };
   const no = invoiceNo || (est.invoice && est.invoice.number) || est.number; const rows = [['InvoiceNo', 'Customer', 'InvoiceDate', 'DueDate', 'Item(Product/Service)', 'ItemDescription', 'ItemQuantity', 'ItemRate', 'ItemAmount', 'Taxable']];
-  for (const i of est.items) rows.push([no, project.client.name || project.name, d(date || (est.invoice && est.invoice.date)), d(dueDate || (est.invoice && est.invoice.dueDate)), i.cat === 'labor' ? 'Labor' : i.cat === 'fee' ? 'Fees' : 'Materials', i.name, i.qty, r2(i.unitCost * f), r2(lineTotal(i) * f), i.cat === 'material' ? 'Y' : 'N']);
+  for (const i of est.items) { if (i.orderOnly) continue; const g = i.cat === 'work' ? 1 : f; rows.push([no, project.client.name || project.name, d(date || (est.invoice && est.invoice.date)), d(dueDate || (est.invoice && est.invoice.dueDate)), i.cat === 'labor' ? 'Labor' : i.cat === 'fee' ? 'Fees' : i.cat === 'work' ? 'Work' : 'Materials', i.name, i.qty, r2(i.unitCost * g), r2(lineTotal(i) * g), i.cat === 'material' ? 'Y' : 'N']); }
   for (const co of project.changeOrders || []) if (co.status === 'approved') rows.push([no, project.client.name || project.name, d(date), d(dueDate), 'Change order', `CO #${co.n}: ${co.title}`, 1, r2(coTotals(co, est).preTax), r2(coTotals(co, est).preTax), 'N']);
   return rows.map((r) => r.map(q).join(',')).join('\n');
 }

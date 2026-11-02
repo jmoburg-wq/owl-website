@@ -1,6 +1,7 @@
 // Design jobs from Contractor Visual Studio: import preview, the design card on the bid, and the send check.
 import { store } from './store.js';
-import { importCvsPackage, describeDiff, packageFromHash, sendReadiness, acceptStarterPrices, setCvsPrice, setLaborChoice, setActiveOption, cvsTrades, tradeLabel, LEVELS, adoptPendingDesign } from './cvs/import.js';
+import { importCvsPackage, describeDiff, packageFromHash, sendReadiness, acceptStarterPrices, setCvsPrice, setLaborChoice, setActiveOption, cvsTrades, tradeLabel, LEVELS, adoptPendingDesign, addMeasurement, setWorkPrice, optionPrices, hasWorkItems, setPriceLaborSeparately, isJobLine } from './cvs/import.js';
+import { totals } from './pricing/estimator.js';
 import { el, h, $, $$, toast, sheet, icons, esc, fmtMoney, fmtNum, confirmDialog, promptDialog } from './ui.js';
 
 const commit = (tag = 'project') => store.update(() => {}, tag);
@@ -12,7 +13,15 @@ export async function startCvsImport(obj, { navigate } = {}) {
   const pv = plan.preview; const body = h('div');
   body.append(el(`<div class="card flat"><b>${esc(pv.text)}</b><div class="dim small mt8">Trade: ${esc(pv.packName)}${plan.createsSupplier ? ` · adds “${esc(plan.companySupplier.name)}” to your suppliers` : ''}</div></div>`));
   let keepEdits = true;
-  if (plan.mode === 'new') body.append(el(`<p class="muted small mt12">Materials come in without prices (each shows “needs a price” until you price it from your price list or type your price). Labor comes in by trade at your rates. Nothing is created until you tap Import.</p>`));
+  if (plan.mode === 'new') {
+    const notes = [];
+    if (pv.work) notes.push('Priced work comes in at your bid’s prices and prints on the client’s bid. The takeoff materials become the order list and your cost; they are not added to the price again.');
+    else notes.push('Materials come in without prices unless the design carries one (each shows “needs a price” until you price it from your price list or type your price).');
+    if (pv.labor) notes.push('Labor comes in by trade at your rates.');
+    else if (pv.fillsLabor) notes.push(`The design sends no labor hours, so ${esc(pv.packName)} hours are worked out from the measurements${pv.needs.length ? `; enter the ${esc(pv.needs.map((n) => n.label.toLowerCase()).join(' and '))} to finish them` : ''}.`);
+    notes.push('Nothing is created until you tap Import.');
+    body.append(el(`<p class="muted small mt12">${notes.join(' ')}</p>`));
+  }
   else {
     const d = plan.diff || [];
     body.append(el(`<p class="mt12"><b>${esc(plan.existing.name)}</b> is already on this device. ${plan.mode === 'change-order' ? 'It is signed, so these differences become a change order draft for the client to sign.' : 'These are the differences from what you have:'}</p>`));
@@ -53,7 +62,7 @@ export function enableCvsDrop(root, opts) {
 }
 
 // ---- on the bid
-export const cvsLineBadges = (it) => it.origin !== 'cvs' ? '' : `${it.unitCost == null ? '<span class="src needs">needs a price</span>' : it.evidence && /^E[01]$/.test(it.evidence) && !it.accepted ? '<span class="src starter">starter price: replace with yours</span>' : it.evidence ? `<span class="src yours">${esc(it.evidence)}</span>` : ''}${it.typical ? `<span class="src typical">${it.recompute ? 'typical size · re-measured' : 'typical size'}</span>` : ''}${it.noOrder ? '<span class="dim">· your stock</span>' : ''}${it.needsSupplier ? '<span class="dim">· pick a supplier</span>' : ''}`;
+export const cvsLineBadges = (it) => !isJobLine(it) ? '' : `${it.unitCost == null ? '<span class="src needs">needs a price</span>' : it.evidence && /^E[01]$/.test(it.evidence) && !it.accepted ? '<span class="src starter">starter price: replace with yours</span>' : it.evidence ? `<span class="src yours">${esc(it.evidence)}</span>` : ''}${it.seenOn ? `<span class="dim">· seen ${esc(it.seenOn)}, not a quote</span>` : ''}${it.typical ? `<span class="src typical">${it.recompute ? 'typical size · re-measured' : 'typical size'}</span>` : ''}${it.origin === 'pack' ? '<span class="src typical">worked out by Fullbid</span>' : ''}${(it.needsMeasure || []).length ? '<span class="src needs">needs a measurement</span>' : ''}${it.orderOnly ? '<span class="dim">· order list only, not in the price</span>' : ''}${it.noOrder ? '<span class="dim">· your stock</span>' : ''}${it.needsSupplier ? '<span class="dim">· pick a supplier</span>' : ''}${it.confirmSupplier ? '<span class="src starter">Confirm supplier</span>' : ''}`;
 export const lineAmount = (it, fmt) => (it.unitCost == null ? '<span class="needs-price">Needs a price</span>' : fmt);
 
 export function cvsCard(project, rerender) {
@@ -68,17 +77,24 @@ export function cvsCard(project, rerender) {
     for (const o of opts) chips.append(el(`<button class="chip ${o.id === cvs.activeOption ? 'on' : ''}" data-cvs-opt="${esc(o.id)}">${esc(o.name)}${o.band ? ` <span class="dim">${esc(o.band)}</span>` : ''}</button>`));
     card.append(el(`<div class="dim small mt8">Options (shown to the client as ${opts.length === 3 ? 'Good / Better / Best' : 'choices'}):</div>`), chips);
   }
-  if (!ready.ok) card.append(el(`<div class="flag mt8">${icons.warn}<div class="grow">${esc(ready.message)}. The proposal can't be sent until every line has a price or you accept the starter prices.</div></div>`));
+  const prices = opts.some((o) => o.total != null) ? optionPrices(project, totals) : [];
+  if (prices.length) card.append(el(`<div class="mt8" data-role="cvs-totals">${prices.map((x) => `<div class="row between small" style="padding:3px 0"><span>${esc(x.name)}</span><span class="mono">${x.theirs == null ? '' : `your bid ${fmtMoney(x.theirs)} · `}Fullbid ${fmtMoney(x.ours)}</span></div>${x.warn ? `<div class="flag" data-role="cvs-total-warn">${icons.warn}<div>${esc(x.name)}: Fullbid's price (before tax) differs from your bid's total by ${fmtMoney(Math.abs(x.diff))} (${fmtNum(x.pct, 1)}%). Check for a line that needs a price, a markup, or a discount.</div></div>` : ''}`).join('')}</div>`));
+  for (const n of cvs.needs || []) if (!(project.measurements || []).some((m) => m.kind === n.kind)) card.append(el(`<div class="flag mt8" data-role="cvs-need">${icons.warn}<div class="grow"><b>${esc(n.label)} needed.</b> ${esc(n.why || '')} Fullbid won't assume one.</div><button class="btn xs" data-cvs-need="${esc(n.kind)}" data-label="${esc(n.label)}" data-unit="${esc(n.unit || '')}">Enter</button></div>`));
+  if (hasWorkItems(project)) { const row = el(`<label class="row mt8 small" style="gap:8px"><input type="checkbox" data-cvs-lab-sep ${cvs.priceLaborSeparately ? 'checked' : ''}> Price labor separately: add labor worked out from the measurements on top of the priced work (leave off when your installed prices include labor)</label>`); card.append(row); }
+  if (!ready.ok) card.append(el(`<div class="flag mt8">${icons.warn}<div class="grow">${esc(ready.message)}. The proposal can't be sent until every line has a price or you accept the starter prices${ready.waiting && ready.waiting.length ? ', and the missing measurements are entered' : ''}.</div></div>`));
   const acts = h('div', { class: 'row wrap mt8', style: { gap: '8px' } });
-  if (ready.unpriced.some((l) => l.cat === 'material')) acts.append(el(`<button class="btn sm" data-cvs="price">${icons.dollar} Price materials</button>`));
+  if (ready.unpriced.some((l) => l.cat === 'material' || l.cat === 'work')) acts.append(el(`<button class="btn sm" data-cvs="price">${icons.dollar} ${ready.unpriced.some((l) => l.cat === 'material') ? 'Price materials' : 'Price lines'}</button>`));
   if (ready.starter.length) acts.append(el(`<button class="btn sm secondary" data-cvs="accept">${icons.check} Accept starter prices</button>`));
-  acts.append(el(`<button class="btn sm secondary" data-cvs="labor">${icons.edit} Labor by trade</button>`));
+  if (cvsTrades(project).length) acts.append(el(`<button class="btn sm secondary" data-cvs="labor">${icons.edit} Labor by trade</button>`));
   card.append(acts);
   if (cvs.recompute) card.append(el(`<div class="flag info mt8">${icons.info}<div>You measured ${esc(cvs.recompute.kinds.join(', '))}. Lines marked “typical size” rest on a standard size: send the measurements to the designer for a re-fitted design, or adjust those quantities.</div></div>`));
   if (cvs.pendingPkg) card.append(el(`<div class="flag info mt8">${icons.info}<div>An updated design is waiting on a change order. It becomes the job's design when the client approves it.</div></div>`));
   const refs = (opts.find((o) => o.id === cvs.activeOption) || {}).priceBookRefs || [];
   if (refs.length) card.append(el(`<div class="dim small mt8"><b>Reference notes from ${esc(cvs.company.name)}:</b> ${refs.map((r) => esc(`${r.item}${r.note ? ` (${r.note})` : ''}`)).join('; ')}</div>`));
+  card.addEventListener('change', (e) => { if (e.target.matches('[data-cvs-lab-sep]')) { setPriceLaborSeparately(project, e.target.checked, s); commit(); rerender(); } });
   card.addEventListener('click', async (e) => {
+    const nd = e.target.closest('[data-cvs-need]');
+    if (nd) { const v = await promptDialog(`${nd.dataset.label}${nd.dataset.unit ? ` (${nd.dataset.unit})` : ''}`, { label: nd.dataset.unit === 'x/12' ? 'Rise in inches per 12 in. of run, as measured' : 'As measured on site', type: 'number', value: '' }); if (v === null || !(Number(v) > 0)) return; addMeasurement(project, { kind: nd.dataset.cvsNeed, value: Number(v), unit: nd.dataset.unit, source: 'measured' }, s); commit(); rerender(); return; }
     const o = e.target.closest('[data-cvs-opt]'); if (o) { setActiveOption(project, o.dataset.cvsOpt, s); commit(); rerender(); return; }
     const a = e.target.closest('[data-cvs]')?.dataset.cvs; if (!a) return;
     if (a === 'accept') { if (await confirmDialog(`Accept ${ready.starter.length} starter price${ready.starter.length === 1 ? '' : 's'} as they are? They are national figures adjusted for your region, not your prices.`, { okLabel: 'Accept', title: 'Starter prices' })) { acceptStarterPrices(project); commit(); rerender(); } }
@@ -89,11 +105,14 @@ export function cvsCard(project, rerender) {
 }
 
 async function priceSheet(project) {
-  const seen = new Set(); const rows = sendReadiness(project).unpriced.filter((l) => l.cat === 'material' && l.cvsId && !seen.has(l.cvsId) && seen.add(l.cvsId));
+  const seen = new Set(); const unpriced = sendReadiness(project).unpriced; const rows = unpriced.filter((l) => l.cat === 'material' && l.origin === 'cvs' && l.cvsId && !seen.has(l.cvsId) && seen.add(l.cvsId));
+  const work = unpriced.filter((l) => l.cat === 'work'); const optName = (id) => ((project.cvs.options || []).find((o) => o.id === id) || {}).name || '';
   const body = h('div');
-  body.append(el(`<p class="dim small">Your price per unit (what it costs you). A price you type here is used for this material in every option.</p>`));
+  if (rows.length) body.append(el(`<p class="dim small">Your price per unit (what it costs you). A price you type here is used for this material in every option.</p>`));
   for (const l of rows) body.append(el(`<div class="field"><label>${esc(l.name)} <span class="dim">· ${fmtNum(l.qty, 2)} ${esc(l.unitText || l.unit)}</span></label><input type="number" step="0.01" inputmode="decimal" placeholder="Needs a price" data-cvs-id="${esc(l.cvsId)}"></div>`));
-  await new Promise((res) => sheet({ title: 'Price materials', body, onClose: res, actions: [{ label: 'Save prices', onClick: () => { for (const inp of $$('[data-cvs-id]', body)) if (inp.value !== '') setCvsPrice(project, inp.dataset.cvsId, Number(inp.value)); return true; } }, { label: 'Cancel', cls: 'neutral' }] }));
+  if (work.length) body.append(el(`<p class="dim small mt8">Priced work: your installed price per unit, as the client sees it.</p>`));
+  for (const l of work) body.append(el(`<div class="field"><label>${esc(l.name)} <span class="dim">· ${esc(optName(l.cvsOption))} · ${fmtNum(l.qty, 2)} ${esc(l.unitText || l.unit)}</span></label><input type="number" step="0.01" inputmode="decimal" placeholder="Needs a price" data-work-key="${esc(l.key)}"></div>`));
+  await new Promise((res) => sheet({ title: rows.length ? 'Price materials' : 'Price lines', body, onClose: res, actions: [{ label: 'Save prices', onClick: () => { for (const inp of $$('[data-cvs-id]', body)) if (inp.value !== '') setCvsPrice(project, inp.dataset.cvsId, Number(inp.value)); for (const inp of $$('[data-work-key]', body)) if (inp.value !== '') setWorkPrice(project, inp.dataset.workKey, Number(inp.value)); return true; } }, { label: 'Cancel', cls: 'neutral' }] }));
 }
 
 async function laborSheet(project) {
@@ -115,7 +134,7 @@ async function laborSheet(project) {
 export function saveCvsLineEdit(project, it, before, rawCost) {
   const v = rawCost === '' ? null : Number(rawCost);
   if (v !== before.unitCost) {
-    if (it.cat === 'material') setCvsPrice(project, it.cvsId, v);
+    if (it.cat === 'material' && it.origin === 'cvs') setCvsPrice(project, it.cvsId, v);
     else { it.unitCost = v; it.evidence = v == null ? null : 'E2'; it.priceSource = 'your rate'; it.priceLocked = true; it.accepted = false; }
   }
   if (it.qty !== before.qty || it.name !== before.name || it.unit !== before.unit) { it.locked = true; it.edited = { qty: it.qty, name: it.name }; }

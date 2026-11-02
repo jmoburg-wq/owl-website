@@ -80,9 +80,37 @@ export const products = [
     attrs: [psel('tier', 'Shingle line', [['good', '3-tab'], ['better', 'Architectural'], ['best', 'Designer / luxury']], 'better'), pbool('system', 'Use the manufacturer\'s matching accessories (system warranty)', true), pbool('tearoff', 'Tear off existing roof', true)],
     price: (a) => Math.round((T(a, 95, 125, 260) / 3) * 100) / 100,
     build: ({ qty: sq, a, geo }) => { const eave = geo.eaveLf || Math.sqrt(sq * 100) * 2.2, rake = geo.rakeLf || Math.sqrt(sq * 100) * 1.6, ridge = geo.ridgeLf || Math.sqrt(sq * 100), hip = geo.hipLf || 0, valley = geo.valleyLf || 0; const w = hip > 0 ? 0.15 : 0.1; const sys = a.system ? ' (manufacturer system)' : ''; const layers = geo.layers || 1; const steep = (geo.pitch || 6) >= 8 ? 1.25 : 1;
-      const parts = [P(`Starter strip${sys}`, 'bundle', Math.max(1, ceil((eave + rake) / 105)), 62, 'roofing', 'Seals the first course at eaves and rakes.'), P(`Hip & ridge cap${sys}`, 'bundle', Math.max(1, ceil((ridge + hip) / 31)), 75, 'roofing', 'Field shingles are not made to bend over ridges.'), P(`Synthetic underlayment${sys}`, 'roll', ceil((sq * 1.1) / 10), 165, 'roofing', 'Secondary water barrier under the shingles.'), P(`Ice & water shield${sys}`, 'roll', Math.max(1, ceil((eave * 3 + valley * 3) / 200)), 115, 'roofing', 'Commonly required at eaves in cold climates and in valleys; check your local rules.'), P('Drip edge (10 ft)', 'ea', ceil(((eave + rake) * 1.05) / 10), 9.5, 'roofing', 'Commonly required on eaves and rakes; check your local rules.'), P('Roofing coil nails', 'box', Math.max(1, ceil(sq / 15)), 58, 'hardware', '4–6 nails per shingle per the manufacturer.'), P('Pipe boots', 'ea', 3, 18, 'roofing', 'Old boots crack and are the #2 leak source.'), P('Ridge vent', 'ea', ceil(ridge / 4), 22, 'roofing', 'Balanced ventilation is required for the shingle warranty.', 'recommended'), P('Step & counter flashing allowance', 'ls', 1, 85, 'roofing', 'Walls, chimneys and skylights.')];
+      const parts = [P(`Starter strip${sys}`, 'bundle', Math.max(1, ceil((eave + rake) / 105)), 62, 'roofing', 'Seals the first course at eaves and rakes.'), P(`Hip & ridge cap${sys}`, 'bundle', Math.max(1, ceil((ridge + hip) / 31)), 75, 'roofing', 'Field shingles are not made to bend over ridges.'), P(`Synthetic underlayment${sys}`, 'roll', ceil((sq * 1.1) / 10), 165, 'roofing', 'Secondary water barrier under the shingles.'), P(`Ice & water shield${sys}`, 'roll', Math.max(1, ceil((eave * 3 + valley * 3) / 200)), 115, 'roofing', 'Seals around nails at the eaves and in valleys, where ice dams and runoff collect; use what the shingle maker\'s instructions call for.'), P('Drip edge (10 ft)', 'ea', ceil(((eave + rake) * 1.05) / 10), 9.5, 'roofing', 'Carries water off the roof edge and protects the edge of the deck.'), P('Roofing coil nails', 'box', Math.max(1, ceil(sq / 15)), 58, 'hardware', '4–6 nails per shingle per the manufacturer.'), P('Pipe boots', 'ea', 3, 18, 'roofing', 'Old boots crack and are the #2 leak source.'), P('Ridge vent', 'ea', ceil(ridge / 4), 22, 'roofing', 'The shingle maker\'s warranty calls for balanced ventilation.', 'recommended'), P('Step & counter flashing allowance', 'ls', 1, 85, 'roofing', 'Walls, chimneys and skylights.')];
       const labor = [LAB('Install underlayment, ice & water, drip edge', sq * 0.45, 'roofer'), LAB('Install shingles, starter, ridge & flashing', sq * 1.6 * steep, 'roofer')]; const fees = [];
       if (a.tearoff) { labor.unshift(LAB(`Tear off ${layers} layer${layers > 1 ? 's' : ''}`, sq * 0.9 * layers, 'roofer')); fees.push(FEE('Roofing dumpster & disposal', 'ea', Math.max(1, ceil((sq * layers) / 25)), 525, 'About one 20–30 yd container per 25 squares-layers.')); parts.push(P('Decking repair allowance (OSB)', 'sheet', ceil(sq * 0.5), 24, 'lumber', 'Unit-priced: billed only for rotted sheets found.', 'recommended')); }
-      fees.push(FEE('Roofing permit', 'ea', 1, 150, 'Most municipalities require a re-roof permit.'));
+      fees.push(FEE('Roofing permit', 'ea', 1, 150, 'Many towns issue re-roof permits; check your local rules.'));
       return { main: { qty: ceil(sq * (1 + w) * 3), note: `${sq.toFixed(1)} sq + ${Math.round(w * 100)}% waste · 3 bundles/sq` }, parts, labor, fees, notes: ['Matching manufacturer accessories qualify most lines for the enhanced system warranty.', 'Check attic ventilation (1 sf net free area per 150–300 sf of attic).'] }; } },
 ];
+
+/**
+ * Labor and usual fees for a design package that sends roofing materials but no labor (FULLBID-DIRECTION addendum 1,
+ * section 2), from the job's measurements, using this pack's own calculators above. Fills only what the package lacks.
+ * m: { kind: value } (roof_area in sq ft; eaves, rakes, ridges, hips, valleys in lf; roof_pitch as x/12; roof_layers).
+ * Returns { lines, needs }. A measurement the calculator needs and the job lacks is asked for, never assumed: the line
+ * that depends on it carries `needs` and the bid can't go out until it is entered.
+ */
+export function fill(m, { has = () => false } = {}) {
+  const sf = Number(m.roof_area) || 0; if (!(sf > 0)) return { lines: [], needs: [{ kind: 'roof_area', label: 'Roof area', unit: 'sq ft', why: 'Tear-off and install hours are worked out from the roof area.' }] };
+  const pitch = Number(m.roof_pitch); const hasPitch = Number.isFinite(pitch) && pitch > 0;
+  const needs = hasPitch ? [] : [{ kind: 'roof_pitch', label: 'Roof pitch', unit: 'x/12', why: 'Steep roofs take longer to shingle.' }];
+  const layers = Number(m.roof_layers) > 0 ? Number(m.roof_layers) : 1; // Fullbid's roof areas start at one layer, shown on the line
+  const base = { roofSq: sf / 100, roofSf: sf, eaveLf: Number(m.eaves) || 0, rakeLf: Number(m.rakes) || 0, ridgeLf: Number(m.ridges) || 0, hipLf: Number(m.hips) || 0, valleyLf: Number(m.valleys) || 0, pitch: hasPitch ? pitch : 0, stories: Number(m.stories) || 1, layers };
+  const ctx = (def, opts) => ({ ...base, opts, n: (k, d) => (opts[k] != null && Number.isFinite(Number(opts[k])) ? Number(opts[k]) : d), opt: (k) => (opts[k] !== undefined ? opts[k] : ((def.options || []).find((o) => o.key === k) || {}).default) });
+  const [tear, shing] = workItems; const lines = [];
+  for (const ln of tear.items(ctx(tear, { layers, deck: 0 }))) {
+    if (ln.cat === 'labor') lines.push({ ...ln, ltrade: tear.ltrade, slug: /^Tear off/.test(ln.name) ? 'tear-off' : 'cleanup' });
+    else if (ln.cat === 'fee' && !has(/dumpster|haul|disposal/i)) lines.push({ ...ln, slug: 'dumpster' });
+  }
+  for (const ln of shing.items(ctx(shing, { ridgeVent: false }))) {
+    if (ln.cat !== 'labor') continue;
+    const install = /^Install shingles/.test(ln.name);
+    lines.push({ ...ln, ltrade: shing.ltrade, slug: install ? 'install-shingles' : /^Install underlayment/.test(ln.name) ? 'underlayment' : 'starter-ridge-flashing', ...(install && !hasPitch ? { name: 'Install shingles (base rate until the roof pitch is entered)', needs: ['roof_pitch'] } : {}) });
+  }
+  if (!has(/permit/i)) lines.push({ cat: 'fee', name: 'Roofing permit', unit: 'ea', qty: 1, unitCost: 150, note: 'Many towns issue re-roof permits; check your local rules.', slug: 'permit' });
+  return { lines, needs };
+}

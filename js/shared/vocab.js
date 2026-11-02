@@ -49,6 +49,7 @@ export function unitFromText(text) {
 // ---- 3.3 Measurement kinds and sources
 export const MEASURE_KINDS = {
   roof_area: 'sq ft', roof_pitch: 'x/12', eaves: 'lf', rakes: 'lf', ridges: 'lf', valleys: 'lf', step_flashing: 'lf', flashing: 'lf',
+  hips: 'lf', roof_layers: 'layers', // Fullbid-side for now (the roofing pack reads them when present); see docs/CVS-REQUESTS.md
   gutters: 'lf', downspouts: 'ea', siding_area: 'sq ft', stone_area: 'sq ft', windows: 'ea', entry_doors: 'ea', garage_doors: 'ea', lights: 'lf',
   seawall_length: 'lf', seawall_returns: 'lf', seawall_area: 'sq ft', driveway_area: 'sq ft', patio_area: 'sq ft', deck_area: 'sq ft', fence_length: 'lf', floor_area: 'sq ft', wall_area: 'sq ft',
   'bath.roomL': 'ft', 'bath.roomW': 'ft', 'bath.ceilingIn': 'in', 'bath.showerW': 'in', 'bath.showerD': 'in', 'bath.wallH': 'in', 'bath.vanityWallIn': 'in',

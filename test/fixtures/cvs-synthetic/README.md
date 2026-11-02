@@ -9,4 +9,5 @@ These three files are **not** real Contractor Visual Studio exports. They were w
 - `roofing-report.json` stands in for the roofing fixture (exterior module, report-sourced measurements).
 - `bath-three-options.json` exercises three options → Good / Better / Best.
 
-Put the real files in `test/fixtures/cvs/`. `test/cvs.mjs` runs the shape checks against every file there too.
+The real exports are now in `test/fixtures/cvs/` and carry the main checks; these stand-ins stay for edge cases
+(a version 2 package, an unknown module, labor units above 1, edits and re-imports on a small package).

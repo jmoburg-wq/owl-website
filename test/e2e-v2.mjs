@@ -132,6 +132,32 @@ try {
   const three = JSON.parse(fs.readFileSync(fx('bath-three-options'), 'utf8')); const enc = await jp.evaluate(async (pkg) => { const m = await import('./js/cvs/import.js'); return m.encodeCvsPackage(pkg); }, three);
   await jp.goto(BASE + '#cvs=' + enc, { waitUntil: 'networkidle' }); await jp.waitForSelector('.sheet:has-text("Import a design")'); check(/3 options/.test(await jp.textContent('.sheet')), '#cvs=d: link opens the import preview');
   await jp.click('.sheet button:has-text("Import")'); await jp.waitForSelector('[data-cvs-opt]'); check((await jp.$$('[data-cvs-opt]')).length === 3, 'three options shown as Good / Better / Best'); await shot(jp, 'v3-05-cvs-options');
+  // a real link: the 3-option Neenan package from the CVS exporter, encoded the way CVS's "Bid it in Fullbid" link is
+  const realFx = (n) => new URL(`./fixtures/cvs/${n}.json`, import.meta.url).pathname;
+  const n3 = JSON.parse(fs.readFileSync(realFx('cvs-shower-neenan-3options'), 'utf8')); const enc3 = await jp.evaluate(async (pkg) => { const m = await import('./js/cvs/import.js'); return m.encodeCvsPackage(pkg); }, n3);
+  check(enc3.startsWith('d:') && enc3.length <= 8000, 'real 3-option package fits a #cvs=d: link', enc3.length);
+  await jp.goto(BASE + '#cvs=' + enc3, { waitUntil: 'networkidle' }); await jp.waitForSelector('.sheet:has-text("Import a design")');
+  const pv3 = await jp.textContent('.sheet'); check(pv3.includes("Import 'Builder primary, panels' from Neenan:") && /3 options/.test(pv3), 'real link opens the import preview', pv3.slice(0, 160)); await jp.waitForTimeout(450); await shot(jp, 'v3-06-cvs-real-link');
+  await jp.click('.sheet button:has-text("Import")'); await jp.waitForSelector('[data-cvs-opt]');
+  jst = await S(jp); check(jst.project.cvs.designId === n3.design.id && Object.keys(jst.project.estimate.cvsLines).length === 3 && (await jp.$$('[data-cvs-opt]')).length === 3 && jst.project.estimate.tiers.cvsOptions.best === 'opt-builder-primary-walk-in', 'importing the real link creates the job with 3 options');
+  // an exterior staff bid: priced work items print on the bid; the takeoff is the order list only
+  await jp.goto(BASE + '#/home', { waitUntil: 'networkidle' }); await jp.waitForSelector('#screen-home .hero');
+  await jp.setInputFiles('#screen-home [data-act="cvs-file"]', realFx('cvs-roof-bid-timbercrest-3options')); await jp.waitForSelector('.sheet:has-text("Import a design")');
+  check(/12 priced work items/.test(await jp.textContent('.sheet')) && /order list/.test(await jp.textContent('.sheet')), 'staff bid preview explains priced work and the order list');
+  await jp.click('.sheet button:has-text("Import")'); await jp.waitForSelector('[data-role="cvs-totals"]');
+  const tt = await jp.textContent('[data-role="cvs-totals"]'); check(/your bid \$15,924\.50 · Fullbid \$15,924\.50/.test(tt) && !(await jp.$('[data-role="cvs-total-warn"]')), "each option's total shown beside Fullbid's, matching", tt.slice(0, 200)); await shot(jp, 'v3-07-cvs-staff-bid');
+  await jp.click('#screen-estimate [data-act="preview"]'); await jp.waitForSelector('.doc-actions'); const docTxt = await jp.textContent('.doc');
+  check(docTxt.includes('GAF Timberline HDZ shingles, installed, Charcoal') && !docTxt.includes('Starter strip') && !docTxt.includes('Hidden hangers'), "the client's bid shows the priced work, not the order list"); await jp.click('.doc-bar [data-act="close"]');
+  await jp.click('[data-cvs="price"]'); await jp.waitForSelector('.sheet [data-work-key]'); const wk = await jp.$$('.sheet [data-work-key]'); for (const inp of wk) await inp.fill('18'); await jp.click('.sheet button:has-text("Save prices")'); await jp.waitForTimeout(200);
+  check(wk.length === 3 && /ready to send/.test(await jp.textContent('[data-role="cvs-card"]')) && /Fullbid \$15,996\.50/.test(await jp.textContent('[data-role="cvs-totals"]')), 'pricing the downspouts readies the bid; the order list never blocks it');
+  // a contractor's own package with no labor: Fullbid works out the roofing hours and asks for the pitch
+  await jp.goto(BASE + '#/home', { waitUntil: 'networkidle' }); await jp.waitForSelector('#screen-home .hero');
+  await jp.setInputFiles('#screen-home [data-act="cvs-file"]', realFx('cvs-roof-timbercrest')); await jp.waitForSelector('.sheet:has-text("Import a design")');
+  check(/enter the roof pitch/.test(await jp.textContent('.sheet')) && !/adds “TimberCrest/.test(await jp.textContent('.sheet')), 'roof preview asks for the pitch and adds no supplier named after the contractor');
+  await jp.click('.sheet button:has-text("Import")'); await jp.waitForSelector('[data-role="cvs-need"]'); await shot(jp, 'v3-08-cvs-roof-pitch');
+  jst = await S(jp); check(jst.project.estimate.items.some((i) => i.origin === 'pack' && i.cat === 'labor' && i.hours > 0) && !jst.settings.suppliers.some((x) => /TimberCrest/.test(x.name)), 'roof job gets pack labor and no TimberCrest supplier');
+  await jp.click('[data-cvs-need="roof_pitch"]'); await jp.fill('.sheet input', '7'); await jp.click('.sheet button:has-text("Save")'); await jp.waitForTimeout(200);
+  jst = await S(jp); check(!(await jp.$('[data-role="cvs-need"]')) && jst.project.measurements.some((m) => m.kind === 'roof_pitch' && m.value === 7) && jst.project.estimate.items.some((i) => /Install shingles \(7\/12\)/.test(i.name)), 'entering the pitch finishes the roofing labor');
   await jctx.close();
 } catch (e) { console.log('\nE2E-V2 FAILURE:', e.message.split('\n')[0]); fails.push('exception: ' + e.message.split('\n')[0]); try { await page.screenshot({ path: `${OUT}/zz-failure.png` }); } catch {} }
 await browser.close();

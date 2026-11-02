@@ -54,3 +54,15 @@ export const products = [
     price: (a) => (a.size === '6' ? 3.1 : 2.4),
     build: ({ qty: lf, a }) => { const ds = Math.max(2, ceil(lf / 35)); return { main: { qty: ceil(lf * 1.05) }, parts: [P('Downspouts 10 ft + elbows', 'ea', ds, 32, 'roofing', 'One per 35 ft of gutter (min 2).'), P('Hidden hangers', 'ea', ceil(lf / 2), 2.2, 'hardware', 'Every 24".'), P('End caps, outlets, miters & sealant', 'ls', 1, Math.round(25 + lf * 0.4), 'roofing', 'Trim pieces for every run.'), P('Splash blocks / extensions', 'ea', ds, 12, 'roofing', 'Move water 4–6 ft from the foundation.', 'recommended')].concat(a.guards ? [P('Gutter guards', 'lf', lf, 3.8, 'roofing', 'Keeps leaves out.')] : []), labor: [LAB('Remove old gutters', lf * 0.02, 'roofer'), LAB('Form & hang gutters, downspouts', lf * 0.09 + ds * 0.5, 'roofer')].concat(a.guards ? [LAB('Install guards', lf * 0.04, 'roofer')] : []), fees: [], notes: ['Pitch gutters 1/4" per 10 ft toward outlets.'] }; } },
 ];
+
+/**
+ * Labor for a design package that sends gutter materials but no labor (addendum 1, section 2), from the job's
+ * measurements: gutters (lf) and downspouts (ea). Old-gutter removal is not added: the package doesn't say there are any.
+ */
+export function fill(m) {
+  const lf = Number(m.gutters) || Number(m.eaves) || 0; if (!(lf > 0)) return { lines: [], needs: [{ kind: 'gutters', label: 'Gutter length', unit: 'lf', why: 'Hanging hours are worked out from the gutter length.' }] };
+  const def = workItems[0]; const ds = Number(m.downspouts) > 0 ? Number(m.downspouts) : null;
+  const ctx = { roofSq: 0, eaveLf: lf, linLf: lf, stories: Number(m.stories) || 1, opts: {}, n: (k, d) => (k === 'downspouts' && ds != null ? ds : d), opt: (k) => (k === 'remove' ? false : k === 'guards' ? false : ((def.options || []).find((o) => o.key === k) || {}).default) };
+  const lines = def.items(ctx).filter((l) => l.cat === 'labor').map((l) => ({ ...l, ltrade: def.ltrade, slug: /downspout/i.test(l.name) ? 'downspouts' : 'hang-gutters', ...(ds == null && /downspout/i.test(l.name) ? { needs: ['downspouts'] } : {}) }));
+  return { lines, needs: ds == null ? [{ kind: 'downspouts', label: 'Downspouts', unit: 'ea', why: 'Each downspout adds install time.' }] : [] };
+}
