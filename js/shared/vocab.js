@@ -54,6 +54,14 @@ export const MEASURE_KINDS = {
   seawall_length: 'lf', seawall_returns: 'lf', seawall_area: 'sq ft', driveway_area: 'sq ft', patio_area: 'sq ft', deck_area: 'sq ft', fence_length: 'lf', floor_area: 'sq ft', wall_area: 'sq ft',
   'bath.roomL': 'ft', 'bath.roomW': 'ft', 'bath.ceilingIn': 'in', 'bath.showerW': 'in', 'bath.showerD': 'in', 'bath.wallH': 'in', 'bath.vanityWallIn': 'in',
 };
+/** Plain names for the measurement kinds, as a contractor says them. */
+export const MEASURE_NAMES = {
+  roof_area: 'Roof area', roof_pitch: 'Roof pitch', eaves: 'Eaves', rakes: 'Rakes', ridges: 'Ridges and hips', valleys: 'Valleys', step_flashing: 'Step flashing', flashing: 'Wall flashing', hips: 'Hips', roof_layers: 'Layers to tear off',
+  gutters: 'Gutters', downspouts: 'Downspouts', siding_area: 'Siding area', stone_area: 'Stone area', windows: 'Windows', entry_doors: 'Entry doors', garage_doors: 'Garage doors', lights: 'Light runs',
+  seawall_length: 'Seawall length', seawall_returns: 'Return walls', seawall_area: 'Seawall face', driveway_area: 'Driveway area', patio_area: 'Patio area', deck_area: 'Deck area', fence_length: 'Fence length', floor_area: 'Floor area', wall_area: 'Wall area',
+  'bath.roomL': 'Bathroom length', 'bath.roomW': 'Bathroom width', 'bath.ceilingIn': 'Ceiling height', 'bath.showerW': 'Shower width', 'bath.showerD': 'Shower depth', 'bath.wallH': 'Shower wall height', 'bath.vanityWallIn': 'Vanity wall',
+};
+export const SOURCE_NAMES = { measured: 'Measured on site', report: 'Measurement report', satellite: 'Satellite', photo: 'From a photo', homeowner: 'Homeowner', typed: 'Typed in', typical: 'Typical size', estimate: 'Estimate' };
 export const SOURCE_RANK = { measured: 5, report: 5, satellite: 3, photo: 2, homeowner: 2, typed: 2, typical: 1, estimate: 1 };
 export const rankOf = (source) => SOURCE_RANK[source] ?? 1;
 /** Merge one measurement into a list: a higher-ranked number wins; equal or lower never silently overwrites. */
