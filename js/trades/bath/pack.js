@@ -79,6 +79,23 @@ export const meta = {
   ]
 };
 
+/**
+ * The phases a CVS bath job's materials are bought for, in order (CVS sends its own list as `phases`; this is the
+ * fallback for packages that don't). docs/FULLBID-DIRECTION-ADDENDUM-3.md.
+ */
+export const JOB_PHASES = [
+  { id: 'protection', name: 'Protection and demo' },
+  { id: 'framing', name: 'Framing and blocking' },
+  { id: 'plumbing', name: 'Plumbing rough-in' },
+  { id: 'electrical', name: 'Electrical' },
+  { id: 'substrate', name: 'Substrate and waterproofing' },
+  { id: 'setting', name: 'Tile, panels and setting' },
+  { id: 'drywall', name: 'Drywall patch and paint' },
+  { id: 'fixtures', name: 'Fixtures, glass and trim-out' },
+  { id: 'finish', name: 'Finish and accessories' },
+  { id: 'consumables', name: 'Consumables' },
+];
+
 export const workItems = [
   { key: 'bath_fixtures', trade: 'Kitchen & Bath', name: 'Bathroom fixtures', icon: 'grid', keywords: ['toilet', 'vanity', 'bathroom', 'sink', 'faucet', 'bath remodel'],
     options: [bool('toilet', 'Toilet', true), bool('vanity', 'Vanity & faucet', true), bool('tub', 'Tub/shower valve & trim', false), bool('exhaust', 'Exhaust fan', false)],
