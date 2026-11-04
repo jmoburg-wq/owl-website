@@ -1,0 +1,637 @@
+{
+  "schema": "cvs.job-package",
+  "version": 1,
+  "source": {
+    "app": "contractor-visual-studio",
+    "module": "walk_in_tub",
+    "appVersion": "",
+    "createdAt": ""
+  },
+  "company": {
+    "id": "neenan",
+    "name": "Neenan",
+    "role": "supplier",
+    "conceptNotice": "A concept prepared for Neenan Company: not an official Neenan site."
+  },
+  "customer": null,
+  "design": {
+    "id": "walk-in-u100Xcpv2y",
+    "title": "Walk-in tub: Tub4Two 60 × 32",
+    "summary": "Ella's Bubbles Tub4Two 60 × 32 walk-in tub in white, air and water jets",
+    "url": null,
+    "pictures": [],
+    "scope": [
+      "Remove the old tub and set a walk-in tub in the 60-in. space"
+    ],
+    "notes": []
+  },
+  "measurements": [
+    {
+      "kind": "bath.tubSpaceIn",
+      "value": 60,
+      "unit": "in",
+      "source": "photo"
+    }
+  ],
+  "options": [
+    {
+      "id": "opt-walk-in-tub",
+      "name": "Walk-in tub: Tub4Two 60 × 32",
+      "tier": null,
+      "band": null,
+      "picture": null,
+      "shoppingList": [
+        {
+          "group": "Tub",
+          "rows": [
+            {
+              "name": "Walk-in tub",
+              "maker": "Ella's Bubbles",
+              "finish": "White",
+              "qty": "1",
+              "picture": {
+                "kind": "swatch",
+                "hex": "#f4f3ef"
+              }
+            },
+            {
+              "name": "Walls around the tub: Smooth panels",
+              "maker": null,
+              "finish": "",
+              "qty": "1",
+              "picture": {
+                "kind": "option",
+                "option": "walls",
+                "choice": "smooth"
+              }
+            },
+            {
+              "name": "Shower over the tub: Slide bar and curtain",
+              "maker": null,
+              "finish": "Chrome",
+              "qty": "1",
+              "picture": {
+                "kind": "option",
+                "option": "shower",
+                "choice": "slide"
+              }
+            },
+            {
+              "name": "Grab bars: Two on the wall",
+              "maker": null,
+              "finish": "Chrome",
+              "qty": "1",
+              "picture": {
+                "kind": "option",
+                "option": "grab",
+                "choice": "wall"
+              }
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "id": "tubs.walk-in-tub",
+          "area": "tubs",
+          "item": "Walk-in tub",
+          "maker": "Ella's Bubbles",
+          "collection": "Tub4Two 60 × 32",
+          "finish": "White",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "60 × 32 in., air and water jets; stands in the 60-in. space",
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [],
+          "designItem": true,
+          "price": null,
+          "phase": "fixtures",
+          "trade": "plumbing",
+          "kit": null
+        },
+        {
+          "id": "walls.walls",
+          "area": "walls",
+          "item": "Walls around the tub: Smooth panels",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "specialty",
+          "fromLabel": "A specialty supplier",
+          "notes": [],
+          "designItem": true,
+          "price": null,
+          "phase": "setting",
+          "trade": "tile",
+          "kit": null
+        },
+        {
+          "id": "fixtures.shower",
+          "area": "fixtures",
+          "item": "Shower over the tub: Slide bar and curtain",
+          "maker": null,
+          "collection": null,
+          "finish": "Chrome",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [],
+          "designItem": true,
+          "price": null,
+          "phase": "fixtures",
+          "trade": "plumbing",
+          "kit": null
+        },
+        {
+          "id": "grab-bars.grab",
+          "area": "grab-bars",
+          "item": "Grab bars: Two on the wall",
+          "maker": null,
+          "collection": null,
+          "finish": "Chrome",
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": null,
+          "typical": false,
+          "group": null,
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [],
+          "designItem": true,
+          "price": null,
+          "phase": "finish",
+          "trade": "finish_carpentry",
+          "kit": null
+        },
+        {
+          "id": "tubs.kit-walk-in-tub--haul",
+          "area": "tubs",
+          "item": "Debris haul-away (the old tub)",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "cu yd",
+          "how": "The old tub out, about a cubic yard loose (typical)",
+          "typical": true,
+          "group": "Demo and protection",
+          "from": "contractor",
+          "fromLabel": "Your contractor",
+          "notes": [
+            "Added for the walk-in tub"
+          ],
+          "designItem": false,
+          "price": null,
+          "phase": "protection",
+          "trade": "demo",
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "walls.kit-walk-in-tub--protection",
+          "area": "walls",
+          "item": "Floor protection",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "rolls (38 in. × 100 ft)",
+          "how": "The path from the door to the bathroom: about 317 sq ft a roll (Ram Board's 38 in. × 100 ft roll)",
+          "typical": true,
+          "group": "Demo and protection",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [
+            "Added for the walk-in tub"
+          ],
+          "designItem": false,
+          "price": null,
+          "phase": "protection",
+          "trade": "demo",
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "tubs.kit-walk-in-tub--shutoffs",
+          "area": "tubs",
+          "item": "Quarter-turn shutoff valves",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "ea",
+          "how": "Hot and cold to the tub's faucet: not included with the tub, Ella's sheet says",
+          "typical": false,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Added for the walk-in tub"
+          ],
+          "designItem": false,
+          "price": null,
+          "phase": "plumbing",
+          "trade": "plumbing",
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "tubs.kit-walk-in-tub--supplies",
+          "area": "tubs",
+          "item": "Supply connections to the tub's faucet",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "ea",
+          "how": "Adapters for the tub's own lines: the tub comes with two 5-ft supply lines with 3/4-in. connectors (Ella's sheet)",
+          "typical": false,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Added for the walk-in tub"
+          ],
+          "designItem": false,
+          "price": null,
+          "phase": "plumbing",
+          "trade": "plumbing",
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "tubs.kit-walk-in-tub--drain",
+          "area": "tubs",
+          "item": "Drain pipe and fittings to the tub's drain",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "set",
+          "how": "From the floor's drain to the tub's: two 2-in. PVC drains come with the tub; the PVC pipe to them doesn't (Ella's sheet)",
+          "typical": false,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Added for the walk-in tub"
+          ],
+          "designItem": false,
+          "price": null,
+          "phase": "plumbing",
+          "trade": "plumbing",
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "tubs.kit-walk-in-tub--drain-move",
+          "area": "tubs",
+          "item": "Drain line and fittings to move the drain",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "set",
+          "how": "The drain moved to the tub's drain end, under the floor (typical)",
+          "typical": true,
+          "group": "Plumbing rough-in",
+          "from": "supplier",
+          "fromLabel": "From Neenan",
+          "notes": [
+            "Added for the walk-in tub"
+          ],
+          "designItem": false,
+          "price": null,
+          "phase": "plumbing",
+          "trade": "plumbing",
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "tubs.kit-walk-in-tub--cable",
+          "area": "tubs",
+          "item": "Electrical cable for the tub's dedicated circuit",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 50,
+          "unit": "ft",
+          "how": "A run from the panel, about 50 ft (typical; the electrician sizes the wire): Ella's sheet: dedicated GFCI-protected electrical line(s)",
+          "typical": true,
+          "group": "Electrical",
+          "from": "specialty",
+          "fromLabel": "An electrical supply house or home center",
+          "notes": [
+            "Added for the walk-in tub"
+          ],
+          "designItem": false,
+          "price": null,
+          "phase": "electrical",
+          "trade": "electrical",
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "tubs.kit-walk-in-tub--gfci",
+          "area": "tubs",
+          "item": "GFCI protection for the tub's circuit",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "ea",
+          "how": "As the tub's maker states (Ella's sheet: dedicated GFCI-protected electrical line(s))",
+          "typical": false,
+          "group": "Electrical",
+          "from": "specialty",
+          "fromLabel": "An electrical supply house or home center",
+          "notes": [
+            "Added for the walk-in tub"
+          ],
+          "designItem": false,
+          "price": null,
+          "phase": "electrical",
+          "trade": "electrical",
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "tubs.kit-walk-in-tub--leveling",
+          "area": "tubs",
+          "item": "Shims or a mortar bed to level the tub",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "set",
+          "how": "Under the tub's feet or frame, as its maker's guide says (typical)",
+          "typical": true,
+          "group": "Waterproofing and setting materials",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [
+            "Added for the walk-in tub"
+          ],
+          "designItem": false,
+          "price": null,
+          "phase": "fixtures",
+          "trade": "carpentry",
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "tubs.kit-walk-in-tub--silicone",
+          "area": "tubs",
+          "item": "100% silicone sealant",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 2,
+          "unit": "tubes (10.1 oz)",
+          "how": "Where the tub, its extension panel and the walls meet (typical)",
+          "typical": true,
+          "group": "Paint and finishing",
+          "from": "home-center",
+          "fromLabel": "A home center",
+          "notes": [
+            "Added for the walk-in tub"
+          ],
+          "designItem": false,
+          "price": null,
+          "phase": "finish",
+          "trade": "tile",
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "walls.kit-walk-in-tub--blocking",
+          "area": "walls",
+          "item": "Blocking for the grab bars, 2 × 8",
+          "maker": null,
+          "collection": null,
+          "finish": null,
+          "sku": null,
+          "qty": 1,
+          "unit": "piece (8 ft)",
+          "how": "About 4 ft behind each of 2 grab bars (typical)",
+          "typical": true,
+          "group": "Lumber and framing",
+          "from": "home-center",
+          "fromLabel": "A lumberyard or home center",
+          "notes": [
+            "Added for the walk-in tub"
+          ],
+          "designItem": false,
+          "price": null,
+          "phase": "framing",
+          "trade": "carpentry",
+          "kit": "Added for the walk-in tub"
+        }
+      ],
+      "labor": [
+        {
+          "id": "kit-walk-in-tub--walk-in-out",
+          "trade": "demo",
+          "name": "Old tub out",
+          "why": "The old tub and the wall's bottom row out and hauled away, the floor under it checked",
+          "hours": [
+            2,
+            4
+          ],
+          "units": 1,
+          "size": null,
+          "area": "tubs",
+          "crewDays": [
+            0.5,
+            0.5
+          ],
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "kit-walk-in-tub--walk-in-plumbing",
+          "trade": "plumbing",
+          "name": "Supplies, shutoffs and the drain moved and connected",
+          "why": "The drain moved under the floor to the tub's drain end, then shutoffs, supplies and the drain connected and tested",
+          "hours": [
+            5,
+            9
+          ],
+          "units": 1,
+          "size": null,
+          "area": "tubs",
+          "crewDays": [
+            1,
+            1.5
+          ],
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "kit-walk-in-tub--walk-in-circuit",
+          "trade": "electrical",
+          "name": "The tub's dedicated circuit",
+          "why": "A GFCI-protected circuit from the panel to the tub's pump and heater, as its maker's guide calls for",
+          "hours": [
+            2,
+            4
+          ],
+          "units": 1,
+          "size": null,
+          "area": "tubs",
+          "crewDays": [
+            0.5,
+            0.5
+          ],
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "kit-walk-in-tub--walk-in-set",
+          "trade": "carpentry",
+          "name": "Walk-in tub set",
+          "why": "Set level and fastened as its maker's guide shows, the door checked for a full seal",
+          "hours": [
+            3,
+            6
+          ],
+          "units": 1,
+          "size": null,
+          "area": "tubs",
+          "crewDays": [
+            0.5,
+            1
+          ],
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "kit-walk-in-tub--walk-in-seal",
+          "trade": "tile",
+          "name": "Caulk and finish around the tub",
+          "why": "Sealed where the tub meets the walls and floor, the surround's edges finished",
+          "hours": [
+            1,
+            2
+          ],
+          "units": 1,
+          "size": null,
+          "area": "tubs",
+          "crewDays": [
+            0.5,
+            0.5
+          ],
+          "kit": "Added for the walk-in tub"
+        },
+        {
+          "id": "cleanup",
+          "trade": "cleanup",
+          "name": "Cleanup",
+          "why": "A sweep-up each day and a final clean: the tub and door wiped, the floor protection taken up",
+          "hours": [
+            1,
+            2
+          ],
+          "units": 1,
+          "size": null,
+          "area": null,
+          "crewDays": [
+            0.5,
+            0.5
+          ],
+          "kit": null
+        }
+      ],
+      "priceBookRefs": [],
+      "notes": [
+        "Quantities are estimated for the material list; the installer measures before ordering."
+      ],
+      "checklist": [
+        {
+          "id": "path",
+          "text": "Measure the doorways and hall the tub passes through on its way in",
+          "phase": "protection",
+          "for": "the walk-in tub"
+        },
+        {
+          "id": "heater",
+          "text": "Confirm the water heater can fill the tub (about 100 gallons, as its maker states)",
+          "phase": "plumbing",
+          "for": "the walk-in tub"
+        },
+        {
+          "id": "floor-load",
+          "text": "Confirm the floor under the tub is sound for the tub's weight filled with water and a bather",
+          "phase": "framing",
+          "for": "the walk-in tub"
+        },
+        {
+          "id": "drain-end",
+          "text": "Confirm the old drain's end matches the tub's drain side",
+          "phase": "plumbing",
+          "for": "the walk-in tub"
+        },
+        {
+          "id": "panel-tub",
+          "text": "Confirm the electrical panel has room for the tub's circuit",
+          "phase": "electrical",
+          "for": "the walk-in tub"
+        }
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "id": "protection",
+      "name": "Protection and demo"
+    },
+    {
+      "id": "framing",
+      "name": "Framing and blocking"
+    },
+    {
+      "id": "plumbing",
+      "name": "Plumbing rough-in"
+    },
+    {
+      "id": "electrical",
+      "name": "Electrical"
+    },
+    {
+      "id": "substrate",
+      "name": "Substrate and waterproofing"
+    },
+    {
+      "id": "setting",
+      "name": "Tile, panels and setting"
+    },
+    {
+      "id": "drywall",
+      "name": "Drywall patch and paint"
+    },
+    {
+      "id": "fixtures",
+      "name": "Fixtures, glass and trim-out"
+    },
+    {
+      "id": "finish",
+      "name": "Finish and accessories"
+    },
+    {
+      "id": "consumables",
+      "name": "Consumables"
+    }
+  ]
+}
