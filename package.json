@@ -6,10 +6,10 @@
   "type": "module",
   "scripts": {
     "start": "python3 -m http.server 8080",
-    "test:unit": "node test/unit.mjs && node test/cvs.mjs",
+    "test:unit": "node test/unit.mjs && node test/cvs.mjs && node test/measure-out.mjs && node test/family.mjs",
     "test:e2e": "node test/e2e.mjs",
     "test:e2e2": "node test/e2e-v2.mjs",
-    "test": "node test/unit.mjs && node test/cvs.mjs && node test/e2e.mjs && node test/e2e-v2.mjs",
+    "test": "node test/unit.mjs && node test/cvs.mjs && node test/measure-out.mjs && node test/family.mjs && node test/e2e.mjs && node test/e2e-v2.mjs",
     "test:cvs": "node test/cvs.mjs"
   },
   "notes": "Three.js r170 is vendored under vendor/three (no build step). Tests need Playwright with Chromium; e2e expects the app served at http://127.0.0.1:8080."

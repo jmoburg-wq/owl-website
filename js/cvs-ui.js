@@ -2,7 +2,10 @@
 import { store } from './store.js';
 import { importCvsPackage, describeDiff, packageFromHash, sendReadiness, acceptStarterPrices, setCvsPrice, setLaborChoice, setActiveOption, cvsTrades, tradeLabel, LEVELS, adoptPendingDesign, addMeasurement, setWorkPrice, optionPrices, hasWorkItems, setPriceLaborSeparately, isJobLine } from './cvs/import.js';
 import { totals } from './pricing/estimator.js';
-import { el, h, $, $$, toast, sheet, icons, esc, fmtMoney, fmtNum, confirmDialog, promptDialog } from './ui.js';
+import { deriveMeasurements, fillFromAreas, outgoingMeasurements, measurementPacket, designLinkWithMeasurements } from './cvs/measure-out.js';
+import { MEASURE_KINDS, MEASURE_NAMES, SOURCE_NAMES } from './shared/vocab.js';
+import { PACK_MAP } from './trades/index.js';
+import { el, h, $, $$, toast, sheet, icons, esc, fmtMoney, fmtNum, confirmDialog, promptDialog, shareOrCopy, download } from './ui.js';
 
 const commit = (tag = 'project') => store.update(() => {}, tag);
 
@@ -72,6 +75,7 @@ export function cvsCard(project, rerender) {
   const opts = cvs.options || [];
   card.append(el(`<div class="card-title"><h3>Design from ${esc(cvs.company.name || 'CVS')}</h3><span class="pill ${ready.ok ? 'signed' : 'draft'}">${ready.ok ? 'ready to send' : 'needs prices'}</span></div>`));
   if (cvs.design.summary) card.append(el(`<p class="small muted">${esc(cvs.design.summary)}</p>`));
+  if (cvs.design.url) card.append(el(`<a class="btn xs secondary mt8" href="${esc(cvs.design.url)}" target="_blank" rel="noopener" data-role="open-design">${icons.back} Open the design in the Studio</a>`));
   if (opts.length > 1) {
     const chips = h('div', { class: 'chips mt8' });
     for (const o of opts) chips.append(el(`<button class="chip ${o.id === cvs.activeOption ? 'on' : ''}" data-cvs-opt="${esc(o.id)}">${esc(o.name)}${o.band ? ` <span class="dim">${esc(o.band)}</span>` : ''}</button>`));
@@ -150,3 +154,53 @@ export async function checkReadyToSend(project) {
 
 /** When a design change order is approved, the new design becomes the job's design. */
 export function onChangeOrderApproved(project, co) { if (co && co.origin === 'cvs' && project.cvs && project.cvs.pendingPkg) { adoptPendingDesign(project, store.settings); return true; } return false; }
+
+// ---- measurements: what's on the job, and sending them back to the design (direction doc section 5)
+const fmtM = (m) => `${fmtNum(Number(m.value), 2)} ${esc(m.unit || MEASURE_KINDS[m.kind] || '')}`;
+export function measurementsCard(project, rerender) {
+  const list = project.measurements || []; const out = outgoingMeasurements(project); const derived = deriveMeasurements(project);
+  const card = h('div', { class: 'card', 'data-role': 'measure-card' });
+  card.append(el(`<div class="card-title"><h3>Measurements</h3><span class="dim small">${list.length}</span></div>`));
+  if (!list.length) card.append(el(`<p class="dim small">No measurements on this job yet. Add what you measured on site; the designer can re-fit the design to them.</p>`));
+  for (const m of list) card.append(el(`<div class="row between" style="padding:6px 0;border-bottom:1px solid var(--line)"><div><b>${esc(MEASURE_NAMES[m.kind] || m.kind)}</b><div class="dim small">${esc(SOURCE_NAMES[m.source] || m.source || '')}${m.from === 'cvs' ? ' · from the design' : ''}${m.replaced ? ` · replaced ${fmtNum(Number(m.replaced.value), 2)} (${esc(SOURCE_NAMES[m.replaced.source] || m.replaced.source)})` : ''}</div></div><div class="mono" style="white-space:nowrap">${fmtM(m)}</div></div>`));
+  const acts = h('div', { class: 'row wrap mt8', style: { gap: '8px' } });
+  acts.append(el(`<button class="btn sm secondary" data-m="add">${icons.plus} Add a measurement</button>`));
+  if (derived.length) acts.append(el(`<button class="btn sm secondary" data-m="fill">${icons.check} Use my measured areas (${derived.length})</button>`));
+  if (out.length) acts.append(el(`<button class="btn sm" data-m="send">${icons.share} Send ${out.length} to the designer</button>`));
+  card.append(acts);
+  if (out.length && !(project.cvs && project.cvs.design && project.cvs.design.url)) card.append(el(`<p class="dim small mt8">This design has no link back to the Studio. Send the file instead: the Studio opens it on the customer's Measurements card.</p>`));
+  card.addEventListener('click', async (e) => {
+    const a = e.target.closest('[data-m]')?.dataset.m; if (!a) return;
+    if (a === 'add') { if (await addMeasurementSheet(project)) { commit(); rerender(); } }
+    if (a === 'fill') { const n = fillFromAreas(project); commit(); toast(n ? `${n} measurement${n === 1 ? '' : 's'} added from your measured areas` : 'Nothing new: the job already has these or better numbers'); rerender(); }
+    if (a === 'send') { await sendMeasurementsSheet(project); }
+  });
+  return card;
+}
+
+async function addMeasurementSheet(project) {
+  const pack = PACK_MAP[(project.cvs && project.cvs.pack) || 'general']; const first = new Set((pack && pack.meta.measurements) || []);
+  const kinds = [...Object.keys(MEASURE_KINDS).filter((k) => first.has(k)), ...Object.keys(MEASURE_KINDS).filter((k) => !first.has(k))];
+  const body = el(`<div><div class="field"><label>What</label><select data-f="kind">${kinds.map((k) => `<option value="${esc(k)}">${esc(MEASURE_NAMES[k] || k)} (${esc(MEASURE_KINDS[k])})</option>`).join('')}</select></div>
+    <div class="field"><label>Number</label><input data-f="value" type="number" step="0.1" inputmode="decimal"></div>
+    <div class="field"><label>Where it came from</label><select data-f="source">${['measured', 'report', 'satellite', 'photo', 'typed'].map((s) => `<option value="${s}">${esc(SOURCE_NAMES[s])}</option>`).join('')}</select></div>
+    <div class="field"><label>Note (optional)</label><input data-f="note" type="text" placeholder="e.g. back wall, tape measure"></div></div>`);
+  let res = null;
+  await new Promise((done) => sheet({ title: 'Add a measurement', body, onClose: done, actions: [{ label: 'Add', onClick: () => {
+    const v = Number($('[data-f="value"]', body).value); if (!(v > 0)) { toast('Enter a number'); return false; }
+    const kind = $('[data-f="kind"]', body).value; res = addMeasurement(project, { kind, value: v, unit: MEASURE_KINDS[kind], source: $('[data-f="source"]', body).value, note: $('[data-f="note"]', body).value.trim() }, store.settings);
+    if (res.action === 'kept') toast('Kept the better number already on the job'); return true; } }, { label: 'Cancel', cls: 'neutral' }] }));
+  return !!res;
+}
+
+async function sendMeasurementsSheet(project) {
+  const link = await designLinkWithMeasurements(project); const packet = link ? link.packet : measurementPacket(project);
+  const body = el(`<div><p>${packet.measurements.length} measurement${packet.measurements.length === 1 ? '' : 's'} for <b>${esc(project.name)}</b>:</p><div class="list mt8">${packet.measurements.map((m) => `<div class="row between small"><span>${esc(MEASURE_NAMES[m.kind] || m.kind)} · ${esc(SOURCE_NAMES[m.source] || m.source)}</span><span class="mono" style="white-space:nowrap">${fmtM(m)}</span></div>`).join('')}</div>
+    <p class="muted small mt12">${link ? 'Open the design with these numbers, or send the link to the designer. The Studio keeps a better-sourced number over a weaker one.' : 'Download the file and open it on the customer\'s Measurements card in the Studio.'}</p></div>`);
+  const file = () => download(`${(project.name || 'job').replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-measurements.json`, JSON.stringify(packet, null, 2), 'application/json');
+  const actions = [];
+  if (link) { actions.push({ label: 'Open the design with these numbers', cls: 'success', onClick: () => { window.open(link.href, '_blank', 'noopener'); return true; } }); actions.push({ label: 'Copy or share the link', cls: 'secondary', onClick: async () => { const r = await shareOrCopy({ title: `Measurements: ${project.name}`, text: `Measurements for ${project.name}`, url: link.href }); if (r === 'copied') toast('Link copied'); return true; } }); }
+  actions.push({ label: 'Download (.json)', cls: link ? 'neutral' : 'success', onClick: () => { file(); return true; } });
+  project.cvs.measurementsSentAt = new Date().toISOString(); commit();
+  await new Promise((done) => sheet({ title: 'Send to the designer', body, onClose: done, actions }));
+}

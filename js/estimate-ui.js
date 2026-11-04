@@ -14,7 +14,7 @@ import { runAI, aiStatus } from './pricing/ai.js';
 import { el, h, $, $$, toast, sheet, icons, confirmDialog, promptDialog, fmtMoney, fmtNum, fmtDate, esc, segEl, switchEl, download, readFileAsDataURL, bind, money0, pct as pctf } from './ui.js';
 import { openDocument, openMaterialOrder, openJobPlan } from './document.js';
 import { metrics, fmtArea } from './geometry.js';
-import { cvsCard, cvsLineBadges, lineAmount, saveCvsLineEdit } from './cvs-ui.js';
+import { cvsCard, cvsLineBadges, lineAmount, saveCvsLineEdit, measurementsCard } from './cvs-ui.js';
 
 const commit = (tag = 'estimate') => store.update((s) => { const p = s.projects.find((x) => x.id === s.activeProjectId); if (p) p.updatedAt = new Date().toISOString(); }, tag);
 
@@ -28,7 +28,7 @@ export function renderEstimate(root, { navigate }) {
   const head = el(`<div class="card"><div class="row between"><div class="grow"><div class="row" style="gap:8px"><h2 data-act="rename" style="cursor:pointer">${esc(project.name)}</h2><span class="pill ${est.status || project.status || 'draft'}">${esc(project.status || 'draft')}</span></div><div class="dim small">${esc(est.number)} · ${fmtDate(est.date)} · ${project.rooms.length} area${project.rooms.length === 1 ? '' : 's'}${sf ? ` · ${fmtNum(sf, 0)} sf` : ''}</div></div><button class="btn icon neutral" data-act="more">${icons.more}</button></div>
     <div class="row mt12" style="gap:8px"><button class="btn sm secondary grow" data-act="client">${icons.edit} ${project.client.name ? esc(project.client.name) : 'Add client'}</button><button class="btn sm grow" data-act="preview">${icons.doc} Preview & send</button></div></div>`);
   root.append(head);
-  if (project.cvs) root.append(cvsCard(project, () => renderEstimate(root, { navigate })));
+  if (project.cvs) root.append(cvsCard(project, () => renderEstimate(root, { navigate })), measurementsCard(project, () => renderEstimate(root, { navigate })));
 
   // ---- scope
   const scope = h('div', { class: 'card' });
