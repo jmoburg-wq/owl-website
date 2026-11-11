@@ -39,10 +39,13 @@ Fullbid does not change CVS. These are the things CVS needs to do so the job pac
 
 ## Still needed
 
-8. **Accept measurement packets (section 5).** `{ schema: "cvs.measurements", version: 1, designId, measurements:
-   [{ kind, value, unit, source, takenAt, note }] }`, arriving as a link `#cvs-measure=d:<…>` or a `.json` file,
-   so a design can be re-fitted to measured sizes. For the bath, also the `m=<base64url(JSON)>` page parameter that
-   `encodeMeasure` already reads. (CVS has said it will build this.)
+8. **Accept measurement packets (section 5).** Built on the Studio side on branch `fullbid-measurements-family`
+   (exterior-visualizer), not yet merged there. Fullbid sends `{ schema: "cvs.measurements", version: 1, designId,
+   from, measurements: [{ kind, value, unit, source, takenAt, note }] }` as `#cvs-measure=d:<…>` on the design's own
+   link, plus `?m=` for bath room sizes, or as a `.json` file. The Studio's customer Measurements card shows them and
+   adds them on confirm; a bath design opened with `?m=` uses measured sizes first. Exterior packages need
+   `design.url` to keep pointing at the customer (`/visualizer/admin?lead=…`), and bath packages need a `design.url`
+   so the sizes can ride back on it.
 9. **Pictures that last.** If CVS picture URLs expire, say how long they last.
 10. **Unit text.** Keep units as words with sizes ("bags (50 lb)", "tubes (10.1 oz)"). Fullbid maps them to its
     units by the first word; please tell us if a new first word appears.
