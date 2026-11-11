@@ -285,3 +285,7 @@ textarea { min-height: 88px; resize: vertical; }
 .src.needs { background: rgba(235,87,87,.14); color: #b42318; } .src.starter { background: rgba(255,176,32,.18); color: #8a5a00; } .src.typical { background: var(--bg-sunken); color: var(--fg-2); }
 .needs-price { color: #b42318; font-weight: 700; font-size: 13px; white-space: nowrap; }
 .dropping { outline: 3px dashed var(--primary); outline-offset: -6px; }
+
+/* CVS job card (addendum 3): a pick's picture on the customer bid */
+.pick-pic { width: 28px; height: 28px; border-radius: 6px; flex: none; display: inline-flex; align-items: center; justify-content: center; background: var(--bg-sunken); object-fit: cover; border: 1px solid var(--line); }
+.pick-pic svg { width: 16px; height: 16px; opacity: .6; }

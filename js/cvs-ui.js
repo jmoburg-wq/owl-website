@@ -5,7 +5,8 @@ import { totals } from './pricing/estimator.js';
 import { deriveMeasurements, fillFromAreas, outgoingMeasurements, measurementPacket, designLinkWithMeasurements } from './cvs/measure-out.js';
 import { MEASURE_KINDS, MEASURE_NAMES, SOURCE_NAMES } from './shared/vocab.js';
 import { PACK_MAP } from './trades/index.js';
-import { el, h, $, $$, toast, sheet, icons, esc, fmtMoney, fmtNum, confirmDialog, promptDialog, shareOrCopy, download } from './ui.js';
+import { el, h, $, $$, toast, sheet, icons, esc, fmtMoney, fmtNum, confirmDialog, promptDialog, panel, shareOrCopy, download } from './ui.js';
+import { jobMaterialsByPhase, laborByTrade, siteChecklist, setCheck, setJobQty, setAllowance, pickLines, customerBid, materialOrderSheet, orderSheetText, BID_LABOR } from './cvs/job.js';
 
 const commit = (tag = 'project') => store.update(() => {}, tag);
 
@@ -203,4 +204,82 @@ async function sendMeasurementsSheet(project) {
   actions.push({ label: 'Download (.json)', cls: link ? 'neutral' : 'success', onClick: () => { file(); return true; } });
   project.cvs.measurementsSentAt = new Date().toISOString(); commit();
   await new Promise((done) => sheet({ title: 'Send to the designer', body, onClose: done, actions }));
+}
+
+// ---- the job's whole list (addendum 3): job materials by phase, labor by trade, confirm on site, the bid and the order sheet
+const tierBadge = (l) => (l.unitCost == null ? '<span class="src needs">needs a price</span>' : l.evidence ? `<span class="src ${/^E[01]$/.test(l.evidence) && !l.accepted ? 'starter' : 'yours'}">${esc(l.evidence)}</span>` : '');
+const pictureHTML = (p) => {
+  if (!p) return '<span class="pick-pic"></span>';
+  if (p.kind === 'swatch') return `<span class="pick-pic" style="background:${esc(p.hex2 ? `linear-gradient(135deg, ${p.hex} 50%, ${p.hex2} 50%)` : p.hex)}"></span>`;
+  if (p.kind === 'url' && /^https:\/\//.test(p.url || '')) return `<img class="pick-pic" src="${esc(p.url)}" alt="">`;
+  return `<span class="pick-pic">${icons.photo}</span>`;
+};
+
+export function cvsJobCard(project, rerender) {
+  const card = h('div', { class: 'card', 'data-role': 'cvs-job' });
+  const phases = jobMaterialsByPhase(project); const lab = laborByTrade(project); const checks = siteChecklist(project); const picks = pickLines(project);
+  const days = lab.reduce((t, g) => t + (g.crewDays || 0), 0);
+  card.append(el(`<div class="card-title"><h3>The job's whole list</h3><span class="dim small">${phases.reduce((t, g) => t + g.lines.length, 0)} job materials · ${fmtNum(days, 1)} crew days</span></div>`));
+  card.append(el(`<p class="dim small">The customer's picks stay on their bid with pictures. Job materials are yours: edit a quantity after you measure; prices come from your price list (tier shown), and a line with no price stays blank.</p>`));
+  const acts = el(`<div class="row wrap mt8" style="gap:8px"><button class="btn sm" data-job="bid">${icons.doc} Customer bid</button><button class="btn sm secondary" data-job="order">${icons.layers} Material order sheet</button></div>`);
+  card.append(acts);
+  if (picks.length) {
+    const d = el(`<details class="mt12" data-role="cvs-picks"><summary><b>Customer's picks</b> <span class="dim small">(${picks.length})</span></summary></details>`);
+    for (const l of picks) d.append(el(`<div class="row between small" style="padding:4px 0;gap:8px"><span class="grow">${esc(l.name)}${l.maker ? ` <span class="dim">· ${esc(l.maker)}</span>` : ''}</span><label class="row tiny" style="gap:4px"><input type="checkbox" data-allow="${esc(l.cvsId)}" ${l.allowance ? 'checked' : ''}> allowance</label></div>`));
+    card.append(d);
+  }
+  for (const g of phases) {
+    const d = el(`<details class="mt8" data-role="cvs-phase" data-phase="${esc(g.id)}"><summary><b>${esc(g.name)}</b> <span class="dim small">(${g.lines.length}${g.unpriced ? `, ${g.unpriced} need a price` : ''})</span>${g.cost ? `<span class="mono small" style="float:right">${fmtMoney(g.cost)}</span>` : ''}</summary></details>`);
+    for (const l of g.lines) d.append(el(`<div class="line" style="align-items:flex-start"><div class="grow"><div class="name">${esc(l.name)}${l.locked ? ' <span class="dim tiny">✎ edited</span>' : ''}</div><div class="meta">${tierBadge(l)}${l.unitCost != null ? ` <span class="mono">${fmtMoney(l.unitCost)}</span>` : ''}${l.kit ? ` <span class="dim">· ${esc(l.kit)}</span>` : ''}</div>${l.note ? `<div class="dim tiny">${esc(l.note)}${l.typical ? ' (typical size)' : ''}</div>` : ''}</div><div class="unit-input" style="width:120px"><input type="number" step="any" min="0" inputmode="decimal" value="${esc(String(l.qty))}" data-qty="${esc(l.key)}" aria-label="Quantity of ${esc(l.name)}"><span>${esc(l.unitText || l.unit)}</span></div></div>`));
+    card.append(d);
+  }
+  if (lab.length) card.append(el(`<div class="mt12" data-role="cvs-labor"><div class="group-head"><span>Labor by trade</span><span>${fmtNum(lab.reduce((t, g) => t + g.hours, 0), 1)} hr</span></div>${lab.map((g) => `<div class="row between small" style="padding:3px 0"><span>${esc(g.label)}</span><span class="mono">${g.sub ? 'sub, lump sum' : `${fmtNum(g.hours, 1)} hr · ${fmtNum(g.crewDays, 1)} crew day${g.crewDays === 1 ? '' : 's'}`}</span></div>`).join('')}</div>`));
+  if (checks.length) card.append(el(`<div class="mt12" data-role="cvs-checks"><div class="group-head"><span>Confirm on site</span><span>${checks.filter((c) => c.done).length} of ${checks.length}</span></div>${checks.map((c) => `<label class="row small" style="gap:8px;padding:4px 0;align-items:flex-start"><input type="checkbox" data-check="${esc(c.id)}" ${c.done ? 'checked' : ''}><span>${esc(c.text)}${c.phaseName ? ` <span class="dim tiny">· ${esc(c.phaseName)}</span>` : ''}</span></label>`).join('')}</div>`));
+  card.addEventListener('change', (e) => {
+    const q = e.target.closest('[data-qty]'); if (q) { if (setJobQty(project, q.dataset.qty, q.value)) { commit(); rerender(); } return; }
+    const c = e.target.closest('[data-check]'); if (c) { setCheck(project, c.dataset.check, c.checked); commit(); const n = siteChecklist(project); const head = card.querySelector('[data-role="cvs-checks"] .group-head span:last-child'); if (head) head.textContent = `${n.filter((x) => x.done).length} of ${n.length}`; return; }
+    const a = e.target.closest('[data-allow]'); if (a) { setAllowance(project, a.dataset.allow, a.checked); commit(); rerender(); }
+  });
+  card.addEventListener('click', (e) => { const a = e.target.closest('[data-job]')?.dataset.job; if (a === 'bid') openCustomerBid(project, rerender); if (a === 'order') openOrderSheet(project); });
+  return card;
+}
+
+/** The customer bid: only their picks with pictures, allowances, labor as you show it, the total */
+export function openCustomerBid(project, rerender) {
+  const pn = panel({ title: 'Customer bid' }); const B = pn.body;
+  const draw = () => {
+    const b = customerBid(project); B.innerHTML = '';
+    B.append(el(`<div class="chips mt8" data-role="bid-labor">${BID_LABOR.map((m) => `<button class="chip ${b.laborMode === m ? 'on' : ''}" data-mode="${m}">${m === 'by-trade' ? 'Labor by trade' : m === 'total' ? 'Labor as one line' : 'Labor inside the price'}</button>`).join('')}</div>`));
+    const c = h('div', { class: 'card', 'data-role': 'customer-bid' });
+    c.append(el(`<div class="card-title"><h3>${esc(b.title)}</h3>${b.option && b.option !== b.title ? `<span class="dim small">${esc(b.option)}</span>` : ''}</div>`));
+    if (b.picture) c.append(el(`<img src="${esc(b.picture)}" alt="The design" style="width:100%;border-radius:8px">`));
+    if (b.scope.length) c.append(el(`<ul class="small" style="padding-left:18px;margin:8px 0">${b.scope.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`));
+    if (b.picks.length) c.append(el(`<div class="group-head mt8"><span>What you picked</span></div>`), el(`<div>${b.picks.map((p) => `<div class="row small" style="gap:8px;padding:4px 0" data-role="bid-pick">${pictureHTML(p.picture)}<span class="grow">${esc(p.name)}${p.maker || p.finish ? `<div class="dim tiny">${esc([p.maker, p.finish].filter(Boolean).join(' · '))}</div>` : ''}</span><span class="dim">${esc(p.qty)}</span></div>`).join('')}</div>`));
+    if (b.allowances.length) c.append(el(`<div class="group-head mt8"><span>Your selections still to make</span></div>`), el(`<div>${b.allowances.map((a) => `<div class="row between small" style="padding:3px 0"><span>${esc(a.name)} allowance</span><span class="mono">${a.amount == null ? 'to be priced' : fmtMoney(a.amount)}</span></div>`).join('')}</div>`));
+    if (b.labor.length) c.append(el(`<div class="group-head mt8"><span>Labor</span></div>`), el(`<div>${b.labor.map((l) => `<div class="row between small" style="padding:3px 0"><span>${esc(l.label)}${l.days ? ` <span class="dim">· about ${fmtNum(l.days, 1)} day${l.days === 1 ? '' : 's'}</span>` : ''}</span><span class="mono">${fmtMoney(l.amount)}</span></div>`).join('')}</div>`));
+    c.append(el(`<div class="trow grand mt12"><span>Total</span><span data-role="bid-total">${b.needsPrices ? '<span class="needs-price">Needs prices</span>' : fmtMoney(b.total)}</span></div>`));
+    if (b.conceptNotice) c.append(el(`<p class="dim tiny mt8">${esc(b.conceptNotice)}</p>`));
+    B.append(c);
+    B.append(el(`<button class="btn block mt12" data-a="print">${icons.print} Print</button>`));
+  };
+  draw();
+  B.addEventListener('click', (e) => {
+    const m = e.target.closest('[data-mode]'); if (m) { project.cvs.bidLabor = m.dataset.mode; commit(); draw(); return; }
+    if (e.target.closest('[data-a="print"]')) window.print();
+  });
+  return pn;
+}
+
+/** The material order sheet: every line, picks and job materials, grouped by where it's bought */
+export function openOrderSheet(project) {
+  const sheetData = materialOrderSheet(project, store.settings); const pn = panel({ title: 'Material order sheet' }); const B = pn.body;
+  B.append(el(`<p class="muted small mt8">Every line for this option, the customer's picks and your job materials, grouped by where you buy it. Quantities are the design's or your edits.</p>`));
+  for (const g of sheetData) {
+    const c = h('div', { class: 'card', 'data-role': 'order-group' }, el(`<div class="card-title"><h3>${esc(g.name)}</h3><span class="dim small">${g.lines.length} lines</span></div>`));
+    for (const l of g.lines) c.append(el(`<div class="row between small" style="padding:4px 0;border-bottom:1px solid var(--line)"><span class="grow"><b>${fmtNum(l.qty, 2)} ${esc(l.unit)}</b> ${esc(l.name)}${l.designItem ? ' <span class="pill tiny">pick</span>' : ''}${l.confirm ? ' <span class="dim tiny">· confirm supplier</span>' : ''}</span><span class="dim tiny">${esc(l.phase)}</span></div>`));
+    B.append(c);
+  }
+  B.append(el(`<button class="btn block mt12" data-a="copy">${icons.copy} Copy the sheet</button>`));
+  B.addEventListener('click', async (e) => { if (!e.target.closest('[data-a="copy"]')) return; try { await navigator.clipboard.writeText(orderSheetText(project, sheetData)); toast('Order sheet copied'); } catch { toast('Copy failed'); } });
+  return pn;
 }

@@ -53,7 +53,11 @@ export function previewPackage(pkg) {
   const pack = projectPack(pkg);
   const text = `Import '${title}' from ${company}: ${work ? `${n(work, 'priced work item')}, ` : ''}${n(matIds.size, 'material')}, ${n(labIds.size, 'labor item')}, ${n(opts.length, 'option')}.` + (typIds.size ? ` ${typIds.size} line${typIds.size === 1 ? ' uses' : 's use'} typical sizes.` : '');
   const fill = packFillPlan(pkg, null);
-  return { title, company, materials: matIds.size, labor: labIds.size, work, options: opts.length, typical: typIds.size, pack, packName: (PACK_MAP[pack] && PACK_MAP[pack].meta.name) || 'General', module: str(pkg.source && pkg.source.module), fillsLabor: fill.options.length > 0, needs: fill.needs, text };
+  // addendum 3: the customer's picks apart from the job materials, and what to confirm on site
+  const first = opts[0] || {}; const phased = arr(first.materials).some((m) => m && m.phase);
+  const picks = arr(first.materials).filter((m) => m && m.designItem).length; const jobMats = arr(first.materials).length - picks; const checks = arr(first.checklist).length;
+  const jobText = phased ? ` ${n(picks, 'customer pick')} and ${n(jobMats, 'job material')} by phase${checks ? `; ${n(checks, 'thing')} to confirm on site` : ''}.` : '';
+  return { title, company, materials: matIds.size, labor: labIds.size, work, options: opts.length, typical: typIds.size, pack, packName: (PACK_MAP[pack] && PACK_MAP[pack].meta.name) || 'General', module: str(pkg.source && pkg.source.module), fillsLabor: fill.options.length > 0, needs: fill.needs, picks, jobMaterials: jobMats, checks, phased, text: text + jobText };
 }
 
 /** The pack that takes the whole job (the module), with exterior and flatwork split by the design's materials. */
@@ -100,6 +104,8 @@ export function preferredSupplierFor(settings, cls) {
 /** Where a line is bought → { supplierId, noOrder, needsSupplier, confirmSupplier, fromNote }. */
 export function supplierForLine(m, cls, settings, companySup, role = '') {
   const from = str(m.from) || 'contractor';
+  // A job line from a plumbing or electrical supply house (addendum 3): the contractor's preferred supplier for it, to confirm
+  if (from === 'specialty' && m.phase && !m.designItem && (cls === 'plumbing' || cls === 'electrical')) return { ...preferredSupplierFor(settings, cls), confirmSupplier: true };
   if (from === 'supplier' && role === 'contractor') return preferredSupplierFor(settings, cls);
   if (from === 'supplier') return { supplierId: companySup ? companySup.id : null, needsSupplier: !companySup };
   if (from === 'home-center') return { supplierId: homeCenterFor(settings, cls).id };
@@ -182,6 +188,8 @@ export function linesForOption(pkg, opt, settings, { laborChoice = {}, companySu
       sku: m.sku == null ? '' : str(m.sku), qty: Number(m.qty) || 0, unit: unitFromText(m.unit), unitText: str(m.unit), cls, ...sup,
       note: m.how == null ? '' : str(m.how), notes: arr(m.notes).map(str), typical: !!m.typical, designItem: !!m.designItem, group: str(m.group), from: str(m.from) || 'contractor', fromLabel: m.fromLabel == null ? '' : str(m.fromLabel),
       taxable: !hasWork, supplierPinned: !!sup.supplierId && !sup.confirmSupplier,
+      // addendum 3: the job phase, the trade that installs it, the kit that added it
+      ...(m.phase ? { phase: str(m.phase) } : {}), ...(m.trade ? { jobTrade: str(m.trade) } : {}), ...(m.kit ? { kit: str(m.kit) } : {}),
       // with priced work items, the takeoff is the order list and the job's cost: never added to the price again
       ...(hasWork ? { orderOnly: true } : {}),
     };
@@ -195,6 +203,7 @@ export function linesForOption(pkg, opt, settings, { laborChoice = {}, companySu
       if (p.supplierPinned && p.supplierId && p.supplierId !== line.supplierId && !line.noOrder) { line.supplierId = p.supplierId; line.supplierPinned = true; delete line.confirmSupplier; delete line.needsSupplier; }
       if (p.locked) line = { ...line, locked: true, qty: p.qty, name: p.name, unit: p.unit, note: p.note, edited: p.edited || { qty: p.qty, name: p.name } };
       if (p.recompute) line.recompute = true;
+      if (p.allowance && line.designItem) line.allowance = true;
     }
     out.push(line);
   }
@@ -214,7 +223,7 @@ export function linesForOption(pkg, opt, settings, { laborChoice = {}, companySu
       const key = `cvs|${opt.id}|l|${l.id}`; const units = Number(l.units) > 0 ? Number(l.units) : 1;
       const hours = r2(hoursAt(l.hours, level) * units);
       const p = prev.get(key);
-      let line = { id: key, key, origin: 'cvs', cvsId: String(l.id), cvsOption: opt.id, cvsTrade: trade, custom: true, cat: 'labor', assembly: 'cvs', assemblyName: 'Labor', trade: 'Labor', roomId: null, roomName: str(l.area), name: str(l.name) || tradeLabel(trade), unit: 'hr', qty: hours, hours, hoursRange: arr(l.hours).map(Number), units, level, ltrade, unitCost: rate, baseCost: rate, evidence, priceSource: evidence === 'E2' ? 'your rate' : 'starter rate', note: l.why == null ? '' : str(l.why), size: l.size == null ? '' : str(l.size), taxable: false };
+      let line = { id: key, key, origin: 'cvs', cvsId: String(l.id), cvsOption: opt.id, cvsTrade: trade, custom: true, cat: 'labor', assembly: 'cvs', assemblyName: 'Labor', trade: 'Labor', roomId: null, roomName: str(l.area), name: str(l.name) || tradeLabel(trade), unit: 'hr', qty: hours, hours, hoursRange: arr(l.hours).map(Number), units, level, ltrade, unitCost: rate, baseCost: rate, evidence, priceSource: evidence === 'E2' ? 'your rate' : 'starter rate', note: l.why == null ? '' : str(l.why), size: l.size == null ? '' : str(l.size), taxable: false, ...(Array.isArray(l.crewDays) ? { crewDays: l.crewDays.map(Number) } : {}), ...(l.kit ? { kit: str(l.kit) } : {}) };
       if (p) { if (p.accepted && p.evidence === line.evidence) line.accepted = true; if (p.priceLocked) line = { ...line, unitCost: p.unitCost, evidence: 'E2', priceSource: 'your rate', priceLocked: true }; }
       out.push(line);
     }
@@ -489,7 +498,7 @@ function cvsRecord(pkg, plan, prev = {}) {
     ...prev, designId: String(d.id), module: str(pkg.source && pkg.source.module), pack: plan.preview.pack, appVersion: str(pkg.source && pkg.source.appVersion), createdAt: str(pkg.source && pkg.source.createdAt),
     company: { id: pkg.company && pkg.company.id || null, name: str(pkg.company && pkg.company.name), role: str(pkg.company && pkg.company.role) }, conceptNotice: pkg.company && pkg.company.conceptNotice != null ? String(pkg.company.conceptNotice) : null,
     design: { title: str(d.title), summary: str(d.summary), url: d.url || null, pictures: arr(d.pictures).map((p) => ({ url: str(p.url), kind: str(p.kind), caption: str(p.caption) })), scope: arr(d.scope).map(str), notes: arr(d.notes).map(str) },
-    options: arr(pkg.options).map((o) => ({ id: o.id, name: str(o.name), tier: o.tier || null, band: o.band || null, picture: o.picture || null, shoppingList: arr(o.shoppingList), priceBookRefs: arr(o.priceBookRefs), notes: arr(o.notes).map(str), total: o.total != null && Number.isFinite(Number(o.total)) ? Number(o.total) : null, workItems: arr(o.workItems).length })),
+    options: arr(pkg.options).map((o) => ({ id: o.id, name: str(o.name), tier: o.tier || null, band: o.band || null, picture: o.picture || null, shoppingList: arr(o.shoppingList), priceBookRefs: arr(o.priceBookRefs), notes: arr(o.notes).map(str), total: o.total != null && Number.isFinite(Number(o.total)) ? Number(o.total) : null, workItems: arr(o.workItems).length, checklist: arr(o.checklist).filter((c) => c && c.id && c.text).map((c) => ({ id: str(c.id), text: str(c.text), phase: str(c.phase), for: c.for == null ? null : str(c.for) })) })),
     replaces: (PACK_MAP[plan.preview.pack] && PACK_MAP[plan.preview.pack].meta.cvsReplaces) || [],
     pkg, companySupplierId: plan.companySupplier ? plan.companySupplier.id : null, laborChoice: prev.laborChoice || {}, activeOption: prev.activeOption || null, priceLaborSeparately: !!prev.priceLaborSeparately,
     importedAt: new Date().toISOString(), revisions: [...(prev.revisions || []), { at: new Date().toISOString(), changes: plan.diff ? plan.diff.length : 0 }],

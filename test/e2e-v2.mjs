@@ -161,6 +161,24 @@ try {
   jst = await S(jp); check(jst.project.estimate.items.some((i) => i.origin === 'pack' && i.cat === 'labor' && i.hours > 0) && !jst.settings.suppliers.some((x) => /TimberCrest/.test(x.name)), 'roof job gets pack labor and no TimberCrest supplier');
   await jp.click('[data-cvs-need="roof_pitch"]'); await jp.fill('.sheet input', '7'); await jp.click('.sheet button:has-text("Save")'); await jp.waitForTimeout(200);
   jst = await S(jp); check(!(await jp.$('[data-role="cvs-need"]')) && jst.project.measurements.some((m) => m.kind === 'roof_pitch' && m.value === 7) && jst.project.estimate.items.some((i) => /Install shingles \(7\/12\)/.test(i.name)), 'entering the pitch finishes the roofing labor');
+  // Addendum 3: the job's whole list (job materials by phase, labor by trade, confirm on site, the customer bid, the order sheet)
+  log('CVS job materials (addendum 3)');
+  await jp.setInputFiles('#screen-home [data-act="cvs-file"]', realFx('cvs-shower-jobs-neenan-wetroom')); await jp.waitForSelector('.sheet:has-text("Import a design")');
+  check(/customer picks and \d+ job materials by phase; \d+ things to confirm on site/.test(await jp.textContent('.sheet')), 'preview separates picks from job materials');
+  await jp.click('.sheet button:has-text("Import")'); await jp.waitForSelector('[data-role="cvs-job"]');
+  const phasesShown = await jp.$$eval('[data-role="cvs-phase"]', (els) => els.map((e) => e.dataset.phase));
+  check(phasesShown[0] === 'protection' && phasesShown.includes('substrate') && phasesShown.includes('consumables'), 'job materials by phase, in the job order', phasesShown.join());
+  await jp.click('[data-role="cvs-phase"][data-phase="substrate"] summary'); const qty = await jp.$('[data-role="cvs-phase"][data-phase="substrate"] [data-qty]'); await qty.fill('99'); await qty.dispatchEvent('change'); await jp.waitForSelector('[data-role="cvs-job"]');
+  jst = await S(jp); check(jst.project.estimate.items.some((i) => i.qty === 99 && i.locked && !i.designItem), 'a job quantity edited on the estimate is kept');
+  check((await jp.$$('[data-role="cvs-checks"] [data-check]')).length >= 4 && /crew day/.test(await jp.textContent('[data-role="cvs-labor"]')), 'checklist and labor by trade with crew days show');
+  await jp.click('[data-role="cvs-checks"] [data-check]'); jst = await S(jp); check(Object.values(jst.project.cvs.checks || {}).some(Boolean), 'a site check is saved');
+  await jp.evaluate(() => window.scrollTo(0, 0)); await shot(jp, 'v3-09-cvs-job-list');
+  await jp.click('[data-job="bid"]'); await jp.waitForSelector('[data-role="customer-bid"]');
+  const bidTxt = await jp.textContent('[data-role="customer-bid"]'); check(/What you picked/.test(bidTxt) && !/Backer board screws|Small parts allowance/.test(bidTxt) && (await jp.$$('[data-role="bid-pick"]')).length > 3, 'the customer bid shows only the picks, with pictures');
+  await jp.click('[data-mode="hidden"]'); check(!/Labor/.test(await jp.textContent('[data-role="customer-bid"]')), 'labor can stay inside the price'); await shot(jp, 'v3-10-cvs-customer-bid');
+  await jp.click('.panel [data-pact="back"]'); await jp.click('[data-job="order"]'); await jp.waitForSelector('[data-role="order-group"]');
+  const og = await jp.$$eval('[data-role="order-group"] h3', (els) => els.map((e) => e.textContent)); check(og[0] === 'Neenan' && /own stock/.test(og[og.length - 1]), 'the order sheet groups every line by where it is bought', og.join(' | ')); await shot(jp, 'v3-11-cvs-order-sheet');
+  await jp.click('.panel [data-pact="back"]');
   await jctx.close();
 } catch (e) { console.log('\nE2E-V2 FAILURE:', e.message.split('\n')[0]); fails.push('exception: ' + e.message.split('\n')[0]); try { await page.screenshot({ path: `${OUT}/zz-failure.png` }); } catch {} }
 await browser.close();
