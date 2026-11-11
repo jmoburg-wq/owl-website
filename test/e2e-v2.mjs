@@ -180,6 +180,41 @@ try {
   const og = await jp.$$eval('[data-role="order-group"] h3', (els) => els.map((e) => e.textContent)); check(og[0] === 'Neenan' && /own stock/.test(og[og.length - 1]), 'the order sheet groups every line by where it is bought', og.join(' | ')); await shot(jp, 'v3-11-cvs-order-sheet');
   await jp.click('.panel [data-pact="back"]');
   await jctx.close();
+  // ---------------- K. sign in with a Studio account and back up (the Studio is stood in for here)
+  log('K. account and backup');
+  const STUDIO = 'https://rrg-studio.vercel.app'; const cloud = new Map(); const seen = { auth: null };
+  const mockStudio = async (c) => {
+    await c.route(`${STUDIO}/**`, async (route) => {
+      const req = route.request(); const u = new URL(req.url()); const cors = { 'access-control-allow-origin': new URL(BASE).origin, 'access-control-allow-headers': 'Authorization, Content-Type', 'access-control-allow-methods': 'GET, POST, OPTIONS' };
+      if (req.method() === 'OPTIONS') return route.fulfill({ status: 204, headers: cors });
+      if (u.pathname === '/visualizer/fullbid/connect') return route.fulfill({ status: 302, headers: { location: `${BASE}#studio=tok.mac&api=${encodeURIComponent(STUDIO + '/visualizer/api')}&state=${u.searchParams.get('state')}` } });
+      seen.auth = req.headers().authorization;
+      if (u.pathname.endsWith('/fullbid/account')) return route.fulfill({ status: 200, headers: cors, contentType: 'application/json', body: JSON.stringify({ ok: true, company: 'Hill Country Exteriors', name: 'Dana', email: 'dana@example.com', role: 'owner', backup: { jobs: cloud.size, lastSavedAt: null } }) });
+      if (u.pathname.endsWith('/fullbid/sync')) { const b = JSON.parse(req.postData() || '{}'); const saved = [];
+        for (const j of b.jobs || []) { const cur = cloud.get(j.id); if (!cur || new Date(j.updatedAt) > new Date(cur.updatedAt)) { cloud.set(j.id, j); saved.push(j.id); } else if (cur.updatedAt === j.updatedAt) saved.push(j.id); }
+        const newer = [...cloud.values()].filter((j) => !saved.includes(j.id) && (!(j.id in (b.have || {})) ? !j.deleted : new Date(j.updatedAt) > new Date(b.have[j.id]))).map((j) => ({ id: j.id, updatedAt: j.updatedAt, name: j.name || '', deleted: !!j.deleted, data: j.deleted ? null : j.data }));
+        return route.fulfill({ status: 200, headers: cors, contentType: 'application/json', body: JSON.stringify({ ok: true, saved, newer, refused: [], at: new Date().toISOString() }) }); }
+      return route.fulfill({ status: 404, headers: cors, body: '{}' });
+    });
+  };
+  const kctx = await browser.newContext(ctxOpts); await mockStudio(kctx); const kp = await kctx.newPage(); watch(kp, 'acct');
+  await kp.goto(BASE, { waitUntil: 'networkidle' }); await kp.click('#screen-home [data-act="new"]'); await kp.waitForSelector('.sheet [data-f="name"]'); await kp.fill('.sheet [data-f="name"]', 'Backup Client'); await kp.click('.sheet button:has-text("Save")'); await kp.waitForTimeout(300);
+  await kp.click('.tabbar [data-tab="settings"]'); await kp.waitForSelector('[data-role="account-card"]'); check(/this device only/i.test(await kp.textContent('[data-role="account-card"]')), 'Settings says jobs live on this device only until connected');
+  await kp.click('[data-acct="connect"]'); await kp.waitForSelector('.sheet [data-f="origin"]'); await kp.click('.sheet button:has-text("Continue to sign in")');
+  await kp.waitForSelector('[data-role="account-card"] .pill.signed', { timeout: 15000 }); await kp.waitForFunction(() => /Last backed up/.test(document.querySelector('[data-role="account-card"]')?.textContent || ''), null, { timeout: 15000 });
+  const acctTxt = await kp.textContent('[data-role="account-card"]'); check(/Dana/.test(acctTxt) && /Hill Country Exteriors/.test(acctTxt), 'connected as the Studio person and company', acctTxt.slice(0, 120)); await kp.waitForTimeout(2600); await shot(kp, 'v3-12-account-connected');
+  check(seen.auth === 'Bearer tok.mac' && [...cloud.keys()].some((k) => k !== '_settings') && cloud.has('_settings') && !JSON.stringify([...cloud.values()]).includes('tok.mac'), 'the job and settings were backed up; the token is never in the backup');
+  const jobId = [...cloud.keys()].find((k) => k !== '_settings'); const exported = await kp.evaluate(() => window.__fullbid.store.exportJSON()); check(!exported.includes('tok.mac'), 'a backup file never contains the sign-in');
+  // a second device signs in and gets the job
+  const k2 = await browser.newContext(ctxOpts); await mockStudio(k2); const kp2 = await k2.newPage(); watch(kp2, 'acct2'); await kp2.goto(BASE + '#/settings', { waitUntil: 'networkidle' }); await kp2.click('[data-acct="connect"]'); await kp2.click('.sheet button:has-text("Continue to sign in")');
+  await kp2.waitForFunction((id) => window.__fullbid && window.__fullbid.store.projects().some((p) => p.id === id), jobId, { timeout: 15000 });
+  const got = await kp2.evaluate((id) => { const p = window.__fullbid.store.project(id); return { client: p.client.name, n: window.__fullbid.store.projects().length }; }, jobId); check(got.client === 'Backup Client' && got.n === 1, 'a second device gets the job after signing in', JSON.stringify(got));
+  // a link someone else wrote connects nothing
+  const k3 = await browser.newContext(ctxOpts); await mockStudio(k3); const kp3 = await k3.newPage(); watch(kp3, 'acct3'); await kp3.goto(`${BASE}#studio=evil.tok&api=${encodeURIComponent('https://evil.example/api')}&state=abcdefgh12345`, { waitUntil: 'networkidle' }); await kp3.waitForTimeout(600);
+  check(await kp3.evaluate(() => !JSON.parse(localStorage.getItem('fullbid.v1.account') || '{}').token), 'a sign-in link this device did not start connects nothing');
+  // erasing the device lets go of the account and leaves the backup alone
+  await kp2.evaluate(() => window.__fullbid.store.reset()); await kp2.waitForTimeout(5200); check(cloud.has(jobId) && !cloud.get(jobId).deleted, 'erasing a device does not delete the backup');
+  await kctx.close(); await k2.close(); await k3.close();
 } catch (e) { console.log('\nE2E-V2 FAILURE:', e.message.split('\n')[0]); fails.push('exception: ' + e.message.split('\n')[0]); try { await page.screenshot({ path: `${OUT}/zz-failure.png` }); } catch {} }
 await browser.close();
 console.log(`\nchecks failed: ${fails.length}`); fails.forEach((f) => console.log('  -', f));

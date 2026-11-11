@@ -103,6 +103,6 @@ What each group most likely sends, to confirm against each app:
 1. **The Studio reads `family.lead`.** Turn it into a lead with its source app and rep code, using the lead hand-off
    the Studio already has (saved first, then sent to the site's `/api/lead`).
 2. **A family switcher.** One menu in each app listing the others, built from `FAMILY_APPS` in the kit.
-3. **One sign-in across the family.** This needs a shared backend. It's James's decision (Fullbid's direction doc,
-   section 11): Fullbid's own, or shared with the Studio's Vercel and Postgres. Nothing in these agreements has to
-   change when that happens; links and files keep working.
+3. **One sign-in across the family.** Decided Nov 11, 2026: the family shares the Studio's backend. Fullbid signs in
+   with a Studio account and backs its jobs up there (the Studio repo's `docs/family/FULLBID-ACCOUNTS.md`). Next on
+   that backend: AI estimates without the contractor's own key, then plans and billing through Helcim.
