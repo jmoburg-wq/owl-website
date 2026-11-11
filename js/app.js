@@ -18,6 +18,7 @@ import { openSuppliersPanel } from './suppliers-ui.js';
 import { profileOf, METHOD_LABELS, markupFromMargin } from './pricing/profile.js';
 import { suppliersOf } from './pricing/suppliers.js';
 import { handleCvsHash, importCvsFile, enableCvsDrop } from './cvs-ui.js';
+import { accountCard, handleStudioHash, startAutoSync } from './account-ui.js';
 
 const TABS = ['home', 'build', 'scan', 'model', 'estimate', 'settings'];
 const TITLES = { home: BRAND.name, build: 'Build', scan: 'Measure', model: '3D & plan', estimate: 'Bid', settings: 'Settings' };
@@ -126,6 +127,7 @@ function renderSettings(root, { navigate }) {
   // appearance + data
   const ap = h('div', { class: 'card' }, el(`<div class="card-title"><h3>Appearance</h3></div>`)); ap.append(segEl([{ value: 'auto', label: 'Auto' }, { value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }], s.theme || 'auto', (v) => { s.theme = v; applyTheme(); save(); })); root.append(ap);
   const data = el(`<div class="card"><div class="card-title"><h3>Data</h3><span class="dim small">${store.projects().length} projects · stored on this device</span></div><div class="btn-grid"><button class="btn secondary" data-act="export">${icons.download} Backup (JSON)</button><label class="btn secondary">${icons.share} Restore<input type="file" accept="application/json" hidden data-act="import"></label></div><button class="btn danger block mt12" data-act="reset">Erase all data</button></div>`);
+  { const ac = accountCard(() => renderSettings(root, { navigate })); if (root.children[1]) root.insertBefore(ac, root.children[1]); else root.append(ac); }
   root.append(data);
   // device capabilities
   const cap = h('div', { class: 'card' }, el(`<div class="card-title"><h3>This device</h3></div>`)); const capList = h('div', { class: 'list' }); cap.append(capList); root.append(cap);
@@ -167,11 +169,12 @@ async function handleShareLink(hash) {
 function boot() {
   applyTheme();
   $$('.tabbar button').forEach((b) => b.addEventListener('click', () => navigate(b.dataset.tab)));
-  store.subscribe((_, tag) => { if (['room', 'project', 'active', 'import', 'reset'].includes(tag)) { if (current === 'home') render('home'); } });
-  window.addEventListener('hashchange', () => { if (/[#&]cvs(-url)?=/.test(location.hash)) { handleCvsHash(location.hash, { navigate }); return; } if (location.hash.includes('share=')) { handleShareLink(location.hash); return; } const m = /#\/(\w+)/.exec(location.hash); if (m && m[1] !== current && TABS.includes(m[1])) navigate(m[1]); });
+  store.subscribe((_, tag) => { if (['room', 'project', 'active', 'import', 'reset', 'sync'].includes(tag)) { if (current === 'home') render('home'); } });
+  window.addEventListener('hashchange', () => { if (/[#&]studio=/.test(location.hash)) { handleStudioHash(location.hash, { navigate }); return; } if (/[#&]cvs(-url)?=/.test(location.hash)) { handleCvsHash(location.hash, { navigate }); return; } if (location.hash.includes('share=')) { handleShareLink(location.hash); return; } const m = /#\/(\w+)/.exec(location.hash); if (m && m[1] !== current && TABS.includes(m[1])) navigate(m[1]); });
   const initialHash = location.hash;
   const m = /#\/(\w+)/.exec(initialHash); navigate(m && TABS.includes(m[1]) ? m[1] : 'home');
-  if (/[#&]cvs(-url)?=/.test(initialHash)) handleCvsHash(initialHash, { navigate }); else handleShareLink(initialHash);
+  if (/[#&]studio=/.test(initialHash)) handleStudioHash(initialHash, { navigate }); else if (/[#&]cvs(-url)?=/.test(initialHash)) handleCvsHash(initialHash, { navigate }); else handleShareLink(initialHash);
+  startAutoSync();
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(() => {});
   window.__fullbid = window.__roompilot = { store, navigate, recompute };
   document.title = `${BRAND.name} — ${BRAND.tagline}`;
